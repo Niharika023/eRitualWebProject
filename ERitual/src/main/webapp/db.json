@@ -1,0 +1,113 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  },
+  "industryList": [
+    {
+      "id": 1,
+      "name": "IT"
+    },
+    {
+      "id": 2,
+      "name": "Finance"
+    }
+  ],
+  "user": {
+    "userDetails": {
+      "name": "Harsha Venkatram",
+      "id": 1
+    },
+    "jwtToken": "thisisasamplejsonwebtoken",
+    "accessToken": "someothertoken"
+  },
+  "bannerData": [
+    {
+      "id": 1,
+      "title": "My Banner 1",
+      "imagePath": "http://harsha-venkatr.am.s3-website-us-east-1.amazonaws.com/sakhaglobal/images/slider/slider.jpg"
+    },
+    {
+      "id": 2,
+      "title": "My Banner 2",
+      "imagePath": "http://harsha-venkatr.am.s3-website-us-east-1.amazonaws.com/sakhaglobal/images/slider/slider2.jpg"
+    },
+    {
+      "id": 3,
+      "title": "My Banner 3",
+      "imagePath": "http://harsha-venkatr.am.s3-website-us-east-1.amazonaws.com/sakhaglobal/images/slider/slider3.jpg"
+    }
+  ],
+  "businessList": [
+    {
+      "id": 1,
+      "imagePath": "http://harsha-venkatr.am.s3-website-us-east-1.amazonaws.com/sakhaglobal/images/logo/tnt.png",
+      "name": "TNT",
+      "cities": [
+        "Bangalore",
+        "Mangalore"
+      ],
+      "servicesOffered": [
+        "Web Development",
+        "Design"
+      ],
+      "rating": 4.8
+    },
+    {
+      "id": 2,
+      "imagePath": "http://sakhaglobal.com/media/images/logo/acca.png",
+      "name": "ACCA",
+      "cities": [
+        "Bangalore",
+        "Mangalore"
+      ],
+      "servicesOffered": [
+        "Web Development",
+        "Design"
+      ],
+      "rating": 3.2
+    },
+    {
+      "id": 3,
+      "imagePath": "http://sakhaglobal.com/media/images/logo/nanolane.png",
+      "name": "Nanolane",
+      "cities": [
+        "Bangalore",
+        "Mangalore"
+      ],
+      "servicesOffered": [
+        "Web Development",
+        "Design"
+      ],
+      "rating": 1.6
+    }
+  ],
+  "getUserProfile": {
+    "profileCompleteness": 60,
+    "isProfileComplete": false
+  },
+  "virtualAddressList": [
+    {
+      "id": 1,
+      "address": "Office space 1, 9th block , jayanagar, Bangalore - 560078"
+    },
+    {
+      "id": 2,
+      "address": "Office space 2, 5th phase , JP Nagar, Bangalore - 560070"
+    }
+  ],
+  "getotp": {"otp":123456}
+}

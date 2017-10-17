@@ -1,0 +1,51 @@
+@media all and (max-width:767px) {
+  html {
+      font-size: 56.5%;
+  }
+
+  .site-container {
+    padding:0;
+  }
+
+  .signup-large-icons {
+    font-size: 60px; 
+  }
+
+  .company-card-container .card {
+    padding: 15px;
+    margin-bottom: 10px;
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+  }
+
+  .company-card-container .logo-container {
+    position: relative;
+    height: auto;
+    width: 130px;
+    margin-bottom: 15px;
+    padding: 5px;
+    border: 1px solid #EEE;
+  }
+
+  .company-card-container .logo{
+    border-radius: 10px;
+    width:120px;
+    float: none !important;
+    margin: auto;
+    position: relative;
+    display: block;
+  }
+
+  .company-card-container .business-details {
+    margin-left: 0;
+    padding-top: 15px;
+    border-top: 1px solid #EEE;
+  }
+
+  .company-card-container .rating-container {
+    top: 15px;
+    bottom: auto;
+    right: 15px;
+  }
+}
