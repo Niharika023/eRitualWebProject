@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
-import EventListForm from '../../containers/EventListForm';
-import EditEventForm from '../../containers/EditEventContainer';
+import EventListForm from '../../containers/EventContainer/EventListForm';
+import EditEventForm from '../../containers/EventContainer/EditEventContainer';
 import { Link } from 'react-router';
 import {LargeLogo} from '../common/Logos';
 

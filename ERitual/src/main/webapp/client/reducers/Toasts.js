@@ -5,7 +5,6 @@ import findIndex from 'lodash/findIndex';
 import shortid from 'shortid';
 
 export default (state=[],action={}) => {
-	console.log("action ", action);
 	switch (action.type) {
     case ADD_TOAST_MESSAGE:
       return [

@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
-import OrderListForm from '../../containers/OrderListForm';
-import OrderDetailsContainer from '../../containers/OrderDetailsContainer';
+import OrderListForm from '../../containers/OrderContainer/OrderListForm';
+import OrderDetailsContainer from '../../containers/OrderContainer/OrderDetailsContainer';
 import { Link } from 'react-router';
 import {LargeLogo} from '../common/Logos';
 

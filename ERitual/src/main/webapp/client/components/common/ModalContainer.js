@@ -62,7 +62,6 @@ class ModalContainer extends Component {
 }
 
   closeModal() {
-    console.log("modal props are " , this.state.backToLink);
     if(this.state.backToLink) {
       this.context.router.push(this.state.backToLink);
     }

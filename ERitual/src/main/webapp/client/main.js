@@ -31,7 +31,6 @@ if(localStorage.jwtToken)
   const jwtToken = localStorage.getItem('jwtToken');
   const user = JSON.parse(localStorage.getItem('user'));
   setAuthToken(jwtToken);
-  console.log("user ", user);
   store.dispatch(setCurrentUser(user));
 }
 

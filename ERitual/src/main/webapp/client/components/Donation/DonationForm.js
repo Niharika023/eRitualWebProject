@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import DonationFormContainer from '../../containers/DonationFormContainer';
+import DonationFormContainer from '../../containers/DonationContainer/DonationFormContainer';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import {userDonationFormsRequest} from '../../actions/donationFormAction';

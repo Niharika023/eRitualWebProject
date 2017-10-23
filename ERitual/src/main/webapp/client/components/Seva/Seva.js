@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
-import SevaListForm from '../../containers/SevaListForm';
-import EditSevaForm from '../../containers/EditSevaContainer';
+import SevaListForm from '../../containers/SevaContainer/SevaListForm';
+import EditSevaForm from '../../containers/SevaContainer/EditSevaContainer';
 import { Link } from 'react-router';
 import {LargeLogo} from '../common/Logos';
 

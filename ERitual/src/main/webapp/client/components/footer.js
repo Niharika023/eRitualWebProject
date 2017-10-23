@@ -24,7 +24,6 @@ class FooterBar extends Component {
   render() {
     const {isAuthenticated} = this.props.auth;
     const user = this.props.auth.user;
-    console.log('path is ' , this.props.pathname);
     const userLinks = ( 
      // <nav className="navbar navbar-default">
        

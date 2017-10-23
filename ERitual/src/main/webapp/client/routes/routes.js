@@ -4,23 +4,22 @@ import { Route, IndexRoute } from 'react-router';
 import App from '../App';
 import Login from '../components/Login/Login';
 import Home from '../components/Home';
-import Seva from '../containers/SevaListForm';
-import OrderListForm from '../containers/OrderListForm';
-import ContactUs from '../components/ContactUs';
+import Seva from '../containers/SevaContainer/SevaListForm';
+import OrderListForm from '../containers/OrderContainer/OrderListForm';
 import Registration from '../components/Registration/Registration';
 import SevaForm from '../components/Seva/SevaForm';
 import EventForm from '../components/Event/EventForm';
 import DonationForm from '../components/Donation/DonationForm';
 import MessageForm from '../components/Message/MessageForm';
-import Event from '../containers/EventListForm';
-import Message from '../containers/MessageListForm';
-import Donation from '../containers/DonationListForm';
+import Event from '../containers/EventContainer/EventListForm';
+import Message from '../containers/MessageContainer/MessageListForm';
+import Donation from '../containers/DonationContainer/DonationListForm';
 import EditSeva from '../components/Seva/EditSevaForm';
 import EditEvent from '../components/Event/EditEventForm';
 import EditDonation from '../components/Donation/EditDonationForm';
 import EditMessage from '../components/Message/EditMessageForm';
-import Order from '../containers/OrderListForm';
-import OrderDetail from '../containers/OrderDetailsContainer';
+import Order from '../containers/OrderContainer/OrderListForm';
+import OrderDetail from '../containers/OrderContainer/OrderDetailsContainer';
 import ChangePassword from '../components/Login/ChangePassword';
 import ResetPassword from '../components/Login/ResetPassword';
 import otpVerification from '../components/Login/OtpVerification';
@@ -51,7 +50,6 @@ export default (
     <Route path= "editEvent/:id" component={EditEvent} />
     <Route path= "editDonation/:id" component={EditDonation} />
     <Route path= "editMessage/:id" component={EditMessage} />
-    <Route path= "contactUs" component={ContactUs} />
     <Route path= "messageForm" component={MessageForm} />
     <Route path= "message" component={Message} />
   </Route>

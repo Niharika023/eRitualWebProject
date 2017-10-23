@@ -1,8 +1,8 @@
 import React,{Component} from 'react';
-import MessageDetailsContainer from '../../containers/MessageDetailsContainer';
+import MessageDetailsContainer from '../../containers/MessageContainer/MessageDetailsContainer';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import {userEditMessagesRequest, userMessageFormsRequest, clearMessageData} from '../../actions/editMessageAction';
+import {userEditMessagesRequest, userMessageFormsRequest, clearMessageData} from '../../actions/messageFormAction';
 import {LargeLogo} from '../common/Logos';
 import { bindActionCreators } from 'redux';
 import {addToast, deleteToast} from '../../actions/Toasts';
@@ -13,7 +13,6 @@ class MessageDetails extends Component {
 		this.props.userEditMessagesRequest(this.props.params.id);
 	}
     render() {
-    	console.log(" edit message " , this.props.editMessage);
     	const {userMessageFormsRequest,userEditMessagesRequest, message,editMessage,addToast,clearMessageData} = this.props;
         return (
             <div className="row full-height">

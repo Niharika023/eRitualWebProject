@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import MessageFormContainer from '../../containers/MessageFormContainer';
+import MessageFormContainer from '../../containers/MessageContainer/MessageFormContainer';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import {userMessageFormsRequest} from '../../actions/messageFormAction';

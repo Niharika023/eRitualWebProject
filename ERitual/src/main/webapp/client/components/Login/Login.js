@@ -12,6 +12,7 @@ class Login extends Component {
             <div className="row full-height">
               <div className="col-md-4 col-md-offset-4 full-height">
                 <LargeLogo id="large_logo" className="large-logo"/>
+                	
                 <LoginForm userLoginRequest={userLoginRequest}/>
               </div>
             </div>

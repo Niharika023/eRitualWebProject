@@ -1,61 +1,51 @@
 import axios from 'axios';
 
 export const CREATE_SEVA = 'CREATE_SEVA';
-export const IMAGE_UPLOAD = 'IMAGE_UPLOAD';
-export const FETCH_RASHI ='FETCH_RASHI';
-export const FETCH_NAKSHATRA ='FETCH_NAKSHATRA';
+export const GET_SEVA_BY_ID = 'GET_SEVA_BY_ID';
+export const UPDATE_SEVA='UPDATE_SEVA';
+export const IMAGE_STREAM='IMAGE_STREAM';
+export const CLEAR_SEVA = 'CLEAR_SEVA';
 export function setSevaData(sevaData) {
 	  return {
 	    type: CREATE_SEVA,
 	    sevaData
 	  };
 	}
-
-export function setImageUpload(imageData) {
-	  return {
-	    type: IMAGE_UPLOAD,
-	    imageData
-	  };
-	}
-export function userSevaFormsRequest(sevaData) {
-	let seva= {
-			"name":sevaData.name,
-			"description":sevaData.description,
-			"formFields":sevaData.formFields,
-			"available":sevaData.available,
-			"amount":sevaData.amount,
-			"imageId":sevaData.imageId,
-			"time":sevaData.time
-	}
+export function userSevaFormsRequest(seva) {
 	const request = axios.post('http://localhost:8080/ERitual/er/seva/create',seva);
 	  return {
 	    type    : CREATE_SEVA,
 	    payload : request
 	  }
 }
+export function clearSevaData() {
+	return {
+	    type    : CLEAR_SEVA,
+	    payload:'whatever'
+	 } 
+}
 
-export function imageUploadRequest(imageData) {
-	const request = axios.post('http://localhost:8080/ERitual/er/seva/image',imageData);
+export function setImageStream(imageUrl) {
 	  return {
-	    type    : IMAGE_UPLOAD,
+	    type: IMAGE_STREAM,
+	    imageUrl
+	  };
+	}
+export function userEditSevasRequest(sevaIdForEdit) {
+	const request = axios.get('http://localhost:8080/ERitual/er/seva/get/byId'+"?sevaId="+ sevaIdForEdit);
+	  return {
+	    type    : GET_SEVA_BY_ID,
 	    payload : request
 	  }
 }
 
-export function rashiRequest() {
-	const request = axios.get('http://localhost:8080/ERitual/er/seva/rashi/list');
+export function userSevaUpdateFormsRequest(seva) {
+	const request = axios.post('http://localhost:8080/ERitual/er/seva/update',seva);
 	  return {
-	    type    : FETCH_RASHI,
+	    type    : UPDATE_SEVA,
 	    payload : request
 	  }
 }
 
-export function nakshatraRequest() {
-	const request = axios.get('http://localhost:8080/ERitual/er/seva/nakshatra/list');
-	  return {
-	    type    : FETCH_NAKSHATRA,
-	    payload : request
-	  }
-}
 
 

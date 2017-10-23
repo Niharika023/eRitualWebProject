@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 export function setAuthToken(token) {
-  console.log("token is " , token);
   if(token) {
     axios.defaults.headers.common['X-token'] = token;
   }

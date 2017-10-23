@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
-import MessageListForm from '../../containers/MessageListForm';
-import EditMessageForm from '../../containers/EditMessageContainer';
+import MessageListForm from '../../containers/MessageContainer/MessageListForm';
+import EditMessageForm from '../../containers/MessageContainer/EditMessageContainer';
 import { Link } from 'react-router';
 import {LargeLogo} from '../common/Logos';
 

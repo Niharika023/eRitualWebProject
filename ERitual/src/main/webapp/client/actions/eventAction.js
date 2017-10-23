@@ -96,7 +96,6 @@ export function eventRenderList(search,searchData,pageSize,pageNumber) {
 	
 	concatStr=concatStr+"pageSize="+ pageSize+"&";
 	concatStr=concatStr+"pageNumber="+pageNumber+"&";
-	console.log("searchEventParameter","http://localhost:8080/ERitual/er/event/list "+concatStr );
 	const request = axios.get("http://localhost:8080/ERitual/er/event/list "+concatStr);
   return {
     type    : FETCH_EVENT_LIST,

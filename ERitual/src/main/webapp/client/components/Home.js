@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import ReactPaginate from 'react-paginate';
-import Order from '../containers/HomeContainer';
-import EventOrder from '../containers/homeContainer2';
-
-import DonationOrder from '../containers/homeContainer3';
-
+import Order from '../containers/HomeContainer/HomeContainer';
+import EventOrder from '../containers/HomeContainer/homeContainer2';
+import DonationOrder from '../containers/HomeContainer/homeContainer3';
 import {orderRenderList,clearOrderList} from '../actions/orderAction';
 import TextFieldGroup from '../components/common/TextFieldGroup';
 import { Link } from 'react-router';
@@ -37,7 +35,6 @@ class OrderListForm extends Component {
   
   componentWillUnmount()
   {
-	  console.log("rende");
     this.props.clearOrderList();
   }
   

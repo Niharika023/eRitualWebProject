@@ -30,7 +30,6 @@ public class EventController {
 	private static final String DELETE_EVENT_ID="/delete";
 	private static final String UPDATE_EVENT="/update";
 	private static final String EVENT_LIST_BY_ID="/get/byId";
-	private static final String UPLOAD_IMAGE = "/image";
 	
 	@RequestMapping(value = EVENT_LIST, method = RequestMethod.GET)
 	public void getEventList(HttpServletRequest request, HttpServletResponse response, HttpSession session) {

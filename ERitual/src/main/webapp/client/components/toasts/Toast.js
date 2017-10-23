@@ -11,7 +11,6 @@ export default class Toast extends Component {
     }
     render() {
         const {id, type, text, toastType} = this.props.message;
-        console.log("this.props.message",this.props.message);
         if(toastType == "auto") {
           let toastTimeout = window.setTimeout( ()=> {
             clearTimeout(toastTimeout);

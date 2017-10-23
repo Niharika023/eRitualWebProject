@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import SevaFormContainer from '../../containers/SevaFormContainer';
+import SevaFormContainer from '../../containers/SevaContainer/SevaFormContainer';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import {userSevaFormsRequest} from '../../actions/sevaFormAction';

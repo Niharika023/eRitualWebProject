@@ -71265,7 +71265,7 @@
 			"address2": eventData.address2,
 			"locality": eventData.locality,
 			"city": eventData.city,
-			"contactDetails": eventData.phoneNo,
+			"contactDetails": eventData.contactDetails,
 			"amount": eventData.amount,
 			"date": eventData.date,
 			"time": eventData.time,
@@ -97500,6 +97500,12 @@
 
 	            event.preventDefault();
 	            this.props.deleteSeva.deleteSeva(this.state.deleteSevaId, this.state.sevaIndex).then(function (res) {
+	                if (!res.payload.response && res.payload.status == 600) {
+	                    _this2.props.addToast.addToast({ type: 'error',
+	                        text: 'Sorry,you are not authorized to delete seva, please contact to your  admin',
+	                        toastType: 'auto' });
+	                    _this2.context.router.push('/ERitual/seva');
+	                }
 	                var sevaFormData = res.payload.data;
 	                if (res.payload.data != true) {
 	                    _this2.setState({ errors: { "form": "Sorry not able to delete!" }, isLoading: false });
@@ -98339,7 +98345,7 @@
 				var elmnt = document.getElementById('edit-seva-form');
 				for (var i = 0; i < elmnt.length; i++) {
 					if (elmnt[i].placeholder) {
-						if (elmnt[i].placeholder == this.state.scroll) {
+						if (elmnt[i].placeholder.toLowerCase() == this.state.scroll) {
 							elmnt[i].focus();
 							break;
 						}
@@ -98607,7 +98613,10 @@
 					}
 					this.props.userSevaFormsRequest(sevaData).then(function (res) {
 						if (!res.payload.response && res.payload.status == 600) {
-							_this3.setState({ errors: { "form": "Sorry,you are not authorized to create or update seva, please contact to your  admin" }, isLoading: false });
+							_this3.props.addToast({ type: 'error',
+								text: 'Sorry,you are not authorized to create or update seva, please contact to your  admin',
+								toastType: 'auto' });
+							_this3.context.router.push('/ERitual/seva');
 						} else if (res.payload.status == 204) {
 							_this3.setState({ errors: { "form": "Seva Name already exist" }, isLoading: false });
 						} else {
@@ -98834,7 +98843,7 @@
 									isValidDate: this.valid,
 									timeFormat: this.state.isTime,
 									value: selectedTime,
-									inputProps: { placeholder: "time" }
+									inputProps: { placeholder: "Time" }
 								}),
 								errors.time && _react2.default.createElement(
 									'span',
@@ -98883,9 +98892,9 @@
 														'Name'
 													),
 													_react2.default.createElement('input', {
-														name: 'eventUserName',
+														name: 'sevaUserName',
 														type: 'checkbox',
-														checked: this.state.eventUserName,
+														checked: this.state.sevaUserName,
 														onChange: this.handleNameInputChange
 													})
 												),
@@ -102752,7 +102761,6 @@
 	    _this.handleRashiInputChange = _this.handleRashiInputChange.bind(_this);
 	    _this.handleGotraInputChange = _this.handleGotraInputChange.bind(_this);
 	    _this.handleNameInputChange = _this.handleNameInputChange.bind(_this);
-	    _this.onImageUpload = _this.onImageUpload.bind(_this);
 	    _this.valid = _this.valid.bind(_this);
 	    _this.handleDateTimeSelect = _this.handleDateTimeSelect.bind(_this);
 	    _this.selectLogoClick = _this.selectLogoClick.bind(_this);
@@ -102793,44 +102801,6 @@
 	      var name = target.name;
 	      this.state.available = value;
 	      this.setState(_defineProperty({}, name, value));
-	    }
-
-	    //For Image Upload 
-
-	  }, {
-	    key: 'onImageUpload',
-	    value: function onImageUpload(event) {
-	      var _this2 = this;
-
-	      var reader = new FileReader();
-	      var file = event.target.files[0];
-	      console.log("image name", file);
-	      console.log("this.state.image", event.target.value);
-	      var filename = event.target.value;
-	      var filenameArr = filename.split("\\");
-	      var fullFileName = filenameArr[2].split(".");
-	      var imageName = fullFileName[0];
-	      if (this.state.image != "") {
-	        this.state.image;
-	        this.state.imageDescription = imageName + "_Picture";
-	        this.state.tags = imageName + "," + this.state.templeName;
-	      }
-	      var imageValue = {
-	        'description': this.state.imageDescription,
-	        'tags': this.state.tags,
-	        'image': file
-	      };
-	      this.props.imageUploadRequest(imageValue).then(function (res) {
-	        res.payload.data = JSON.parse(decodeURIComponent(res.payload.data.replace(/\+/g, '%20')));
-	        var sevaFormData = res.payload.data;
-	        _this2.setState({ imageId: sevaFormData.id });
-	        if (sevaFormData.message != null) {
-	          _this2.setState({ errors: { "form": sevaFormData.message }, isLoading: false });
-	        } else {
-
-	          _this2.setState({ success: { "form": "uploaded successfully" }, isLoading: false });
-	        }
-	      });
 	    }
 	  }, {
 	    key: 'handleInputChange',
@@ -102906,7 +102876,7 @@
 	      var elmnt = document.getElementById('seva-form');
 	      for (var i = 0; i < elmnt.length; i++) {
 	        if (elmnt[i].placeholder) {
-	          if (elmnt[i].placeholder == this.state.scroll) {
+	          if (elmnt[i].placeholder.toLowerCase() == this.state.scroll) {
 	            elmnt[i].focus();
 	            break;
 	          }
@@ -102938,7 +102908,6 @@
 	        time: (selectedHour < 10 ? "0" + selectedHour : selectedHour) + ':' + (minutesFormat < 10 ? "0" + minutesFormat : minutesFormat),
 	        selectedTime: (selectedHour < 10 ? "0" + selectedHour : selectedHour) + ':' + (minutesFormat < 10 ? "0" + minutesFormat : minutesFormat) + ' ' + (hoursFormat < 12 ? 'AM' : 'PM')
 	      });
-	      console.log("timme", this.state.time);
 	      if (this.state.firstTimeFormSubmit) {
 	        this.isValid();
 	      }
@@ -102946,7 +102915,7 @@
 	  }, {
 	    key: 'onSubmit',
 	    value: function onSubmit(event) {
-	      var _this3 = this;
+	      var _this2 = this;
 
 	      event.preventDefault();
 	      this.state.submitApplied = true;
@@ -102983,19 +102952,22 @@
 	        // this.state.time = this.state.hours+":"+this.state.minutes;
 	        this.props.userSevaFormsRequest(sevaData).then(function (res) {
 	          if (!res.payload.response && res.payload.status == 600) {
-	            _this3.setState({ errors: { "form": "Sorry,you are not authorized to create seva, please contact to your  admin" }, isLoading: false });
+	            _this2.props.addToast({ type: 'error',
+	              text: 'Sorry,you are not authorized to create or update seva, please contact to your  admin',
+	              toastType: 'auto' });
+	            _this2.context.router.push('/ERitual/seva');
 	          } else if (res.payload.status == 204) {
-	            _this3.setState({ errors: { "form": "Seva Name already exist" }, isLoading: false });
+	            _this2.setState({ errors: { "form": "Seva Name already exist" }, isLoading: false });
 	          } else {
 	            res.payload.data = JSON.parse(decodeURIComponent(res.payload.data.replace(/\+/g, '%20')));
 	            var sevaFormData = res.payload.data;
 	            if (sevaFormData.message != null) {
-	              _this3.setState({ errors: { "form": sevaFormData.message }, isLoading: false });
+	              _this2.setState({ errors: { "form": sevaFormData.message }, isLoading: false });
 	            } else {
-	              _this3.props.addToast({ type: 'success',
+	              _this2.props.addToast({ type: 'success',
 	                text: 'Seva created successfully',
 	                toastType: 'auto' });
-	              _this3.context.router.push('/ERitual/seva');
+	              _this2.context.router.push('/ERitual/seva');
 	            }
 	          }
 	        });
@@ -103031,7 +103003,7 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this4 = this;
+	      var _this3 = this;
 
 	      var uploadedImageSrc;
 	      var options = {
@@ -103055,10 +103027,7 @@
 	                  alert("Minimum dimensions of file should be 300x300");
 	                  return false;
 	                } else {
-	                  //console.log("binary is ", e2.target.result);
-
-
-	                  _this4.setState({ logoImage: e2.target.result, sevaImage: e2.target.result, isUploadLoading: false });
+	                  _this3.setState({ logoImage: e2.target.result, sevaImage: e2.target.result, isUploadLoading: false });
 	                  if (img.width < img.height) {
 	                    uploadedImageStyles.content.width = "auto";
 	                    uploadedImageStyles.content.height = "100%";
@@ -103073,7 +103042,7 @@
 	        },
 	        doUpload: function doUpload(files) {
 	          event.preventDefault();
-	          _this4.closeModal();
+	          _this3.closeModal();
 	          var form = new FormData();
 	          form.append("description", "asdasd");
 	          form.append("tags", "seva");
@@ -103083,28 +103052,25 @@
 	            method: 'POST',
 	            data: form
 	          }).then(function (response) {
-	            _this4.setState({
+	            _this3.setState({
 	              imageId: response.data.id
 	            });
 
-	            _this4.setState({
+	            _this3.setState({
 	              imageUploadSuccess: true
-	            }, function () {
-	              console.log("state ", _this4.state);
-	            });
+	            }, function () {});
 	          }).catch(function (error) {
-	            _this4.setState({
+	            _this3.setState({
 	              imageUploadSuccess: false
 	            });
 	          });
 	        },
 	        uploading: function uploading(progress) {
-	          _this4.setState({ isUploadLoading: true });
-	          console.log('loading...', progress.loaded / progress.total + '%');
+	          _this3.setState({ isUploadLoading: true });
 	        },
 	        uploadSuccess: function uploadSuccess(response) {
-	          _this4.setState({ logoImageOnCard: _this4.state.logoImage });
-	          _this4.setState({ isUploadLoading: false });
+	          _this3.setState({ logoImageOnCard: _this3.state.logoImage });
+	          _this3.setState({ isUploadLoading: false });
 	        }
 	      };
 
@@ -103210,7 +103176,7 @@
 	                isValidDate: this.valid,
 	                timeFormat: this.state.isTime,
 	                value: selectedTime,
-	                inputProps: { placeholder: "time" }
+	                inputProps: { placeholder: "Time" }
 	              }),
 	              errors.time && _react2.default.createElement(
 	                'span',
@@ -103664,7 +103630,6 @@
 			_this.handleRashiInputChange = _this.handleRashiInputChange.bind(_this);
 			_this.handleGotraInputChange = _this.handleGotraInputChange.bind(_this);
 			_this.handleNameInputChange = _this.handleNameInputChange.bind(_this);
-			_this.onImageUpload = _this.onImageUpload.bind(_this);
 			_this.valid = _this.valid.bind(_this);
 			_this.selectLogoClick = _this.selectLogoClick.bind(_this);
 			_this.closeModal = _this.closeModal.bind(_this);
@@ -103705,44 +103670,6 @@
 				var name = target.name;
 				this.state.available = value;
 				this.setState(_defineProperty({}, name, value));
-			}
-
-			//For Image Upload 
-
-		}, {
-			key: 'onImageUpload',
-			value: function onImageUpload(event) {
-				var _this2 = this;
-
-				var reader = new FileReader();
-				var file = event.target.files[0];
-				console.log("image name", file);
-				console.log("this.state.image", event.target.value);
-				var filename = event.target.value;
-				var filenameArr = filename.split("\\");
-				var fullFileName = filenameArr[2].split(".");
-				var imageName = fullFileName[0];
-				if (this.state.image != "") {
-					this.state.image;
-					this.state.imageDescription = imageName + "_Picture";
-					this.state.tags = imageName + "," + this.state.templeName;
-				}
-				var imageValue = {
-					'description': this.state.imageDescription,
-					'tags': this.state.tags,
-					'image': file
-				};
-				this.props.imageUploadRequest(imageValue).then(function (res) {
-					res.payload.data = JSON.parse(decodeURIComponent(res.payload.data.replace(/\+/g, '%20')));
-					var eventFormData = res.payload.data;
-					_this2.setState({ imageId: eventFormData.id });
-					if (eventFormData.message != null) {
-						_this2.setState({ errors: { "form": eventFormData.message }, isLoading: false });
-					} else {
-
-						_this2.setState({ success: { "form": "uploaded successfully" }, isLoading: false });
-					}
-				});
 			}
 		}, {
 			key: 'handleInputChange',
@@ -103819,7 +103746,7 @@
 				var elmnt = document.getElementById('event-form');
 				for (var i = 0; i < elmnt.length; i++) {
 					if (elmnt[i].placeholder) {
-						if (elmnt[i].placeholder == this.state.scroll) {
+						if (elmnt[i].placeholder.toLowerCase() == this.state.scroll) {
 							elmnt[i].focus();
 							break;
 						}
@@ -103837,9 +103764,8 @@
 		}, {
 			key: 'handleDateSelect',
 			value: function handleDateSelect(selectedDate) {
-				var _this3 = this;
+				var _this2 = this;
 
-				console.log("selected", selectedDate);
 				var monthFormat = new Date(selectedDate._d).getMonth() + 1;
 				var dayFormat = new Date(selectedDate._d).getDate();
 				var yearFormat = new Date(selectedDate._d).getFullYear();
@@ -103850,9 +103776,8 @@
 
 				this.setState({ date: yearFormat + '-' + (monthFormat < 10 ? "0" + monthFormat : monthFormat) + '-' + (dayFormat < 10 ? "0" + dayFormat : dayFormat),
 					selecDate: (monthFormat < 10 ? "0" + monthFormat : monthFormat) + '/' + (dayFormat < 10 ? "0" + dayFormat : dayFormat) + '/' + yearFormat }, function () {
-					console.log(_this3.state.date, 'dealersOverallTotal1');
-					if (_this3.state.firstTimeFormSubmit) {
-						_this3.isValid();
+					if (_this2.state.firstTimeFormSubmit) {
+						_this2.isValid();
 					}
 				});
 				/*if(this.state.firstTimeFormSubmit) {
@@ -103876,7 +103801,6 @@
 					time: (this.state.hours < 10 ? "0" + this.state.hours : this.state.hours) + ':' + (this.state.minutes < 10 ? "0" + this.state.minutes : this.state.minutes),
 					selectedTime: (selectedHour < 10 ? "0" + selectedHour : selectedHour) + ':' + (minutesFormat < 10 ? "0" + minutesFormat : minutesFormat) + ' ' + (hoursFormat < 12 ? 'AM' : 'PM')
 				});
-				console.log("sate", this.state.selectedTime);
 				if (this.state.firstTimeFormSubmit) {
 					this.isValid();
 				}
@@ -103884,9 +103808,8 @@
 		}, {
 			key: 'onSubmit',
 			value: function onSubmit(event) {
-				var _this4 = this;
+				var _this3 = this;
 
-				console.log("this", this.state.date);
 				event.preventDefault();
 				this.state.submitApplied = true;
 				this.setState({ firstTimeFormSubmit: true });
@@ -103919,19 +103842,22 @@
 					var eventData = this.state;
 					this.props.userEventFormsRequest(eventData).then(function (res) {
 						if (!res.payload.response && res.payload.status == 600) {
-							_this4.setState({ errors: { "form": "Sorry,you are not authorized to create event, please contact to your  admin" }, isLoading: false });
+							_this3.props.addToast({ type: 'error',
+								text: 'Sorry,you are not authorized to create or update event, please contact to your  admin',
+								toastType: 'auto' });
+							_this3.context.router.push('/ERitual/event');
 						} else if (res.payload.status == 204) {
-							_this4.setState({ errors: { "form": "Event Name already exist" }, isLoading: false });
+							_this3.setState({ errors: { "form": "Event Name already exist" }, isLoading: false });
 						} else {
 							res.payload.data = JSON.parse(decodeURIComponent(res.payload.config.data.replace(/\+/g, '%20')));
 							var eventFormData = res.payload.data;
 							if (eventFormData.message != null) {
-								_this4.setState({ errors: { "form": eventFormData.message }, isLoading: false });
+								_this3.setState({ errors: { "form": eventFormData.message }, isLoading: false });
 							} else {
-								_this4.props.addToast({ type: 'success',
+								_this3.props.addToast({ type: 'success',
 									text: 'Event created successfully',
 									toastType: 'auto' });
-								_this4.context.router.push('/ERitual/event');
+								_this3.context.router.push('/ERitual/event');
 							}
 						}
 					});
@@ -103967,7 +103893,7 @@
 		}, {
 			key: 'render',
 			value: function render() {
-				var _this5 = this;
+				var _this4 = this;
 
 				var uploadedImageSrc;
 				var options = {
@@ -103991,10 +103917,7 @@
 										alert("Minimum dimensions of file should be 300x300");
 										return false;
 									} else {
-										//console.log("binary is ", e2.target.result);
-
-
-										_this5.setState({ logoImage: e2.target.result, eventImage: e2.target.result, isUploadLoading: false });
+										_this4.setState({ logoImage: e2.target.result, eventImage: e2.target.result, isUploadLoading: false });
 										if (img.width < img.height) {
 											uploadedImageStyles.content.width = "auto";
 											uploadedImageStyles.content.height = "100%";
@@ -104009,7 +103932,7 @@
 					},
 					doUpload: function doUpload(files) {
 						event.preventDefault();
-						_this5.closeModal();
+						_this4.closeModal();
 						var form = new FormData();
 						form.append("description", "asdasd");
 						form.append("tags", "event");
@@ -104019,28 +103942,25 @@
 							method: 'POST',
 							data: form
 						}).then(function (response) {
-							_this5.setState({
+							_this4.setState({
 								imageId: response.data.id
 							});
 
-							_this5.setState({
+							_this4.setState({
 								imageUploadSuccess: true
-							}, function () {
-								console.log("state ", _this5.state);
-							});
+							}, function () {});
 						}).catch(function (error) {
-							_this5.setState({
+							_this4.setState({
 								imageUploadSuccess: false
 							});
 						});
 					},
 					uploading: function uploading(progress) {
-						_this5.setState({ isUploadLoading: true });
-						console.log('loading...', progress.loaded / progress.total + '%');
+						_this4.setState({ isUploadLoading: true });
 					},
 					uploadSuccess: function uploadSuccess(response) {
-						_this5.setState({ logoImageOnCard: _this5.state.logoImage });
-						_this5.setState({ isUploadLoading: false });
+						_this4.setState({ logoImageOnCard: _this4.state.logoImage });
+						_this4.setState({ isUploadLoading: false });
 					}
 				};
 
@@ -104155,7 +104075,7 @@
 									timeFormat: false,
 									value: this.state.selecDate,
 									field: 'selecDate',
-									inputProps: { placeholder: "date" }
+									inputProps: { placeholder: "Date" }
 								}),
 								errors.date && _react2.default.createElement(
 									'span',
@@ -104180,7 +104100,7 @@
 									timeFormat: this.state.isTime,
 									value: selectedTime,
 									field: 'time',
-									inputProps: { placeholder: "time" }
+									inputProps: { placeholder: "Time" }
 								}),
 								errors.time && _react2.default.createElement(
 									'span',
@@ -104885,7 +104805,10 @@
 					var donationData = this.state;
 					this.props.userDonationFormsRequest(donationData).then(function (res) {
 						if (!res.payload.response && res.payload.status == 600) {
-							_this2.setState({ errors: { "form": "Sorry,you are not authorized to create donation, please contact to your admin" }, isLoading: false });
+							_this2.props.addToast({ type: 'error',
+								text: 'Sorry,you are not authorized to create or update donation, please contact to your  admin',
+								toastType: 'auto' });
+							_this2.context.router.push('/ERitual/donation');
 						} else if (res.payload.status == 204) {
 							_this2.setState({ errors: { "form": "Donation Name already exist" }, isLoading: false });
 						} else {
@@ -105275,7 +105198,6 @@
 	  }, {
 	    key: 'onChange',
 	    value: function onChange(event) {
-	      console.log("onchanging");
 	      event.preventDefault();
 	      this.setState(_defineProperty({}, event.target.name, event.target.value), function () {
 	        if (this.state.image != "" && this.state.firstTimeFormSubmit == false) {
@@ -105314,21 +105236,17 @@
 	        this.setState({ errors: {}, isLoading: true });
 	        var messageData = this.state;
 	        this.props.userMessageFormsRequest(messageData).then(function (res) {
-	          if (res.payload.response && res.payload.response.status == 600) {
-	            _this2.setState({ errors: { "form": "Sorry,you are not authorized to create or update seva, please contact to your  admin" }, isLoading: false });
-	          } else {
-	            res.payload.data = JSON.parse(decodeURIComponent(res.payload.data.replace(/\+/g, '%20')));
-	            var messageFormData = res.payload.data;
-	            /*	if(messageFormData.message!= null) {
-	            		this.setState({ errors : { "form" : messageFormData.message }, isLoading : false })
-	            		}
-	            else {*/
-	            _this2.props.addToast({ type: 'success',
-	              text: 'Message created successfully',
-	              toastType: 'auto' });
-	            _this2.context.router.push('/ERitual/message');
-	            //	}
-	          }
+	          res.payload.data = JSON.parse(decodeURIComponent(res.payload.config.data.replace(/\+/g, '%20')));
+	          var messageFormData = res.payload.data;
+	          /*	if(messageFormData.message!= null) {
+	          		this.setState({ errors : { "form" : messageFormData.message }, isLoading : false })
+	          		}
+	          else {*/
+	          _this2.props.addToast({ type: 'success',
+	            text: 'Message created successfully',
+	            toastType: 'auto' });
+	          _this2.context.router.push('/ERitual/message');
+	          //	}
 	        });
 	      }
 	    }
@@ -105438,7 +105356,7 @@
 	        null,
 	        _react2.default.createElement(
 	          'form',
-	          { className: 'p20 user-entry-forms details-form', onSubmit: this.onSubmit },
+	          { className: 'p20 user-entry-forms login-form', onSubmit: this.onSubmit },
 	          _react2.default.createElement(
 	            'h2',
 	            { className: 'mt0 mb20 text-center' },
@@ -105502,29 +105420,15 @@
 	            { className: 'row mb10' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'col-xs-12 message' },
-	              _react2.default.createElement(
-	                'label',
-	                null,
-	                'Message'
-	              ),
-	              _react2.default.createElement('span', { className: 'required' }),
-	              _react2.default.createElement('textarea', {
+	              { className: 'col-xs-12' },
+	              _react2.default.createElement(_TextFieldGroup2.default, {
+	                error: errors.message,
 	                label: 'Message',
-	                cols: '55',
-	                rows: '7',
 	                onChange: this.onChange,
-	                name: 'message',
-	                placeholder: 'Message',
 	                value: message,
-	                className: 'wordText messageColor'
-	              }),
-	              errors.message && _react2.default.createElement(
-	                'span',
-	                { className: 'help-block has-error material-label error-form ' },
-	                ' ',
-	                errors.message
-	              )
+	                field: 'message',
+	                className: 'wordText'
+	              })
 	            )
 	          ),
 	          _react2.default.createElement(
@@ -105816,6 +105720,12 @@
 
 	            event.preventDefault();
 	            this.props.deleteEvent.deleteEvent(this.state.deleteEventId, this.state.eventIndex).then(function (res) {
+	                if (!res.payload.response && res.payload.status == 600) {
+	                    _this2.props.addToast.addToast({ type: 'error',
+	                        text: 'Sorry,you are not authorized to delete event, please contact to your  admin',
+	                        toastType: 'auto' });
+	                    _this2.context.router.push('/ERitual/event');
+	                }
 	                var eventFormData = res.payload.data;
 	                if (res.payload.data != true) {
 	                    _this2.setState({ errors: { "form": "Sorry not able to delete!" }, isLoading: false });
@@ -106689,7 +106599,6 @@
 			value: function componentDidMount() {
 				var _this2 = this;
 
-				console.log("inside mount", this.props.editEvent);
 				var name = this.props.editEvent.name;
 				var description = this.props.editEvent.description;
 				var amount = this.props.editEvent.amount;
@@ -106947,7 +106856,7 @@
 				}
 				var elmnt = document.getElementById('edit-event-form');
 				for (var i = 0; i < elmnt.length; i++) {
-					if (elmnt[i].name == this.state.scroll) {
+					if (elmnt[i].name.toLowerCase() == this.state.scroll) {
 						elmnt[i].focus();
 						break;
 					}
@@ -106997,7 +106906,10 @@
 					var eventData = this.state;
 					this.props.userEventFormsRequest(eventData).then(function (res) {
 						if (!res.payload.response && res.payload.status == 600) {
-							_this4.setState({ errors: { "form": "Sorry,you are not authorized to create or update event, please contact to your  admin" }, isLoading: false });
+							_this4.props.addToast({ type: 'error',
+								text: 'Sorry,you are not authorized to create or update event, please contact to your  admin',
+								toastType: 'auto' });
+							_this4.context.router.push('/ERitual/event');
 						} else if (res.payload.status == 204) {
 							_this4.setState({ errors: { "form": "Event Name already exist" }, isLoading: false });
 						} else {
@@ -107231,7 +107143,7 @@
 									dateFormat: true,
 									timeFormat: false,
 									value: this.state.selecDate,
-									field: 'date'
+									field: 'Date'
 								}),
 								errors.date && _react2.default.createElement(
 									'span',
@@ -107254,7 +107166,7 @@
 									dateFormat: false,
 									timeFormat: this.state.isTime,
 									value: selectedTime,
-									field: 'time'
+									field: 'Time'
 								}),
 								errors.time && _react2.default.createElement(
 									'span',
@@ -107794,6 +107706,12 @@
 
 				event.preventDefault();
 				this.props.deleteMessage.deleteMessage(this.state.deleteMessageId, this.state.messageIndex).then(function (res) {
+					if (!res.payload.response && res.payload.status == 600) {
+						_this2.props.addToast.addToast({ type: 'error',
+							text: 'Sorry,you are not authorized to delete message, please contact to your  admin',
+							toastType: 'auto' });
+						_this2.context.router.push('/ERitual/message');
+					}
 					var messageFormData = res.payload.data;
 					if (res.payload.data != true) {
 						_this2.setState({ errors: { "form": "Sorry not able to delete!" }, isLoading: false });
@@ -108654,6 +108572,11 @@
 						break;
 					}
 				}
+				if (this.state.scroll == '') {
+					var _elmnt = document.querySelector('.site-container');
+					_elmnt.scrollIntoView();
+				}
+				this.setState({ scroll: '' });
 			}
 		}, {
 			key: 'onSubmit',
@@ -108669,9 +108592,13 @@
 					var messageData = this.state;
 					this.props.userMessageFormsRequest(messageData).then(function (res) {
 						if (!res.payload.response && res.payload.status == 600) {
-							_this3.setState({ errors: { "form": "Sorry,you are not authorized to create or update message, please contact to your  admin" }, isLoading: false });
+							_this3.props.addToast({ type: 'error',
+								text: 'Sorry,you are not authorized to create or update message, please contact to your  admin',
+								toastType: 'auto' });
+							_this3.context.router.push('/ERitual/message');
 						} else if (res.payload.status == 204) {
 							_this3.setState({ errors: { "form": "Message Name already exist" }, isLoading: false });
+							_this3.context.router.push('/ERitual/editMessage');
 						} else {
 							res.payload.data = JSON.parse(decodeURIComponent(res.payload.config.data.replace(/\+/g, '%20')));
 							var messageFormData = res.payload.data;
@@ -109130,6 +109057,12 @@
 
 				event.preventDefault();
 				this.props.deleteDonation.deleteDonation(this.state.deleteDonationId, this.state.donationIndex).then(function (res) {
+					if (!res.payload.response && res.payload.status == 600) {
+						_this2.props.addToast.addToast({ type: 'error',
+							text: 'Sorry,you are not authorized to delete donation, please contact to your  admin',
+							toastType: 'auto' });
+						_this2.context.router.push('/ERitual/donation');
+					}
 					var donationFormData = res.payload.data;
 					if (res.payload.data != true) {
 						_this2.setState({ errors: { "form": "Sorry not able to delete!" }, isLoading: false });
@@ -109878,7 +109811,10 @@
 					var donationData = this.state;
 					this.props.userDonationFormsRequest(donationData).then(function (res) {
 						if (!res.payload.response && res.payload.status == 600) {
-							_this2.setState({ errors: { "form": "Sorry,you are not authorized to create or update donation, please contact to your  admin" }, isLoading: false });
+							_this2.props.addToast({ type: 'error',
+								text: 'Sorry,you are not authorized to create or update donation, please contact to your  admin',
+								toastType: 'auto' });
+							_this2.context.router.push('/ERitual/donation');
 						} else if (res.payload.status == 204) {
 							_this2.setState({ errors: { "form": "Donation Name already exist" }, isLoading: false });
 						} else {

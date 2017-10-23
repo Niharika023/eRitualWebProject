@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
-import DonationListForm from '../../containers/DonationListForm';
-import EditDonationForm from '../../containers/EditDonationContainer';
+import DonationListForm from '../../containers/DonationContainer/DonationListForm';
+import EditDonationForm from '../../containers/DonationContainer/EditDonationContainer';
 import { Link } from 'react-router';
 import {LargeLogo} from '../common/Logos';
 

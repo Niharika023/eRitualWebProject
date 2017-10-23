@@ -28,9 +28,6 @@ public class DonationController {
 	Environment environment;
 	private static final String DONATION_LIST = "/list";
 	private static final String CREATE_DONATION = "/create";
-	private static final String UPLOAD_IMAGE = "/image";
-	private static final String RASHI_LIST = "/rashi/list";
-	private static final String NAKSHATRA_LIST= "/nakshatra/list";
 	private static final String DELETE_DONATION_ID="/delete";
 	private static final String DONATION_LIST_BY_ID="/get/byId";
 	private static final String UPDATE_DONATION="/update";

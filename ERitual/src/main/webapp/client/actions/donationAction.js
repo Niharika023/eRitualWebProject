@@ -52,7 +52,6 @@ export function donationRenderList(search,searchData,pageSize,pageNumber) {
 	}
 	concatStr=concatStr+"pageSize="+ pageSize+"&";
 	concatStr=concatStr+"pageNumber="+pageNumber+"&";
-	console.log("searchDonationParameter","http://localhost:8080/ERitual/er/donation/list "+concatStr );
 	const request = axios.get("http://localhost:8080/ERitual/er/donation/list "+concatStr);
   return {
     type    : FETCH_DONATION_LIST,

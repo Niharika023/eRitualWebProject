@@ -29,7 +29,6 @@ class App extends Component {
 					toastType:'auto'  });
 				this.context.router.push('/ERitual/');
 		  }
-      console.log(res);
 		  return res;
 		});
   }

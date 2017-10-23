@@ -30,7 +30,6 @@ public class SevaController {
 	Environment environment;
 	private static final String SEVA_LIST = "/list";
 	private static final String CREATE_SEVA = "/create";
-	private static final String IMAGE_STREAM = "/image/stream";
 	private static final String DELETE_SEVA_ID="/delete";
 	private static final String SEVA_LIST_BY_ID="/get/byId";
 	private static final String UPDATE_SEVA="/update";
@@ -138,16 +137,5 @@ public class SevaController {
 		
 	}
 
-	@RequestMapping(value = IMAGE_STREAM, method = RequestMethod.GET)
-	public void getImageStreamById(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-		String imageId=null;
-		if( request.getParameter("imageId") != null)
-			imageId= request.getParameter("imageId"); 
-		CommonUtility.isSessionActive(response, (String) session.getAttribute("access_token"));
-		String url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/image/stream/"+imageId;
-		ServiceResponse responseObj = HttpUtil.sendGet(url, (String) session.getAttribute("access_token"));
-		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
-		
-	}
 	
 }

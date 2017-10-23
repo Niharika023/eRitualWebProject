@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import EventFormContainer from '../../containers/EventFormContainer';
+import EventFormContainer from '../../containers/EventContainer/EventFormContainer';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import {userEventFormsRequest} from '../../actions/eventFormAction';
