@@ -139,7 +139,7 @@ this.onSubmit(event,this.state.itemsPerPage,this.state.activePage);
                      return(
                              <div className="p30 "  >
                                  <div className="row">
-                                    <div className="col-md-4 col-md-offset-2">
+                                    <div className="col-md-4 ">
                                         <TextFieldGroup
                                         label="Creator Name "
                                         onChange={this.onChange}
@@ -148,9 +148,8 @@ this.onSubmit(event,this.state.itemsPerPage,this.state.activePage);
                                         asterisk=""
                                         />
                                     </div>
-                                  <span className="col-md-4"><label>Target Type</label></span>
-
-                                        <div className="sector-division col-md-3 mtNeg10 ">
+                                        <div className="sector-division col-md-3  ">
+                                        <span className="col-md-4"><label>Target Type</label></span>
                                         <h4><i className="kp-up-down blue "></i></h4>
                                         <select className=" form-control"  onChange={this.changePage} field = "targetType">
                                             <option value="" selected = {this.state.istargetType===""} >--- Select Target Type --- </option>
@@ -161,7 +160,6 @@ this.onSubmit(event,this.state.itemsPerPage,this.state.activePage);
                                     </div>
                                     <div className="col-md-1">
                                         <button  className="btn btn-lg btn-primary " onClick={this.onSearch}>
-                                        <i className="kp-up-down blue mr_5"></i>
                                         Search
                                         </button>
                                     </div>
@@ -181,7 +179,7 @@ this.onSubmit(event,this.state.itemsPerPage,this.state.activePage);
                  return (
                          <div className="p30 " >
                             <div className="row">
-                                <div className="col-md-4 col-md-offset-2">
+                                <div className="col-md-4 ">
                                 <TextFieldGroup
                                 label="Creator Name"
                                 onChange={this.onChange}
@@ -191,9 +189,8 @@ this.onSubmit(event,this.state.itemsPerPage,this.state.activePage);
                                 asterisk=""
                                 />
                                 </div>
-                                 <span className="col-md-4"><label>Target Type</label></span>
-
-                                        <div className="sector-division col-md-3 mtNeg10 ">
+                                        <div className="sector-division col-md-3  ">
+                                        <span className="col-md-6"><label>Target Type</label></span>
                                         <h4><i className="kp-up-down blue "></i></h4>
                                         <select className=" form-control"  onChange={this.changePage} field = "targetType">
                                             <option value="" selected = {this.state.istargetType===""} >--- Select Target Type ---</option>
@@ -203,17 +200,15 @@ this.onSubmit(event,this.state.itemsPerPage,this.state.activePage);
                                         
                                     </div>
                                 <div className="col-md-1">
-                                    <button  className="btn btn-lg btn-primary " onClick={this.onSearch}>
-                                    <i className="kp-up-down blue mr_5"></i>
+                                    <button  className="btn btn-lg btn-primary mt20" onClick={this.onSearch}>
                                     Search
                                     </button>
                                 </div>
                                 <div className="col-md-1">
-                                    <button  className="btn btn-lg btn-primary " onClick={this.onCancel}>
+                                    <button  className="btn btn-lg btn-primary mt20" onClick={this.onCancel}>
                                     Clear
                                     </button>
                                 </div>
-                                
                             </div>
 
                             <div className="row">

@@ -103,14 +103,24 @@ class LoginForm extends Component {
     render() {
         const {errors , name, password, isLoading} = this.state;
         return (
-            <form className="p20 user-entry-forms login-form" onSubmit={this.onSubmit} id="login-form">
-                <h2 className="mt0 mb20 text-center">Login</h2>
+            <form className="p20 user-entry-forms details-form" onSubmit={this.onSubmit} id="login-form">
+                <h1 className="mt0 mb20 text-center">Login</h1>
+               
                 <div className="row mb30">
+                
                   <div className="col-xs-12">
                     <hr/>
                   </div>
                 </div>
                 { errors.form && <div className="alert alert-danger">{errors.form}</div> }
+                <div className="row mb10">
+                <div className="col-md-6  full-height">
+                <div className="mt20 ">
+                <img src = "https://previews.123rf.com/images/markusgann/markusgann1105/markusgann110500002/9444297-An-image-of-a-beautiful-golden-ganesh-sculpture-Stock-Photo-elephant-ganesha-ganesh.jpg"
+                    alt = "HTML Tutorial" height = "200" width = "200" />
+                </div>
+                </div>
+                <div className="col-md-6 vertical-line full-height">
                 <div className="row mb10">
                   <div className="col-xs-12">
                     <TextFieldGroup
@@ -151,6 +161,8 @@ class LoginForm extends Component {
                   <div className="col-md-12 text-center ">
                   <Link to="/ERitual/registration" className=" block mb20 link-secondary">Not registered? Sign up</Link> 
                  </div>
+                </div>
+                </div>
                 </div>
             </form>
         );

@@ -158,7 +158,9 @@
 {
   margin-top: 30px;
 }
-
+ .mt40{
+ margin-top: 40px;
+ }
 .mb15
 {
   margin-bottom: 15px;
@@ -227,6 +229,9 @@
 .full-height
 {
   height:100%;
+}
+.margin-200per{
+	margin-top:150%
 }
 
 .pos-r
@@ -384,4 +389,27 @@ input[type=file] {
     width: 100%;
     margin-top: 10px;
     height:100%;
+}
+.vertical-line{
+	border-left: 2px solid #801800;
+    height: auto;
+}
+.carousel{
+    background: #2f4357;
+    margin-top: 20px;
+}
+.carousel .item{
+    min-height: 280px; /* Prevent carousel from being distorted if for some reason image doesn't load */
+}
+.carousel .item img{
+    margin: 0 auto; /* Align slide image horizontally center */
+}
+.bs-example{
+	margin: 20px;
+}
+.drop-down{
+	color:#9e9999;
+}
+.ml35{
+	margin-left:35px;
 }

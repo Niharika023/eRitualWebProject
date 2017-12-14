@@ -211,7 +211,7 @@ class DonationListForm extends Component {
 					return(
 							<div className="p30 " >
 							<div className="row">
-							<div className="col-md-2 col-md-offset-2">
+							<div className="col-md-2">
 							<TextFieldGroup
 							label="Name "
 								onChange={this.onChange}
@@ -250,9 +250,7 @@ class DonationListForm extends Component {
 							Clear
 							</button>
 							</div>
-							</div>
-							<div className="row">
-							<div className="col-md-9">
+							<div className="col-md-1 col-md-offset-2">
 							<button  className="btn btn-lg  sector-division btn-primary mb15 mt15" onClick={this.onAdd}>
 							Add Donation
 							</button>
@@ -266,7 +264,7 @@ class DonationListForm extends Component {
 					return (
 							<div className="p30 " >
 							<div className="row">
-							<div className="col-md-2 col-md-offset-2">
+							<div className="col-md-2 ">
 							<TextFieldGroup
 							label="Name "
 								onChange={this.onChange}
@@ -306,16 +304,13 @@ class DonationListForm extends Component {
 							Clear
 							</button>
 							</div>
-							</div>
-							<div className="row">
-							<div className="col-md-9">
+							<div className="col-md-1 col-md-offset-2">
 							<button  className="btn btn-lg  sector-division btn-primary mb15 mt15" onClick={this.onAdd}>
 							Add Donation
 							</button>
 							</div>
-
 							</div>
-							<div className="row">
+							<div className="row mt40">
 							<div className="col-md-3 filter-container">
 							<h2> Sort By Relevance</h2>
 							<select name="orderByName" className=" form-control  font-color mb10" onChange={this.changeSort}>

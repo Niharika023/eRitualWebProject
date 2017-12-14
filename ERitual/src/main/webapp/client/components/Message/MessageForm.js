@@ -31,7 +31,7 @@ MessageForm.propTypes = {
 
 function mapStateToProps(state) {
 	  return {
-		  donation:state.messageFormReducer,
+		  message:state.messageFormReducer,
 	  };
 	}
 function mapDispatchToProps(dispatch) {

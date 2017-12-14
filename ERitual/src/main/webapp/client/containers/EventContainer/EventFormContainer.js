@@ -431,7 +431,7 @@ class EventFormContainer extends Component {
 
 					</div> 
 					</div>
-					<div className="row mb10">
+					{ /*<div className="row mb10">
 					<div className="col-xs-12">
 					<label className="mr10">Pre-Requisite</label>
 					<input
@@ -485,6 +485,9 @@ class EventFormContainer extends Component {
 					</div>}
 					</div>
 					</div>
+					*/
+					}
+				
 					<div className="row mb10">
 					<div className="col-xs-12">
 					<TextFieldGroup

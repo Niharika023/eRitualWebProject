@@ -44,7 +44,7 @@ order = order.sort(orderDate);
 
       return ( 
        <tr className="font-color p-ver-70" key={index}>
-             {index<=4 &&  <td > <Link to={{ pathname: '/ERitual/orderdetails/'+JSON.stringify(item)}}  className=" link-secondary  active "><label>{item.seva.name}</label></Link></td>}
+             {index<=4 &&  <td > <Link to={{ pathname: '/ERitual/orderdetails/'+JSON.stringify(item)}}  className=" link-secondary  active "><label className="coursor-pointer">{item.seva.name}</label></Link></td>}
             {index<=4 &&  <td  > {item.executionDate}</td>}
              {index<=4 &&  <td  > {item.amount}</td>}
 

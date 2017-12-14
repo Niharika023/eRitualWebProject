@@ -125,9 +125,15 @@ class OrderDetailsContainer extends Component {
 		const {orderId,targetType,creatorName,amount,orderListArr} = this.state;
 		return (
 				<div>
-				<form className=" p20 container user-entry-forms details-form mt80" >
+				<nav class="breadcrumb">
+                <a class="breadcrumb-item" href="#">Home</a>
+                <a class="breadcrumb-item" href="#">Library</a>
+                <a class="breadcrumb-item" href="#">Data</a>
+                <span class="breadcrumb-item active">Bootstrap</span>
+              </nav>
+				<form className=" row p20 container user-entry-forms details-form mt80" >
 					<h1 className="text-center">{this.state.targetType}</h1>
-					<table className="table table-bordered table-striped mt30 ">
+					<table className="table table-bordered table-striped mt30 col-md-12">
 						<tbody>
 						<tr className="row">
 							<th className="col-md-2">
@@ -162,7 +168,6 @@ class OrderDetailsContainer extends Component {
 							<tr >{this.state.creatorEmail}</tr>
 							</tr>
 						</tr>
-		
 						<tr className="row">
 							<th className="col-md-2 ">
 							<tr ><h3>Scheduled Date</h3></tr>
@@ -181,8 +186,6 @@ class OrderDetailsContainer extends Component {
 						</tr>
 						</tbody>
 					</table>
-					
-					
 					{!(this.state.targetType=='DONATION') && <div>
 						<h2 className="mt30">Person Enrollment</h2>
 					<table className="table table-bordered table-striped  ">

@@ -13,7 +13,6 @@ if(orderRenderList.length<=0)
 }
 var order=[] ;
 
-
 const orderDate = function(a, b) {  
   var date1 = a.createdTS;
   var date2 = b.createdTS;
@@ -22,18 +21,14 @@ const orderDate = function(a, b) {
       return 0;
 }
 
-
 const orderSelected = orderRenderList.orderData.map((item,index)=>{
 if(item.targetType=='DONATION' && item.donation!=null  ){
   order.push(item);
 }
 })
 
-
  const orderlistnull = <tr className = "text center">
 <td colSpan={3}>No data to display.</td>  </tr>
-
-
 
 if(order.length<=0)
 {
@@ -43,26 +38,17 @@ if(order.length<=0)
           </tbody>;
 }
 
-
 order = order.sort(orderDate);
-
-
-
   const  orderList =order.map((item,index) => {
-
-      return ( 
-       <tr className="font-color p-ver-70" key={index}>
-             {index<=4 &&  <td > <Link to={{ pathname: '/ERitual/orderdetails/'+JSON.stringify(item)}}  className=" link-secondary  active  "><label className="coursor-pointer">{item.donation.name}</label></Link></td>}
-             {index<=4 &&  <td  > {item.amount}</td>}
-             {index<=4 &&  <td  > {item.creatorEmail}</td>}
-
-              </tr>
-     
-        );
-     }
-    )
-
- 
+	  return ( 
+		       <tr className="font-color p-ver-70" key={index}>
+		             {index<=4 &&  <td > <Link to={{ pathname: '/ERitual/orderdetails/'+JSON.stringify(item)}}  className=" link-secondary  active  "><label className="coursor-pointer">{item.donation.name}</label></Link></td>}
+		             {index<=4 &&  <td  > {item.amount}</td>}
+		             {index<=4 &&  <td  > {item.creatorEmail}</td>}
+		              </tr>
+		        );
+  			}
+ )
   return <tbody>
             
               {orderList}

@@ -32,6 +32,7 @@ EditMessageForm.propTypes = {
 }
 
 function mapStateToProps(state) {
+	console.log("statte",state.messageFormReducer);
 	  return {
 		  message:state.messageFormReducer,
 		  editMessage:state.messageFormReducer.editMessage,

@@ -237,7 +237,7 @@ class MessageListForm extends Component {
 					return(
 							<div className="p30 " >
 							<div className="row">
-							<div className="col-md-2 col-md-offset-2">
+							<div className="col-md-2 ">
 							<TextFieldGroup
 							label="Title "
 								onChange={this.onChange}
@@ -290,9 +290,7 @@ class MessageListForm extends Component {
 							Clear
 							</button>
 							</div>
-							</div>
-							<div className="row">
-							<div className="col-md-9">
+							<div className="col-md-1 ">
 							<button  className="btn btn-lg  sector-division btn-primary mb15 mt15" onClick={this.onAdd}>
 							Add Message
 							</button>
@@ -306,7 +304,7 @@ class MessageListForm extends Component {
 					return (
 							<div className="p30 " >
 							<div className="row">
-							<div className="col-md-2 col-md-offset-2">
+							<div className="col-md-2 ">
 							<TextFieldGroup
 							label="Title "
 								onChange={this.onChange}
@@ -360,16 +358,14 @@ class MessageListForm extends Component {
 							Clear
 							</button>
 							</div>
-							</div>
-							<div className="row">
-							<div className="col-md-9">
+							<div className="col-md-1 ml10">
 							<button  className="btn btn-lg  sector-division btn-primary mb15 mt15" onClick={this.onAdd}>
 							Add Message
 							</button>
 							</div>
 
 							</div>
-							<div className="row">
+							<div className="row mt40">
 							<div className="col-md-3 filter-container">
 							<h2> Sort By Relevance</h2>
 							<select name="orderByTitle" className=" form-control  font-color mb10" onChange={this.changeSort}>

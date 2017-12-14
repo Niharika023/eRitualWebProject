@@ -25,7 +25,6 @@ import com.er.consumer.util.ServiceResponse;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-
 	@Autowired
 	Environment environment;
 	private static final String REGISTER = "/register";
@@ -34,9 +33,9 @@ public class UserController {
 	private static final String CHANGE_PASSWORD="/changePassword";
 	private static final String RESET_PASSWORD="/resetPassword";
 	private static final String EMAIL_VERIFICATION="/emailVerification";
+	
 	@RequestMapping(value = REGISTER, method = RequestMethod.POST)
 	public void saveUserDetails(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-		
 		JSONObject reqObj = CommonUtility.readInputStream(request);
 		/*String email = (String) (reqObj.has("email") == true ? reqObj.getString("email") : "");
 		String password = (String) (reqObj.has("password") == true ? reqObj.getString("password") : "");
@@ -46,7 +45,6 @@ public class UserController {
 		MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
 		map.add("user", reqObj.toString());
 		String url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/user/create";
-
 		ServiceResponse responseObj = HttpUtil.sendPostBeforeLogging(url, map);
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 		}
@@ -54,7 +52,6 @@ public class UserController {
 	
 	@RequestMapping(value = LOGIN, method = RequestMethod.POST)
 	public void login(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-		
 		JSONObject reqObj = CommonUtility.readInputStream(request);
 		String email = (String) (reqObj.has("name") == true ? reqObj.getString("name") : "");
 		String password = (String) (reqObj.has("password") == true ? reqObj.getString("password") : "");
@@ -72,7 +69,6 @@ public class UserController {
 			session.setAttribute("roles", newJsonObject.get("roles"));
 			}
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
-		
 	}
 	
 	@RequestMapping(value = CHANGE_PASSWORD, method = RequestMethod.POST)
@@ -100,8 +96,8 @@ public class UserController {
 		String url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/user/reset-password";
 		ServiceResponse responseObj = HttpUtil.sendPostBeforeLogging(url, map);
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
-		
 	}
+	
 	@RequestMapping(value = EMAIL_VERIFICATION, method = RequestMethod.POST)
 	public void emailVerification(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 		JSONObject reqObj = CommonUtility.readInputStream(request);
@@ -115,7 +111,6 @@ public class UserController {
 		String url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/user/send-lost-password-mail";
 		ServiceResponse responseObj = HttpUtil.sendPostBeforeLogging(url, map);
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
-		
 	}
 	
 	@RequestMapping(value = ADMIN_LOGOUT, method = RequestMethod.GET)
@@ -125,7 +120,6 @@ public class UserController {
 		session.removeAttribute("access_token");
 		session.removeAttribute("id");
 		session.invalidate();
-		
 		CommonUtility.writeResponse(response, "", 200);
 	}
 }

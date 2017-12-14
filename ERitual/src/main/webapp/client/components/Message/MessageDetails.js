@@ -34,7 +34,7 @@ MessageDetails.propTypes = {
 function mapStateToProps(state) {
 	  return {
 		  message:state.messageFormReducer,
-		  editMessage:state.editMessageReducer.editMessage,
+		  editMessage:state.messageFormReducer.editMessage,
 	  };
 	}
 function mapDispatchToProps(dispatch) {
