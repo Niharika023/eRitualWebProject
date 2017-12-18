@@ -101,12 +101,12 @@ label.user-type-select-freelancer {
 }
 
 .login-form {
-  max-width:350px;
+  max-width:500px;
   width:100%;
   min-height:370px;
 }
 .details-form {
-  max-width:500px;
+  max-width:800px;
   width:100%;
   min-height:370px;
 }

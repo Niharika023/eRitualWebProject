@@ -103,7 +103,7 @@ class LoginForm extends Component {
     render() {
         const {errors , name, password, isLoading} = this.state;
         return (
-            <form className="p20 user-entry-forms details-form" onSubmit={this.onSubmit} id="login-form">
+            <form className="p20 user-entry-forms login-form" onSubmit={this.onSubmit} id="login-form">
                 <h1 className="mt0 mb20 text-center">Login</h1>
                
                 <div className="row mb30">

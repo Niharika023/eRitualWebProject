@@ -18,7 +18,7 @@ class SevaForm extends Component {
       const {userSevaFormsRequest,imageUploadRequest, seva,addToast} = this.props;
         return (
             <div className="row full-height">
-              <div className="col-md-8 col-md-offset-2 full-height">
+              <div className="col-md-10 col-md-offset-1 full-height">
                 <LargeLogo id="large_logo" className="large-logo"/>
                 <SevaFormContainer userSevaFormsRequest={userSevaFormsRequest}  imageUploadRequest={imageUploadRequest}  addToast={addToast} deleteToast = {deleteToast} /> 
               </div>

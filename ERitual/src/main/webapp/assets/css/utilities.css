@@ -316,7 +316,15 @@
 	width:360px;
 	position:relative;
 }
-
+.video-upload-container {
+	background:#FFF;
+	padding:30px;
+	border-radius:5px;
+	margin:40px auto;
+	float:none;
+	width:360px;
+	position:relative;
+}
 .upload-btn-container {
 	float: none;
     width: 190px;
@@ -412,4 +420,7 @@ input[type=file] {
 }
 .ml35{
 	margin-left:35px;
+}
+.page-hdrCstm{
+	border-bottom: 1px solid #ff8e8e;
 }

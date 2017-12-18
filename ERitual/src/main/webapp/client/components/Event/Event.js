@@ -33,7 +33,7 @@ const Event = ({eventRenderList,deleteEvent}) => {
 		              <td className="col-sm-2" > {item.description}</td>
 		              <td className="col-sm-1" > {item.date}</td>
 		              <td className="col-sm-1" > {item.city}</td>
-		              <td className="col-sm-2" > {item.amount}</td>
+		              <td className="col-sm-2" > Rs.{item.amount}</td>
 		              <td className="col-sm-1" > {item.available}</td>
 		              <td className="col-sm-3" > <tr>
 		            	<td>

@@ -14,7 +14,7 @@ const Donation = ({donationRenderList,deleteDonation}) => {
     		  <tr className="font-color p-ver-70" key={index}>
               <td className="col-sm-2" > {item.name}</td>
               <td className="col-sm-2" > {item.description}</td>
-              <td className="col-sm-2" > {item.amount}</td>
+              <td className="col-sm-2" > Rs.{item.amount}</td>
               <td className="col-sm-2" > <tr>
             	<td>
           		<ul className="nav navbar-nav row ">

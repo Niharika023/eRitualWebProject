@@ -20,7 +20,7 @@ const Order = ({orderRenderList,orderDetails}) => {
     		  <td className="col-sm-2" > {item.creatorEmail}</td>
     		  <td className="col-sm-2" > {formattedDate}</td>
     		  <td className="col-sm-2" > {item.executionDate}</td>
-              <td className="col-sm-2" > {item.amount}</td>
+              <td className="col-sm-2" > Rs.{item.amount}</td>
             </tr>
       
         );
