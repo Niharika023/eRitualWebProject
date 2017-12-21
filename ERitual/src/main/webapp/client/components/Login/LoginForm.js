@@ -104,14 +104,7 @@ class LoginForm extends Component {
         const {errors , name, password, isLoading} = this.state;
         return (
             <form className="p20 user-entry-forms login-form" onSubmit={this.onSubmit} id="login-form">
-                <h1 className="mt0 mb20 text-center">Login</h1>
-               
-                <div className="row mb30">
-                
-                  <div className="col-xs-12">
-                    <hr/>
-                  </div>
-                </div>
+                <h1 className="mt0 mb20 text-center  page-header page-hdrCstm">Login</h1>
                 { errors.form && <div className="alert alert-danger">{errors.form}</div> }
                 <div className="row mb10">
                 <div className="col-md-6  full-height">

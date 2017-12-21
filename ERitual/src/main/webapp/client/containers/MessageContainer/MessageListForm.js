@@ -237,6 +237,11 @@ class MessageListForm extends Component {
 					return(
 							<div className="p30 " >
 							<div className="row">
+							<div className="col-md-offset-5">
+							<h1 className="mt0 mb20 ">Message List</h1>
+							</div>
+							</div>
+							<div className="row">
 							<div className="col-md-2 ">
 							<TextFieldGroup
 							label="Title "
@@ -304,6 +309,11 @@ class MessageListForm extends Component {
 					return (
 							<div className="p30 " >
 							<div className="row">
+							<div className="col-md-offset-5">
+							<h1 className="mt0 mb20 ">Message List</h1>
+							</div>
+							</div>
+							<div className="row">
 							<div className="col-md-2 ">
 							<TextFieldGroup
 							label="Title "
@@ -363,7 +373,6 @@ class MessageListForm extends Component {
 							Add Message
 							</button>
 							</div>
-
 							</div>
 							<div className="row mt40">
 							<div className="col-md-3 filter-container">

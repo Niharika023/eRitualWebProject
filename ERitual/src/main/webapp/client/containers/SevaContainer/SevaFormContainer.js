@@ -53,7 +53,8 @@ class SevaFormContainer extends Component {
 				scroll:'',
 				triggerUploadVideo:false,
 				videoUrl:'',
-				showMessage:false
+				showMessage:false,
+				message:'',
 		}
 
 		this.onChange = this.onChange.bind(this);// bind(this) is needed here,
@@ -64,9 +65,9 @@ class SevaFormContainer extends Component {
 		this.selectLogoClick = this.selectLogoClick.bind(this);
 		this.closeModal = this.closeModal.bind(this);
 		this.scrollPage=this.scrollPage.bind(this);
-		this.onClick = this.onClick.bind(this);
 		this.onSelect=this.onSelect.bind(this);
 		this.handleFile=this.handleFile.bind(this);
+		this.onClick=this.onClick.bind(this);
 	}
 
 	//method used to close the dialogue box for image upload
@@ -78,6 +79,7 @@ class SevaFormContainer extends Component {
 		});
 	}
 
+	
 	//For Type DropDown
 	onSelect(event){
 		if(event.target.value=='text'){
@@ -92,8 +94,13 @@ class SevaFormContainer extends Component {
 	
 	onClick(event){
 		this.context.router.push('/ERitual/seva');
+	this.setState({
+			'triggerUpload':false,
+			'logoImage':'',
+			'triggerUploadVideo':false,
+		});
 	}
-	
+
 	onChange(event) {
 		event.preventDefault();
 		this.state.submitApplied=false;
@@ -104,7 +111,6 @@ class SevaFormContainer extends Component {
 			}
 		});
 	}
-
 	handleFile(event){
 		event.preventDefault();
 		this.state.videoUrl=event.target.value;
@@ -211,7 +217,7 @@ class SevaFormContainer extends Component {
 			let userGotra=null;
 			let userRashi=null;
 			let userNakshatra=null;
-			if(this.state.checke9d==true){
+			if(this.state.checked==true){
 				this.state.formFields={
 						sevaUser:this.state.sevaUserName,
 						userGotra:this.state.gotra,
@@ -309,7 +315,7 @@ class SevaFormContainer extends Component {
 										uploadedImageStyles.content.height = "100%";
 									}
 
-								  }
+								}
 							};
 							img.src = _URL.createObjectURL(files[0]);
 						}
@@ -321,7 +327,7 @@ class SevaFormContainer extends Component {
 					event.preventDefault();
 					this.closeModal();
 					let form = new FormData();
-					form.append("description", "description");
+					form.append("description", "asdasd");
 					form.append("tags", "seva");
 					form.append("image",files[0]);
 					axios({
@@ -353,20 +359,19 @@ class SevaFormContainer extends Component {
 				}
 		};
 
-		const {errors ,success,image,sevaUserName,videoUrl,showMessage, name,selectedTime,preRequisite,imageUploadSuccess,gotra,rashi,sevaImage, nakshatra, description,amount,active,inActive,isLoading,checked} = this.state;
+		const {errors ,success,videoUrl,image,sevaUserName,message,showMessage, name,selectedTime,preRequisite,imageUploadSuccess,gotra,rashi,sevaImage, nakshatra, description,amount,active,inActive,isLoading,checked} = this.state;
 		return (
 				<div>
 				<form className="p20 user-entry-forms details-form" onSubmit={this.onSubmit} id="seva-form">
-				<h2 className="mt0 mb20 text-center  page-header page-hdrCstm">Seva Form</h2>
-			
+				<h2 className="mt0 mb20 text-center page-header page-hdrCstm">Seva Form</h2>
 				{ errors.form && <div className="alert alert-danger ">{errors.form}</div> }
 				<label>Upload Image</label>
 				<div className="row mb10">
 				<div className="col-xs-12">
 				{imageUploadSuccess && <img src = {sevaImage} width="100%"/>}
-				<div className="mt10 logo-container" onClick={this.selectLogoClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
+				<div className="pull-right logo-container" onClick={this.selectLogoClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
 				{this.state.logoImageOnCard != '' && <img ref="logoOnCard" src={this.state.logoImageOnCard} style={uploadedImageStyles}/> }
-				<Link ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload</Link>
+				<button ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload</button>
 				</div>
 				</div>
 				</div>
@@ -394,16 +399,10 @@ class SevaFormContainer extends Component {
 
 				</div>
 				</div>
-				<div className="row mb10">
+				{/*<div className="row mb10">
 				<div className="col-xs-12">
 				<label className="mr10">Pre-Requisite</label>
-				{/*}<input
-				name="checked"
-				type="checkbox"
-					checked={this.state.checked}
-				onChange={this.handleInputChange} 
-				/>*/}
-				<div>  <div className="row mb10">
+				 <div className="row mb10">
 				<div className="col-md-12">
 				<div className="row mb10">
 				<div className="col-md-3">
@@ -446,12 +445,11 @@ class SevaFormContainer extends Component {
 				</div>
 				</div>
 				</div>
-				</div>
-				</div>
-				<label>Type</label>
+				</div>*/}
 				<div className="row mb10">
 				<div className="col-xs-6">
-				<select name="type" className=" form-control  font-color mb10 " onChange={this.onSelect}>
+				<label>Type</label>
+				<select name="type" className=" form-control  font-color " onChange={this.onSelect}>
 				<option value="">Select Type</option>
 				<option value="audio" >Audio</option>
 				<option value="video"  >Video</option>
@@ -459,21 +457,6 @@ class SevaFormContainer extends Component {
 				<option value="text">Text</option>
 				</select>
 				</div>
-				{showMessage && <div><div className="col-xs-6">
-				<textarea 
-				label="Message"
-					cols="43"
-						rows="6"
-							onChange={this.onChange}
-				name="Message"
-					placeholder = "Message"
-						value={description}
-				className="wordText messageColor"
-					/>
-				</div>
-				</div>}
-				</div>
-				<div className="row mb10">
 				<div className="col-xs-6">
 				<label>Description</label>
 				<textarea 
@@ -481,18 +464,23 @@ class SevaFormContainer extends Component {
 					cols="43"
 						rows="6"
 							onChange={this.onChange}
-				name="Description"
+				name="description"
 					placeholder = "Description"
 						value={description}
 				className="wordText messageColor"
 					/>
-				{/*<TextFieldGroup
-				error={errors.description}
-				label="Description"
-					onChange={this.onChange}
-				value={description}
-				field="description"
-					/>*/}
+				</div>
+				</div>
+				<div className="row ">
+				<div className="col-xs-6">
+				<label>Module</label>
+				<select name="module" className=" form-control  font-color " onChange={this.onModule}>
+				<option value="">Select Module</option>
+				<option value="spc" >Special Package Categories</option>
+				<option value="rmt"  >Ramachandra Math Temple</option>
+				<option value="rmt"  >Gowardhan Temple</option>
+				<option value="camp">Camp</option>
+				</select>
 				</div>
 				<div className="col-xs-6">
 				<TextFieldGroup
@@ -505,7 +493,7 @@ class SevaFormContainer extends Component {
 					</div>
 				</div>
 				<div className="row mb10">
-				<div className="col-xs-6">
+				<div className="col-xs-12">
 				<label>Available</label>
 				<input
 				name="available"
@@ -516,24 +504,14 @@ class SevaFormContainer extends Component {
 				</div>
 				</div>
 				<div className="row mt30">
-				{/*<div className="col-md-4  col-md-offset-4">
-				 <a href="/ERitual/seva" className=" btn-lg btn-primary ">Cancel</a>
-				</div>
-				<div className="col-md-4 text-center">
-				<div className="form-group">
-				<button disabled={this.state.isLoading} className="btn btn-lg btn-primary full-width">
-				Submit
-				</button>
-				</div>*/}
 				<div className="col-md-4 col-md-offset-4">
 				  <div className="btn-toolbar">
 				  <button type="button" disabled={this.state.isLoading} onClick={this.onClick} className="btn btn-lg btn-primary">
 					Cancel
 					</button>
-				  <button type="button" disabled={this.state.isLoading} className="btn btn-lg btn-primary">
+				  <button  disabled={this.state.isLoading} className="btn btn-lg btn-primary">
 					Submit
 					</button>
-				 {/* </div>*/}
 				</div>
 				</div>
 				</div>
@@ -567,10 +545,7 @@ class SevaFormContainer extends Component {
 				</div>
 				</div>
 				</div>
-				</div>
-				
-				}
-				
+				</div>}
 				</div>
 		);
 				}

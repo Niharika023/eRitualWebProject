@@ -30,6 +30,7 @@ class DonationFormContainer extends Component {
 		this.onChange = this.onChange.bind(this);// bind(this) is needed here,
 		this.onSubmit = this.onSubmit.bind(this);
 		this.scrollPage=this.scrollPage.bind(this);
+		this.onClick=this.onClick.bind(this);
 
 	}
 
@@ -41,6 +42,11 @@ class DonationFormContainer extends Component {
 				this.isValid();
 			}
 		});
+	}
+
+	
+	onClick(event){
+		this.context.router.push('/ERitual/donation');
 	}
 
 
@@ -138,7 +144,7 @@ class DonationFormContainer extends Component {
 				{ errors.form && <div className="alert alert-danger">{errors.form}</div> }
 
 				<div className="row mb10">
-				<div className="col-xs-12">
+				<div className="col-xs-6 col-md-6">
 				<TextFieldGroup
 				error={errors.name}
 				label="Donation Name"
@@ -147,9 +153,7 @@ class DonationFormContainer extends Component {
 				field="name"
 					/>
 					</div>
-				</div>
-				<div className="row mb10">
-				<div className="col-xs-12">
+				<div className="col-xs-6 col-md-6">
 				<TextFieldGroup
 				error={errors.description}
 				label="Description"
@@ -160,7 +164,7 @@ class DonationFormContainer extends Component {
 					</div>
 				</div>
 				<div className="row mb10">
-				<div className="col-xs-12">
+				<div className="col-xs-6 col-md-6">
 				<TextFieldGroup
 				error={errors.amount}
 				label="Donation Amount"
@@ -171,14 +175,14 @@ class DonationFormContainer extends Component {
 					</div>
 				</div>
 				<div className="row mt30">
-				<div className="col-md-6 text-center ">
-				<Link to="/ERitual/donation" className=" block mb20 link-secondary">Cancel</Link> 
-				</div>
-				<div className="col-md-6">
-				<div className="form-group">
-				<button disabled={this.state.isLoading} className="btn btn-lg btn-primary full-width">
-				Submit
-				</button>
+				<div className="col-md-4 col-md-offset-4">
+				  <div className="btn-toolbar">
+				  <button type="button" disabled={this.state.isLoading} onClick={this.onClick} className="btn btn-lg btn-primary">
+					Cancel
+					</button>
+				  <button  disabled={this.state.isLoading} className="btn btn-lg btn-primary">
+					Submit
+					</button>
 				</div>
 				</div>
 				</div>

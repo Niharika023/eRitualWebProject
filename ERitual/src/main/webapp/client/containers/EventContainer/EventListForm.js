@@ -280,6 +280,11 @@ class EventListForm extends Component {
 					return(
 							<div className="p30 " >
 							<div className="row">
+							<div className="col-md-offset-5">
+							<h1 className="mt0 mb20 ">Event List</h1>
+							</div>
+							</div>
+							<div className="row">
 							<div className="col-md-3 ">
 							<TextFieldGroup
 							label="Name "
@@ -333,6 +338,11 @@ class EventListForm extends Component {
 					return (
 							<div className="p30 " >
 							<div className="row">
+							<div className="col-md-offset-5">
+							<h1 className="mt0 mb20 ">Event List</h1>
+							</div>
+							</div>
+							<div className="row">
 							<div className="col-md-3 ">
 							<TextFieldGroup
 							label="Name "
@@ -381,7 +391,7 @@ class EventListForm extends Component {
 							</div>
 							<div className="row mt40">
 							<div className="col-md-3  filter-container">
-							<h2> Sort By Relevance</h2>
+							<h3> Sort By Relevance</h3>
 							<select name="orderByDate" className=" form-control  font-color mb10" onChange={this.changeSort}>
 							<option value="">Sort By Date</option>
 							<option value="asc">Ascending</option>

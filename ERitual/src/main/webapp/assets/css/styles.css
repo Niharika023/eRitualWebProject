@@ -196,8 +196,11 @@ font-size:20px;
 
 
 .filter-container{
-	border:1px solid black;
+	border:1px solid #f2dede;
 	height:auto;
+	box-shadow: 5px 0px #ccc;
+	background-color:white;
+}
 	
 .widget{
    background:#FFF;

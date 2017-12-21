@@ -53,7 +53,11 @@ class EditSevaContainer extends Component {
 				triggerUpload:false,
 				isUploadLoading:true,
 				submitApplied:false,
-				 scroll:''
+				 scroll:'',
+				 triggerUploadVideo:false,
+					videoUrl:'',
+					showMessage:false,
+					message:'',
 		}
 
 		this.onChange = this.onChange.bind(this);// bind(this) is needed here,
@@ -66,6 +70,8 @@ class EditSevaContainer extends Component {
 		this.closeModal = this.closeModal.bind(this);
 		this.hexToBase64 = this.hexToBase64.bind(this);
 		this.scrollPage=this.scrollPage.bind(this);
+		this.onSelect=this.onSelect.bind(this);
+		this.handleFile=this.handleFile.bind(this);
 	}
 
 	imageStreamRequest(imageId){
@@ -153,10 +159,45 @@ class EditSevaContainer extends Component {
 	closeModal() {
 		this.setState({
 			'triggerUpload':false,
-			'logoImage':''
+			'logoImage':'',
+			'triggerUploadVideo':false,
 		});
 	}
 	
+	
+	//For Type DropDown
+	onSelect(event){
+		if(event.target.value=='text'){
+			this.setState({triggerUploadVideo:false});
+			this.setState({showMessage:true});
+		}
+		else{
+		this.setState({triggerUploadVideo:true});
+		this.setState({showMessage:false});
+		}
+	}
+	
+	onClick(event){
+		this.context.router.push('/ERitual/seva');
+	}
+	
+	onClick(event){
+		this.context.router.push('/ERitual/seva');
+	this.setState({
+			'triggerUpload':false,
+			'logoImage':'',
+			'triggerUploadVideo':false,
+		});
+	}
+	handleFile(event){
+		event.preventDefault();
+		this.state.videoUrl=event.target.value;
+		this.setState({ [event.target.name]:event.target.value}, function() {
+			if(this.state.firstTimeFormSubmit) {
+				this.isValid();
+			}
+		});
+	}
 	onChange(event) {
 		this.state.submitApplied=false;
 		this.setState({ [event.target.name]:event.target.value}, function() {
@@ -415,42 +456,34 @@ class EditSevaContainer extends Component {
 					this.setState({isUploadLoading:false});
 				}
 		};
-		const {errors ,imageId,success,image,sevaUserName, name,date,selectedTime,imageUploadSuccess,sevaImage,preRequisite,gotra,rashi,nakshatra, description,amount,active,inActive,isLoading,checked} = this.state;
+		const {errors ,imageId,success,image,sevaUserName,message,showMessage, name,date,selectedTime,imageUploadSuccess,sevaImage,preRequisite,gotra,rashi,nakshatra, description,amount,active,inActive,isLoading,checked} = this.state;
 		let imgSrc = `http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/image/stream/${imageId}`;
 		return (
 				<div>
-				<form className="p20 user-entry-forms details-form" onSubmit={this.onSubmit} id="edit-seva-form">
-				<h2 className="mt0 mb20 text-center">Edit Seva Form</h2>
-				<div className="row mb30">
-				<div className="col-xs-12">
-				<hr/>
-				</div>
-				</div>
-				{ errors.form && <div className="alert alert-danger">{errors.form}</div> }
+				<form className="p20 user-entry-forms details-form" onSubmit={this.onSubmit} id="seva-form">
+				<h2 className="mt0 mb20 text-center page-header page-hdrCstm">Seva Form</h2>
+				{ errors.form && <div className="alert alert-danger ">{errors.form}</div> }
 				<label>Upload Image</label>
 				<div className="row mb10">
 				<div className="col-xs-12">
 				{imageUploadSuccess && <img src = {sevaImage} width="100%"/>}
-				{!imageUploadSuccess && <img src={imgSrc} width="100%"/>}
 				<div className="pull-right logo-container" onClick={this.selectLogoClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
 				{this.state.logoImageOnCard != '' && <img ref="logoOnCard" src={this.state.logoImageOnCard} style={uploadedImageStyles}/> }
-				<Link ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload</Link>
+				<button ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload</button>
 				</div>
 				</div>
 				</div>
 				<div className="row mb10">
-				<div className="col-xs-12">
+				<div className="col-xs-6">
 				<TextFieldGroup
 				error={errors.name}
-				label="Name"
-					onChange={this.onChange}
+				onChange={this.onChange}
 				value={name}
 				field="name"
-					/>
-					</div>
-				</div>
-				<div className="row mb10">
-				<div className="col-xs-12">
+					label="Name"
+						/>
+						</div>
+				<div className="col-xs-6">
 				<label>Time</label><span className = "required"></span>
 				<Datetime 
 				onChange ={this.handleDateTimeSelect}
@@ -464,17 +497,11 @@ class EditSevaContainer extends Component {
 
 				</div>
 				</div>
-				<div className="row mb10">
+				{/*<div className="row mb10">
 				<div className="col-xs-12">
 				<label className="mr10">Pre-Requisite</label>
-				<input
-				name="checked"
-				type="checkbox"
-						checked={this.state.checked}
-				onChange={this.handleInputChange} 
-				/>
-				{this.state.checked && <div>  <div className="row mb10">
-					<div className="col-md-12">
+				 <div className="row mb10">
+				<div className="col-md-12">
 				<div className="row mb10">
 				<div className="col-md-3">
 				<label>Name</label>
@@ -515,22 +542,60 @@ class EditSevaContainer extends Component {
 				</div>
 				</div>
 				</div>
-				</div>}
 				</div>
-				</div>
+				</div>*/}
 				<div className="row mb10">
-				<div className="col-xs-12">
-				<TextFieldGroup
-				error={errors.description}
+				<div className="col-xs-6">
+				<label>Type</label>
+				<select name="type" className=" form-control  font-color " onChange={this.onSelect}>
+				<option value="">Select Type</option>
+				<option value="audio" >Audio</option>
+				<option value="video"  >Video</option>
+				<option value="pdf">Pdf</option>
+				<option value="text">Text</option>
+				</select>
+				</div>
+				<div className="col-xs-6">
+				<label>Description</label>
+				<textarea 
 				label="Description"
-					onChange={this.onChange}
-				value={description}
-				field="description"
+					cols="39"
+						rows="6"
+							onChange={this.onChange}
+				name="description"
+					placeholder = "Description"
+						value={description}
+				className="wordText messageColor"
 					/>
-					</div>
 				</div>
-				<div className="row mb10">
-				<div className="col-xs-12">
+				</div>
+				<div className="row ">
+				<div className="col-xs-6">
+				<label>Module</label>
+				<select name="module" className=" form-control  font-color " onChange={this.onModule}>
+				<option value="">Select Module</option>
+				<option value="spc" >Special Package Categories</option>
+				<option value="rmt"  >Ramachandra Math </option>
+				<option value="gt"  >Gowardhan Temple</option>
+				<option value="camp">Camp</option>
+				<option value="location">Location</option>
+				</select>
+				</div>
+				{/*<div className="col-xs-6">
+				
+				<label>Description</label>
+				<textarea 
+				label="Description"
+					cols="43"
+						rows="6"
+							onChange={this.onChange}
+				name="description"
+					placeholder = "Description"
+						value={description}
+				className="wordText messageColor"
+					/>
+				</div>*/}
+				<div className="col-xs-6">
 				<TextFieldGroup
 				error={errors.amount}
 				label="Seva Amount"
@@ -552,14 +617,14 @@ class EditSevaContainer extends Component {
 				</div>
 				</div>
 				<div className="row mt30">
-				<div className="col-md-6 text-center ">
-				<Link to="/ERitual/seva" className=" block mb20 link-secondary">Cancel</Link> 
-				</div>
-				<div className="col-md-6">
-				<div className="form-group">
-				<button disabled={this.state.isLoading} className="btn btn-lg btn-primary full-width">
-				Submit
-				</button>
+				<div className="col-md-4 col-md-offset-4">
+				  <div className="btn-toolbar">
+				  <button type="button" disabled={this.state.isLoading} onClick={this.onClick} className="btn btn-lg btn-primary">
+					Cancel
+					</button>
+				  <button  disabled={this.state.isLoading} className="btn btn-lg btn-primary">
+					Submit
+					</button>
 				</div>
 				</div>
 				</div>
@@ -572,7 +637,29 @@ class EditSevaContainer extends Component {
 				<button ref="uploadBtn" className="btn btn-primary pull-right">Upload</button>
 				</FileUpload>
 				</div></div>}
-				</div> 
+				{this.state.triggerUploadVideo && <div className="modal-bg"><div className="video-upload-container">
+				<button className = 'close-modal' onClick = {this.closeModal}>x</button>
+				{videoUrl}
+				<div className="row">
+				<div className="col-md-6">
+				<label htmlFor="file-upload" className="">
+				<i className="btn btn-lg btn-primary mr50" aria-hidden="true">Choose File
+				</i>
+				</label>
+				<input
+				name="file"
+					type="file"
+						id="file-upload"
+							onChange={this.handleFile} 
+				/>
+				</div>
+				<div className="col-md-6">
+				<button ref="uploadBtn" className="btn btn-primary ">Upload</button>
+				</div>
+				</div>
+				</div>
+				</div>}
+				</div>
 		);
 	}
 }

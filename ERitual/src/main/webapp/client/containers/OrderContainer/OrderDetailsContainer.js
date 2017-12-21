@@ -125,14 +125,14 @@ class OrderDetailsContainer extends Component {
 		const {orderId,targetType,creatorName,amount,orderListArr} = this.state;
 		return (
 				<div>
-				<nav class="breadcrumb">
+				{/*<nav class="breadcrumb">
                 <a class="breadcrumb-item" href="#">Home</a>
                 <a class="breadcrumb-item" href="#">Library</a>
                 <a class="breadcrumb-item" href="#">Data</a>
                 <span class="breadcrumb-item active">Bootstrap</span>
-              </nav>
+              </nav>*/}
 				<form className=" row p20 container user-entry-forms details-form mt80" >
-					<h1 className="text-center">{this.state.targetType}</h1>
+					<h1 className="text-center page-header page-hdrCstm">{this.state.targetType}</h1>
 					<table className="table table-bordered table-striped mt30 col-md-12">
 						<tbody>
 						<tr className="row">

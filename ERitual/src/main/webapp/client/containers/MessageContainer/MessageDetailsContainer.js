@@ -193,7 +193,7 @@ class MessageDetailsContainer extends Component {
         return (
         		<div>
         		<form className="p20 user-entry-forms details-form ">
-                <h2 className="mt0 mb20 text-center"> Message Details</h2>
+                <h1 className="mt0 mb20 text-center page-header page-hdrCstm"> Message Details</h1>
                 <table className="table table-bordered table-striped mt30 ">
 				<tbody>
 				<tr className="row">

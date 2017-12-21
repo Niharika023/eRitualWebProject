@@ -270,6 +270,11 @@ class SevaListForm extends Component {
 					return(
 							<div className="p30 " >
 							<div className="row">
+							<div className="col-md-offset-5">
+							<h1 className="mt0 mb20 ">Seva List</h1>
+							</div>
+							</div>
+							<div className="row">
 							<div className="col-md-4 ">
 							<TextFieldGroup
 							label="Name "
@@ -315,6 +320,11 @@ class SevaListForm extends Component {
 					return (
 							<div className="p30 " >
 							<div className="row">
+							<div className="col-md-offset-5">
+							<h1 className="mt0 mb20 ">Seva List</h1>
+							</div>
+							</div>
+							<div className="row">
 							<div className="col-md-4 ">
 							<TextFieldGroup
 							label="Name "
@@ -323,32 +333,28 @@ class SevaListForm extends Component {
 								value = {this.state.search}
 							name="searchByName"
 								asterisk=""
-
 									/>
 									</div>
-
 							<div className="sector-division col-md-3  ">
 							<span className="col-md-2"><label>Available</label></span>
 							<h4><i className="kp-up-down blue"></i></h4>
 							<select className=" form-control "  onChange={this.onStatus}  field = "available">
-							<option value="" selected={this.state.isAvailable === ""} >--- Select Availability ---</option>
-
-							<option value={this.state.isAvailable=true}  >True    </option>
-							<option value={this.state.isAvailable =false}  >False    </option>
+								<option value="" selected={this.state.isAvailable === ""} >--- Select Availability ---</option>
+								<option value={this.state.isAvailable=true}  >True    </option>
+								<option value={this.state.isAvailable =false}  >False    </option>
 							</select>
 							</div>
 							<div className="col-md-1">
-							<button  className="btn btn-lg btn-primary mt20 " onClick={this.onSearch}>
-							<i className="kp-up-down blue mr_5"></i>
-							Search
-							</button>
+								<button  className="btn btn-lg btn-primary mt20 " onClick={this.onSearch}>
+								<i className="kp-up-down blue mr_5"></i>
+								Search
+								</button>
 							</div>
 							<div className="col-md-1">
 							<button  className="btn btn-lg btn-primary mt20" onClick={this.onCancel}>
 							Clear
 							</button>
 							</div>
-
 							<div className="col-md-1 col-md-offset-1 ">
 							<button  className="btn btn-lg  sector-division btn-primary mb15 mt15" onClick={this.onAdd}>
 							Add Seva
@@ -357,53 +363,66 @@ class SevaListForm extends Component {
 							</div>
 							<div className="row mt40">
 							<div className="col-md-3 filter-container drop-down">
-							<h2> Sort By Relevance</h2>
-							<select name="orderByName" className=" form-control  font-color mb10 " onChange={this.changeSort}>
-							<option value="">Sort By Name</option>
-							<option value="asc">Ascending</option>
-							<option value="desc">Descending</option>
+							<h3 className="filter-color"> Filters</h3>
+							<select name="orderByName" className=" form-control  font-color mb10 link-secondary coursor-pointer" onChange={this.changeSort}>
+								<option value="">Sort By Name</option>
+								<option value="asc">Sort By Ascending</option>
+								<option value="desc">Sort By Descending</option>
 							</select>
-							<select name="orderByTime" className=" form-control  font-color mb10" onChange={this.changeSort}>
-							<option value="">Sort By Time</option>
-							<option value="asc">Ascending</option>
-							<option value="desc">Descending</option>
+							<select name="orderByTime" className=" form-control  font-color mb10 link-secondary coursor-pointer" onChange={this.changeSort}>
+								<option value="">Sort By Time</option>
+								<option value="asc">Sort By Ascending</option>
+								<option value="desc">Sort By Descending</option>
 							</select>
-							<select name="orderByAmount" className=" form-control  font-color mb10" onChange={this.changeSort}>
-							<option value="">Sort By Amount</option>
-							<option value="asc">Ascending</option>
-							<option value="desc">Descending</option>
+							<select name="orderByAmount" className=" form-control  font-color mb10 link-secondary coursor-pointer" onChange={this.changeSort}>
+								<option value="">Sort By Amount</option>
+								<option value="asc">Sort By Ascending</option>
+								<option value="desc">Sort By Descending</option>
 							</select>
+							<div className="form-control">
+							<a  className=" font-color mb10 link-secondary coursor-pointer" data-toggle="collapse" data-target="#demo">Availability</a>
+							<div id="demo" className="collapse ">
+							  <label>Include available</label>
+								<input
+								name="sevaUserName"
+									type="checkbox"
+										checked={this.state.sevaUserName}
+								onChange={this.handleInputChange} 
+								/>
+							  </div>
+								</div>
+							<div name="Availability" className=" font-color mb10 link-secondary coursor-pointer" onChange={this.changeSort}>
+						</div>
 							</div>
 							<div className="col-md-9 "> 
-							<table className="table table-bordered table-striped">
-							<thead>
-							<tr className="font-color">
-							<th className="tabel-header">Name</th>
-							<th className="tabel-header">Description</th>
-							<th className="tabel-header">Amount</th>
-							<th className="tabel-header">Time</th>
-							<th className="tabel-header">Available</th>
-							<th className="tabel-header">Actions</th>
-							</tr>
-							</thead>
-							<Seva sevaRenderList ={sevaList} deleteSeva={this.deleteSeva.bind(this)}/>
-							</table>
+								<table className="table table-bordered table-striped">
+									<thead>
+										<tr className="font-color">
+											<th className="tabel-header">Name</th>
+											<th className="tabel-header">Description</th>
+											<th className="tabel-header">Amount</th>
+											<th className="tabel-header">Time</th>
+											<th className="tabel-header">Available</th>
+											<th className="tabel-header">Actions</th>
+										</tr>
+									</thead>
+								<Seva sevaRenderList ={sevaList} deleteSeva={this.deleteSeva.bind(this)}/>
+								</table>
 							</div>
 							</div>
 							<div className="pull-left coursor-pointer">
-							<ReactPaginate previousLabel={"previous"}
-							nextLabel={"next"}
-							breakLabel={<a href="">...</a>}
-							breakClassName={"break-me"}
-							pageCount={this.state.pageNum}
-							marginPagesDisplayed={2}
-							pageRangeDisplayed={2}
-							onPageChange={this.handlePageClick}
-							containerClassName={"pagination"}
-							subContainerClassName={"pages pagination"}
-							activeClassName={"active"} />
+								<ReactPaginate previousLabel={"previous"}
+								nextLabel={"next"}
+								breakLabel={<a href="">...</a>}
+								breakClassName={"break-me"}
+								pageCount={this.state.pageNum}
+								marginPagesDisplayed={2}
+								pageRangeDisplayed={2}
+								onPageChange={this.handlePageClick}
+								containerClassName={"pagination"}
+								subContainerClassName={"pages pagination"}
+								activeClassName={"active"} />
 							</div>
-
 							{this.state.triggerDelete && <div className="modal-bg"><div className="delete-container">
 							<button className = 'close-modal' onClick = {this.closeModal}>x</button>
 							<div className="delete-btn-container">

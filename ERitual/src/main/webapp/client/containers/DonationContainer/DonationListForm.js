@@ -211,6 +211,11 @@ class DonationListForm extends Component {
 					return(
 							<div className="p30 " >
 							<div className="row">
+							<div className="col-md-offset-5">
+							<h1 className="mt0 mb20 ">Dontion List</h1>
+							</div>
+							</div>
+							<div className="row">
 							<div className="col-md-2">
 							<TextFieldGroup
 							label="Name "
@@ -263,6 +268,11 @@ class DonationListForm extends Component {
 				else
 					return (
 							<div className="p30 " >
+							<div className="row">
+							<div className="col-md-offset-5">
+							<h1 className="mt0 mb20 ">Donation List</h1>
+							</div>
+							</div>
 							<div className="row">
 							<div className="col-md-2 ">
 							<TextFieldGroup

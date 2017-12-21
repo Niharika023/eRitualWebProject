@@ -33,7 +33,8 @@ class MessageFormContainer extends Component {
 				messageImage:"",
 				title:'',
 				message:'',
-				message:'',
+				showMessage:false,
+				videoUrl:'',
 		}
 
 		this.onChange = this.onChange.bind(this);// bind(this) is needed here,
@@ -41,12 +42,24 @@ class MessageFormContainer extends Component {
 		this.selectLogoClick = this.selectLogoClick.bind(this);
 		this.closeModal = this.closeModal.bind(this);
 		this.handleFile=this.handleFile.bind(this);
+		this.onSelect=this.onSelect.bind(this);
+		this.onClick=this.onClick.bind(this);
 	}
 
 	closeModal() {
 		this.setState({
 			'triggerUpload':false,
-			'logoImage':''
+			'logoImage':'',
+			'triggerUploadVideo':false,
+		});
+	}
+	
+	onClick(event){
+		this.context.router.push('/ERitual/message');
+	this.setState({
+			'triggerUpload':false,
+			'logoImage':'',
+			'triggerUploadVideo':false,
 		});
 	}
 	onChange(event) {
@@ -60,13 +73,25 @@ class MessageFormContainer extends Component {
 
 	handleFile(event){
 		event.preventDefault();
-		this.state.message=event.target.value;
+		this.state.videoUrl=event.target.value;
 		this.setState({ [event.target.name]:event.target.value}, function() {
 			if(this.state.firstTimeFormSubmit) {
 				this.isValid();
 			}
 		});
 	}
+	
+	onSelect(event){
+		if(event.target.value=='text'){
+			this.setState({triggerUploadVideo:false});
+			this.setState({showMessage:true});
+		}
+		else{
+		this.setState({triggerUploadVideo:true});
+		this.setState({showMessage:false});
+		}
+	}
+	
 
 	// method to check the validity of the form
 	isValid() {
@@ -194,43 +219,87 @@ class MessageFormContainer extends Component {
 				}
 		};
 
-		const {errors ,success,image,message,imageUploadSuccess,messageImage,isLoading,title} = this.state;
+		const {errors ,success,image,message,videoUrl,imageUploadSuccess,showMessage,messageImage,isLoading,title} = this.state;
 		return (
 				<div>
-				<form className="p20 user-entry-forms details-form" onSubmit={this.onSubmit}>
-				<h2 className="mt0 mb20 text-center">Message Form</h2>
-				<div className="row mb30">
-				<div className="col-xs-12">
-				<hr/>
-				</div>
-				</div>
-				{ errors.form && <div className="alert alert-danger">{errors.form}</div> }
-
-				<div className="row mb10">
-				<div className="col-xs-12">
-				<TextFieldGroup
-				error={errors.title}
-				label="Title"
-					onChange={this.onChange}
-				value={title}
-				field="title"
+        		<form className="p20 user-entry-forms details-form" onSubmit={this.onSubmit}>
+                <h1 className="mt0 mb20 text-center page-header page-hdrCstm">Message Form</h1>
+                { errors.form && <div className="alert alert-danger">{errors.form}</div> }
+                <label>Upload Image</label>
+                <div className="row mb10">
+                <div className="col-xs-12">
+	                {imageUploadSuccess && <img src = {messageImage} width="100%"/>}
+	                <div className="pull-right logo-container" onClick={this.selectLogoClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
+	                  {this.state.logoImageOnCard != '' && <img ref="logoOnCard" src={this.state.logoImageOnCard} style={uploadedImageStyles}/> }
+	                  <button ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload</button>
+	                </div>
+	              </div>
+                </div>
+                <div className="row mb10">
+                <div className="col-xs-6 col-md-6">
+                  <TextFieldGroup
+                    error={errors.title}
+                    label="Title"
+                    onChange={this.onChange}
+                    value={title}
+                    field="title"
+                  />
+                </div>
+                  <div className="col-xs-6">
+  				<label>Type</label>
+  				<select name="type" className=" form-control  font-color " onChange={this.onSelect}>
+  				<option value="">Select Type</option>
+  				<option value="audio" >Audio</option>
+  				<option value="video"  >Video</option>
+  				<option value="pdf">Pdf</option>
+  				<option value="text">Text</option>
+  				</select>
+  				</div>
+              </div>
+              <div className="row">
+				<div className="col-xs-6">
+				 <label>Description</label>
+				<textarea 
+				label="Message"
+					cols="84"
+						rows="6"
+							onChange={this.onChange}
+				name="message"
+					placeholder = "Type something.."
+						value={message}
+				className="wordText messageColor"
 					/>
-					</div>
 				</div>
-				<div className="row mb10">
-				<div className="col-xs-12 message">
-				<label>Message</label><span className = "required"></span>
-				<div className="row ">
-				<span>
-				<div className="pull-right logo-container" onClick={this.selectLogoClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
-				{this.state.logoImageOnCard != '' && <img ref="logoOnCard" src={this.state.logoImageOnCard} style={uploadedImageStyles}/> }
-				<Link ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer "><i className="fa fa-file-image-o mr30" aria-hidden="true"></i></Link>
 				</div>
-				</span>
-				{imageUploadSuccess && <img src = {messageImage} width="100%"/>}
-				<span className="pull-right">
+				<div className="row mt30">
+				<div className="col-md-4 col-md-offset-4">
+				  <div className="btn-toolbar">
+				  <button type="button" disabled={this.state.isLoading} onClick={this.onClick} className="btn btn-lg btn-primary">
+					Cancel
+					</button>
+				  <button  disabled={this.state.isLoading} className="btn btn-lg btn-primary">
+					Submit
+					</button>
+				</div>
+				</div>
+				</div>
+				</form>
+            {this.state.triggerUpload && <div className="modal-bg"><div className="file-upload-container">
+              {this.state.logoImage != '' && <img  className="full-width logo-upload-preview mb20" src={this.state.logoImage}/> }
+              <button className = 'close-modal' onClick = {this.closeModal}>x</button>
+              <FileUpload options={options} className="upload-btn-container">
+                <button ref="chooseBtn" className="btn btn-primary mr20">Choose File</button>
+                <button ref="uploadBtn" className="btn btn-primary pull-right">Upload</button>
+              </FileUpload>
+            </div></div>}
+              {this.state.triggerUploadVideo && <div className="modal-bg"><div className="video-upload-container">
+				<button className = 'close-modal' onClick = {this.closeModal}>x</button>
+				{videoUrl}
+				<div className="row">
+				<div className="col-md-6">
 				<label htmlFor="file-upload" className="">
-				<i className="fa fa-paperclip mr50" aria-hidden="true"></i>
+				<i className="btn btn-lg btn-primary mr50" aria-hidden="true">Choose File
+				</i>
 				</label>
 				<input
 				name="file"
@@ -238,44 +307,14 @@ class MessageFormContainer extends Component {
 						id="file-upload"
 							onChange={this.handleFile} 
 				/>
-				</span>
-				</div>
-				<textarea 
-				label="Message"
-					cols="55"
-						rows="7"
-							onChange={this.onChange}
-				name="message"
-					placeholder = "Message"
-						value={message}
-				className="wordText messageColor"
-					/>
-				{errors.message && <span className="help-block has-error material-label error-form "> {errors.message}</span>}
-
-				</div>
-				</div>
-				<div className="row mt30">
-				<div className="col-md-6 text-center ">
-				<Link to="/ERitual/message" className=" block mb20 link-secondary">Cancel</Link> 
 				</div>
 				<div className="col-md-6">
-				<div className="form-group">
-				<button disabled={this.state.isLoading} className="btn btn-lg btn-primary full-width">
-				Submit
-				</button>
+				<button ref="uploadBtn" className="btn btn-primary ">Upload</button>
 				</div>
 				</div>
 				</div>
-				</form>
-				{this.state.triggerUpload && <div className="modal-bg"><div className="file-upload-container">
-				{this.state.logoImage != '' && <img  className="full-width logo-upload-preview mb20" src={this.state.logoImage}/> }
-				<button className = 'close-modal' onClick = {this.closeModal}>x</button>
-				<FileUpload options={options} className="upload-btn-container">
-				<button ref="chooseBtn" className="btn btn-primary mr20">Choose File</button>
-				<button ref="uploadBtn" className="btn btn-primary pull-right">Upload</button>
-				</FileUpload>
-				</div></div>}
-				</div>
+				</div>}
+        </div>
 		);
 				}
 	}

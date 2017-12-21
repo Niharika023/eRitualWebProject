@@ -138,6 +138,11 @@ this.onSubmit(event,this.state.itemsPerPage,this.state.activePage);
                  if(this.props.orderList.orderData==undefined || this.props.orderList.orderData.length==0){
                      return(
                              <div className="p30 "  >
+                             <div className="row">
+	 							<div className="col-md-offset-5">
+	 							<h1 className="mt0 mb20 ">Order List</h1>
+	 							</div>
+	 						</div>
                                  <div className="row">
                                     <div className="col-md-4 ">
                                         <TextFieldGroup
@@ -178,6 +183,11 @@ this.onSubmit(event,this.state.itemsPerPage,this.state.activePage);
              else
                  return (
                          <div className="p30 " >
+                         <div className="row">
+							<div className="col-md-offset-5">
+							<h1 className="mt0 mb20 ">Order List</h1>
+							</div>
+						</div>
                             <div className="row">
                                 <div className="col-md-4 ">
                                 <TextFieldGroup

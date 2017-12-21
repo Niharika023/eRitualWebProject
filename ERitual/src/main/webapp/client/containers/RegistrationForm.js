@@ -162,12 +162,7 @@ class RegistrationForm extends Component {
         const {errors , name,phone, email,gender,dob,isLoading, password,confirmPassword} = this.state;
         return (
             <form className="p20 user-entry-forms login-form" id= "registration-form" onSubmit={this.onSubmit}>
-                <h2 className="mt0 mb20 text-center">Registration</h2>
-                <div className="row mb30">
-                  <div className="col-xs-12">
-                    <hr/>
-                  </div>
-                </div>
+                <h2 className="mt0 mb20 text-center  page-header page-hdrCstm">Registration</h2>
                 { errors.form && <div className="alert alert-danger">{errors.form}</div> }
                 <div className="row mb10">
                   <div className="col-xs-12" id="myTextField" >
