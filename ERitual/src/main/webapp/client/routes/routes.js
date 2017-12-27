@@ -24,6 +24,8 @@ import ChangePassword from '../components/Login/ChangePassword';
 import ResetPassword from '../components/Login/ResetPassword';
 import otpVerification from '../components/Login/OtpVerification';
 import MessageDetail from '../components/Message/MessageDetails';
+import TagConfigForm from '../components/TagConfig/TagConfigForm';
+import TagConfig from '../containers/TagConfigContainer/TagConfigListForm';
 /*import Otp from '../components/login/Otp';
 */
 
@@ -52,5 +54,7 @@ export default (
     <Route path= "editMessage/:id" component={EditMessage} />
     <Route path= "messageForm" component={MessageForm} />
     <Route path= "message" component={Message} />
+    <Route path= "tagConfigForm" component={TagConfigForm} />
+    <Route path= "tagConfig" component={TagConfig} />
   </Route>
 )

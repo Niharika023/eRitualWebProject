@@ -43,6 +43,8 @@ class NavigationBar extends Component {
 			this.context.router.push( '/ERitual/home');
 		if(event.target.selected == 'Message')
 			this.context.router.push('/ERitual/message');
+		if(event.target.selected == 'TagConfig')
+			this.context.router.push('/ERitual/tagConfig');
 	}
 
 	render() {
@@ -64,7 +66,8 @@ class NavigationBar extends Component {
 				<li><a   selected = "Event" className=" link-secondary mr15 coursor-pointer" data-toggle = "tab" onClick = {this.onClick}>Event</a> </li>
 				<li><a    selected = "Donation" className=" link-secondary mr15 coursor-pointer" data-toggle = "tab" onClick = {this.onClick}>Donation</a></li>
 				<li><a    selected = "Orders" className=" link-secondary mr15 coursor-pointer" data-toggle = "tab" onClick = {this.onClick}>Orders</a></li>
-				<li><a    selected = "Message" className=" link-secondary mr15 coursor-pointer" data-toggle = "tab" onClick = {this.onClick}>Message</a></li>
+				<li><a    selected = "Message" className=" link-secondary mr15 coursor-pointer" data-toggle = "tab" onClick = {this.onClick}>Sri Samasthanam</a></li>
+				<li><a    selected = "TagConfig" className=" link-secondary mr15 coursor-pointer" data-toggle = "tab" onClick = {this.onClick}>Tag</a></li>
 
 				<li className="pull-right dropdown">
 				<a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span className="caret"></span></a>

@@ -16,6 +16,10 @@ import changePasswordReducer from './reducers/ChangePasswordReducer';
 import donationFormReducer from './reducers/DonationFormReducer';
 import eventFormReducer from './reducers/EventFormReducer';
 import resetPasswordReducer from './reducers/ResetPasswordReducer';
+import tagConfigFormReducer from './reducers/TagConfigFormReducer';
+import tagList from './reducers/tagListReducer';
+import valueList from './reducers/valueListReducer';
+import tagConfigReducer from './reducers/TagConfigReducer';
 
 export default combineReducers({
   toasts,
@@ -33,5 +37,9 @@ export default combineReducers({
   changePasswordReducer,
   resetPasswordReducer,
   messageReducer,
-  messageFormReducer
+  messageFormReducer,
+  tagConfigFormReducer,
+  tagList,
+  valueList,
+  tagConfigReducer,
 });

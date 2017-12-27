@@ -223,7 +223,7 @@ class MessageFormContainer extends Component {
 		return (
 				<div>
         		<form className="p20 user-entry-forms details-form" onSubmit={this.onSubmit}>
-                <h1 className="mt0 mb20 text-center page-header page-hdrCstm">Message Form</h1>
+                <h1 className="mt0 mb20 text-center page-header page-hdrCstm">Sri Samasthanam Form</h1>
                 { errors.form && <div className="alert alert-danger">{errors.form}</div> }
                 <label>Upload Image</label>
                 <div className="row mb10">

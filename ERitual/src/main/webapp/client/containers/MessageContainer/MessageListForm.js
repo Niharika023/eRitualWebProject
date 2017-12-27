@@ -297,7 +297,7 @@ class MessageListForm extends Component {
 							</div>
 							<div className="col-md-1 ">
 							<button  className="btn btn-lg  sector-division btn-primary mb15 mt15" onClick={this.onAdd}>
-							Add Message
+							Add Sri Samasthanam
 							</button>
 							</div>
 							</div>
@@ -310,7 +310,7 @@ class MessageListForm extends Component {
 							<div className="p30 " >
 							<div className="row">
 							<div className="col-md-offset-5">
-							<h1 className="mt0 mb20 ">Message List</h1>
+							<h1 className="mt0 mb20 ">Sri Samasthanam List</h1>
 							</div>
 							</div>
 							<div className="row">
@@ -370,7 +370,7 @@ class MessageListForm extends Component {
 							</div>
 							<div className="col-md-1 ml10">
 							<button  className="btn btn-lg  sector-division btn-primary mb15 mt15" onClick={this.onAdd}>
-							Add Message
+							Add Sri Samasthanam
 							</button>
 							</div>
 							</div>
