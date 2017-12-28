@@ -36,27 +36,52 @@ class TagConfigFormContainer extends Component {
 
 
 	onChange(event) {
-	      this.state.submitApplied=false;
+	    console.log("value ", event.target.name);  
+	    this.state.submitApplied=false;
 		this.setState({ [event.target.name]:event.target.value}, function() {
 			if(this.state.firstTimeFormSubmit) {
 				this.isValid();
 			}
 		});
 	}
-
+	
+	onTagChange (event, { newValue }) {
+	    this.setState({
+	      value: newValue
+	    });
+	  };
+	  
+	onSuggestionsFetchRequested({ value }) {
+		console.log(value);
+		this.props.tagConfigRenderList(value).then(this.keyRenderOptions)
+	}
+	
 	 keyRenderOptions() {
-	    	console.log("this.props",this.props);
-	    	if(this.props.tag!=undefined){
-	    	if(this.props.tag.length!=0){
-	    		const tagList = this.props.tag.data.items.map((d) => 
+	     if(this && !this.props.tagConfig) {
+	    	 return [];
+	     }
+		 if(this && this.props.tagConfig.tagConfigData!=undefined){
+	    	if(this.props.tagConfig.tagConfigData.length!=0){
+	    		const tagList = this.props.tagConfig.tagConfigData.map((d) => 
 	    		{
-	    			return (<option key={d.key}>{d.key}</option>
-	    			)
-	    			});
+	    			return d.key;
+	    		});
 	    		return tagList;
 	    	}
-	    	}
-	    }
+		 }
+	    	
+	  }
+	 
+	 renderSuggestion(suggestion) {
+		 if (suggestion.isAddNew) {
+		      return (
+		        <span>
+		          [+] Add new: <strong>{this.state.value}</strong>
+		        </span>
+		      );
+		    }
+		 return <div>{suggestion}</div>
+	 }
 	 
 	 valueRenderOptions() {
 	    	console.log("this.props",this.props);
@@ -120,10 +145,10 @@ class TagConfigFormContainer extends Component {
 		//condition for checking the validation
 		if(this.isValid()) {
 			this.setState({ errors: {}, isLoading:true });
-			let tagConfig= {
-					"key":this.state.tagKey,
-					"value":this.state.description,
-			}
+			let tagKey=this.state.tagKey;
+			let value=this.state.value
+			let tagConfig= {}
+			tagConfig[tagKey]=value;
 			this.props.userTagConfigFormsRequest(tagConfig).then(
 					(res) => {
 						//condition for unauthorized admin
@@ -155,10 +180,32 @@ class TagConfigFormContainer extends Component {
 			);
 		}
 	}
-
-
+	getSuggestionValue(suggestion) {
+	    if (suggestion.isAddNew) {
+	      return this.state.value;
+	    }
+	    
+	    return suggestion.name;
+	  };
+	  
+	  onSuggestionSelected(event, { suggestion }){
+		    if (suggestion.isAddNew) {
+		      console.log('Add new:', this.state.value);
+		    }
+		  };
+	
+	onSuggestionsClearRequested() {
+		
+	}
+	
 	render() {
 		const {errors ,success,tagKey,value,isLoading,checked} = this.state;
+		const inputProps = {
+	      placeholder: 'Type a programming language',
+	      value,
+	      onChange: this.onTagChange.bind(this)
+	    };
+		const suggestions = ["a","b"];
 		return (
 				<form className="p20 user-entry-forms details-form" onSubmit={this.onSubmit} id="tagConfig-form">
 				<h2 className="mt0 mb20 text-center">TagConfig Form</h2>
@@ -197,6 +244,14 @@ class TagConfigFormContainer extends Component {
 			     </select>
 			     </div>
 				  <div className="col-xs-6 ">
+				  <Autosuggest
+			        suggestions={this.keyRenderOptions() ? this.keyRenderOptions() : [] }
+			        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested.bind(this)}
+			        onSuggestionsClearRequested={this.onSuggestionsClearRequested.bind(this)}
+			        getSuggestionValue={this.getSuggestionValue.bind(this)}
+			        renderSuggestion={this.renderSuggestion.bind(this)}
+				    inputProps={inputProps}
+				  />
 		      	<select
 				        onChange={this.handleDropDownChange} 
 		      		name="tag"

@@ -55,6 +55,12 @@ class SevaFormContainer extends Component {
 				videoUrl:'',
 				showMessage:false,
 				message:'',
+				tags:'',
+				url:'',
+				showUrl:false,
+				metadata:'',
+				triggerUploadVidAudPdf: false,
+				triggerUploadImg: true,
 		}
 
 		this.onChange = this.onChange.bind(this);// bind(this) is needed here,
@@ -68,6 +74,8 @@ class SevaFormContainer extends Component {
 		this.onSelect=this.onSelect.bind(this);
 		this.handleFile=this.handleFile.bind(this);
 		this.onClick=this.onClick.bind(this);
+		this.selectAudVid = this.selectAudVid.bind(this);
+		//this.SelectTag = this.SelectTag.bind(this);
 	}
 
 	//method used to close the dialogue box for image upload
@@ -87,8 +95,8 @@ class SevaFormContainer extends Component {
 			this.setState({showMessage:true});
 		}
 		else{
-		this.setState({triggerUploadVideo:true});
-		this.setState({showMessage:false});
+		//this.setState({triggerUploadVideo:true});
+		this.setState({showUrl:true});
 		}
 	}
 	
@@ -283,7 +291,24 @@ class SevaFormContainer extends Component {
 	selectLogoClick(event) {
 		this.setState({triggerUpload:true});
 	}
-
+	selectAudVid(event) {
+		this.setState({triggerUploadVideo:true});
+	}
+	
+	 sevaTagRenderOptions() {
+	    	console.log("this.props",this.props);
+	    	if(this.props.tag!=undefined){
+	    	if(this.props.tag.length!=0){
+	    		const tagList = this.props.tag.data.items.map((d) => 
+	    		{
+	    			return (<option key={d.key}>{d.key}</option>
+	    			)
+	    			});
+	    		return tagList;
+	    	}
+	    	}
+	    }
+	 
 	render() {
 		var uploadedImageSrc;
 		let options={
@@ -358,23 +383,15 @@ class SevaFormContainer extends Component {
 					this.setState({isUploadLoading:false});
 				}
 		};
+		
 
-		const {errors ,success,videoUrl,image,sevaUserName,message,showMessage, name,selectedTime,preRequisite,imageUploadSuccess,gotra,rashi,sevaImage, nakshatra, description,amount,active,inActive,isLoading,checked} = this.state;
+		const {errors ,success,metadata,videoUrl,tags,image,url,showUrl,sevaUserName,message,showMessage, name,selectedTime,preRequisite,imageUploadSuccess,gotra,rashi,sevaImage, nakshatra, description,amount,active,inActive,isLoading,checked,triggerUploadVidAudPdf,triggerUploadImg} = this.state;
 		return (
 				<div>
 				<form className="p20 user-entry-forms details-form" onSubmit={this.onSubmit} id="seva-form">
 				<h2 className="mt0 mb20 text-center page-header page-hdrCstm">Seva Form</h2>
 				{ errors.form && <div className="alert alert-danger ">{errors.form}</div> }
-				<label>Upload Image</label>
-				<div className="row mb10">
-				<div className="col-xs-12">
-				{imageUploadSuccess && <img src = {sevaImage} width="100%"/>}
-				<div className="pull-right logo-container" onClick={this.selectLogoClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
-				{this.state.logoImageOnCard != '' && <img ref="logoOnCard" src={this.state.logoImageOnCard} style={uploadedImageStyles}/> }
-				<button ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload</button>
-				</div>
-				</div>
-				</div>
+				
 				<div className="row mb10">
 				<div className="col-xs-6">
 				<TextFieldGroup
@@ -397,6 +414,43 @@ class SevaFormContainer extends Component {
 				/>
 				{errors.time && <span className="help-block has-error material-label error-form "> {errors.time}</span>}
 
+				</div>
+				</div>
+				<div className="row mb10">
+				<div className="col-xs-6">
+				  <label>Tags</label>
+				<select name="type" className=" form-control  font-color" onChange={this.SelectTag}>
+				<option value=""> Select Tags</option>
+				{this.sevaTagRenderOptions()}
+				</select>
+				{/*<TextFieldGroup
+								error={errors.tags}
+								onChange={this.onChange}
+								value={tags}
+								field="tags"
+									label="Tags"
+										/>*/}
+				</div>
+				<label>Upload Image</label>
+				<div className="row mb10">
+				<div className="col-xs-12">
+				{imageUploadSuccess && <img src = {sevaImage} width="100%"/>}
+				<div className="pull-right logo-container" onClick={this.selectLogoClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
+				{this.state.logoImageOnCard != '' && <img ref="logoOnCard" src={this.state.logoImageOnCard} style={uploadedImageStyles}/> }
+				<button ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload</button>
+				</div>
+				</div>
+				</div>
+				 <div className="col-xs-6">
+				<label>Type</label>
+				<select name="type" className=" form-control  font-color " onChange={this.selectAudVid}>
+				<option value="">Select Type</option>
+				<option value="audio" >Audio</option>
+				<option value="video"  >Video</option>
+				<option value="pdf">Pdf</option>
+				<option value="text">Text</option>
+				</select>
+				
 				</div>
 				</div>
 				{/*<div className="row mb10">
@@ -447,42 +501,7 @@ class SevaFormContainer extends Component {
 				</div>
 				</div>*/}
 				<div className="row mb10">
-				<div className="col-xs-6">
-				<label>Type</label>
-				<select name="type" className=" form-control  font-color " onChange={this.onSelect}>
-				<option value="">Select Type</option>
-				<option value="audio" >Audio</option>
-				<option value="video"  >Video</option>
-				<option value="pdf">Pdf</option>
-				<option value="text">Text</option>
-				</select>
-				</div>
-				<div className="col-xs-6">
-				<label>Description</label>
-				<textarea 
-				label="Description"
-					cols="43"
-						rows="6"
-							onChange={this.onChange}
-				name="description"
-					placeholder = "Description"
-						value={description}
-				className="wordText messageColor"
-					/>
-				</div>
-				</div>
-				<div className="row ">
-				<div className="col-xs-6">
-				<label>Module</label>
-				<select name="module" className=" form-control  font-color " onChange={this.onModule}>
-				<option value="">Select Module</option>
-				<option value="spc" >Special Package Categories</option>
-				<option value="rmt"  >Ramachandra Math Temple</option>
-				<option value="rmt"  >Gowardhan Temple</option>
-				<option value="camp">Camp</option>
-				</select>
-				</div>
-				<div className="col-xs-6">
+			     <div className="col-xs-6">
 				<TextFieldGroup
 				error={errors.amount}
 				label="Seva Amount"
@@ -491,7 +510,33 @@ class SevaFormContainer extends Component {
 				field="amount"
 					/>
 					</div>
+				{/*<div className="col-xs-6">
+								<label>Description</label>
+								<textarea 
+								label="Description"
+									cols="43"
+										rows="6"
+											onChange={this.onChange}
+								name="description"
+									placeholder = "Description"
+										value={description}
+								className="wordText messageColor"
+									/>
+								</div>*/}
 				</div>
+				{/*<div className="row ">
+								<div className="col-xs-6">
+								<label>Module</label>
+								<select name="module" className=" form-control  font-color " onChange={this.onModule}>
+								<option value="">Select Module</option>
+								<option value="spc" >Special Package Categories</option>
+								<option value="rmt"  >Ramachandra Math Temple</option>
+								<option value="rmt"  >Gowardhan Temple</option>
+								<option value="camp">Camp</option>
+								</select>
+								</div>
+								
+								</div>*/}
 				<div className="row mb10">
 				<div className="col-xs-12">
 				<label>Available</label>
@@ -527,23 +572,54 @@ class SevaFormContainer extends Component {
 				{this.state.triggerUploadVideo && <div className="modal-bg"><div className="video-upload-container">
 				<button className = 'close-modal' onClick = {this.closeModal}>x</button>
 				{videoUrl}
+			<form onSubmit={this.onSubmitAudVidUrl} id="vid-aud-url-form">
 				<div className="row">
-				<div className="col-md-6">
-				<label htmlFor="file-upload" className="">
-				<i className="btn btn-lg btn-primary mr50" aria-hidden="true">Choose File
-				</i>
-				</label>
-				<input
-				name="file"
-					type="file"
-						id="file-upload"
-							onChange={this.handleFile} 
-				/>
+				
+					 <div className="col-md-12">
+				   	  <TextFieldGroup
+				error={errors.name}
+				onChange={this.onChange}
+				value={name}
+				field="url"
+					label="url"
+						/>
+				    </div>
+				    </div>
+				    <div className="row">
+				    		 <div className="col-md-12">
+				   	  <TextFieldGroup
+				       error={errors.name}
+				     onChange={this.onChange}
+				   value={name}
+				field="tags"
+					label="Tags"
+						/>
+				    </div> 
+				    </div>
+                  <div className="row">
+				    <div className="col-md-12">
+				   	  <label>Description</label>
+				<textarea 
+				label="Description"
+					cols="35"
+						rows="6"
+							onChange={this.onChange}
+				name="description"
+					placeholder = "Description"
+						value={description}
+				className="wordText messageColor"
+					/>
+				  </div>
 				</div>
-				<div className="col-md-6">
-				<button ref="uploadBtn" className="btn btn-primary ">Upload</button>
-				</div>
-				</div>
+                <div className="row mr15">
+                  <div className="text-center">
+                   <button className="btn btn-lg btn-primary">
+					Submit
+				   </button>
+                  </div>                	
+                </div>
+
+					</form>
 				</div>
 				</div>}
 				</div>

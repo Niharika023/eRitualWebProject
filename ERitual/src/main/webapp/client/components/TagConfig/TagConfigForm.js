@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import {userTagConfigFormsRequest} from '../../actions/tagConfigFormAction';
 import {tagRequest} from '../../actions/tagConfigFormAction';
 import {valueRequest} from '../../actions/tagConfigFormAction';
+import {tagConfigRenderList} from '../../actions/tagConfigAction';
 import {LargeLogo} from '../common/Logos';
 import { bindActionCreators } from 'redux';
 import {addToast, deleteToast} from '../../actions/Toasts';
@@ -16,12 +17,12 @@ class TagConfigForm extends Component {
 		this.props.valueRequest();
 	}
     render() {
-      const {userTagConfigFormsRequest,tagRequest,valueRequest,tag,tagValue,tagConfig,addToast} = this.props;
+      const {userTagConfigFormsRequest,tagRequest,valueRequest,tag,tagValue,tagConfig,addToast,tagConfigRenderList} = this.props;
         return (
             <div className="row full-height">
               <div className="col-md-8 col-md-offset-2 full-height">
                 <LargeLogo id="large_logo" className="large-logo"/>
-                <TagConfigFormContainer userTagConfigFormsRequest={userTagConfigFormsRequest}  addToast={addToast} tag = {tag} tagValue={tagValue} deleteToast = {deleteToast}/> 
+                <TagConfigFormContainer userTagConfigFormsRequest={userTagConfigFormsRequest} tagConfig={tagConfig} tagConfigRenderList = {tagConfigRenderList} addToast={addToast} tag = {tag} tagValue={tagValue} deleteToast = {deleteToast}/> 
               </div>
             </div>
         );
@@ -35,7 +36,7 @@ TagConfigForm.propTypes = {
 
 function mapStateToProps(state) {
 	  return {
-		  tagConfig:state.tagConfigFormReducer,
+		  tagConfig:state.tagConfigReducer,
 		  tag:state.tagList,
 		  value:state.valueList
 	  };
@@ -46,8 +47,9 @@ function mapDispatchToProps(dispatch) {
 		userTagConfigFormsRequest: bindActionCreators({userTagConfigFormsRequest }, dispatch),
 		tagRequest: bindActionCreators({ tagRequest }, dispatch),
 		valueRequest: bindActionCreators({ valueRequest }, dispatch),
+		tagConfigRenderList:bindActionCreators({ tagConfigRenderList }, dispatch),
 
 	  };
 	}
 
-export default connect(mapStateToProps, {userTagConfigFormsRequest,tagRequest,valueRequest,addToast} )(TagConfigForm)
+export default connect(mapStateToProps, {userTagConfigFormsRequest,tagRequest,valueRequest,addToast,tagConfigRenderList} )(TagConfigForm)

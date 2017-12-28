@@ -40,6 +40,7 @@ public class TagConfigController {
 			queryParameter= ";keyLike=" +request.getParameter("search");
 		if(request.getParameter("orderByKey") != null)
 			queryParameter+=";orderByKey="+request.getParameter("orderByKey");
+		if(request.getParameter("pageSize") != null)
 			queryParameter+=";pageSize="+request.getParameter("pageSize");
 		if(request.getParameter("pageNumber") != null)
 			queryParameter+=";pageNumber="+request.getParameter("pageNumber");

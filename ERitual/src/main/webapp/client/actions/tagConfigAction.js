@@ -20,26 +20,26 @@ export function tagConfigRenderList(search,searchData,pageSize,pageNumber) {
 		{
 		concatStr = concatStr + "search=&";
 		}
-	if(searchData.orderByName !=""){
+	if(searchData && searchData.orderByName !=""){
 		concatStr=concatStr+"orderByKey="+ searchData.orderByName+"&";
 	}
 	else{
 		concatStr = concatStr + "orderByKey=&";
 	}
-	if(searchData.orderByAmount !=""){
+	if(searchData && searchData.orderByAmount !=""){
 		concatStr=concatStr+"orderByAmount="+ searchData.orderByAmount+"&";
 	}
 	else{
 		concatStr = concatStr + "orderByAmount=&";
 	}
-	if(searchData.orderByUpdatedTS !=""){
+	if(searchData && searchData.orderByUpdatedTS !=""){
 		concatStr=concatStr+"orderByUpdatedTS="+ searchData.orderByUpdatedTS+"&";
 	}
 	else{
 		concatStr = concatStr + "orderByUpdatedTS=&";
 	}
-	concatStr=concatStr+"pageSize="+ pageSize+"&";
-	concatStr=concatStr+"pageNumber="+pageNumber+"&";
+	if(pageSize) concatStr=concatStr+"pageSize="+ pageSize+"&";
+	if(pageNumber) concatStr=concatStr+"pageNumber="+pageNumber+"&";
 	const request = axios.get("http://localhost:8080/ERitual/er/tagConfig/list"+concatStr);
 	  return {
 	    type    : FETCH_TAGCONFIG_LIST,

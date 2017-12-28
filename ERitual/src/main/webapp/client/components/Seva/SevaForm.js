@@ -6,6 +6,7 @@ import {userSevaFormsRequest} from '../../actions/sevaFormAction';
 import {imageUploadRequest} from '../../actions/sevaFormAction';
 import {rashiRequest} from '../../actions/sevaFormAction';
 import {nakshatraRequest} from '../../actions/sevaFormAction';
+import {valueRequest} from '../../actions/tagConfigFormAction';
 import {LargeLogo} from '../common/Logos';
 import { bindActionCreators } from 'redux';
 import {addToast, deleteToast} from '../../actions/Toasts';
@@ -13,14 +14,15 @@ import {addToast, deleteToast} from '../../actions/Toasts';
 class SevaForm extends Component {
 	componentDidMount(){
 		this.props.seva;
+		this.props.valueRequest();
 	}
     render() {
-      const {userSevaFormsRequest,imageUploadRequest, seva,addToast} = this.props;
+      const {userSevaFormsRequest,imageUploadRequest,valueRequest,value, seva,addToast} = this.props;
         return (
             <div className="row full-height">
               <div className="col-md-10 col-md-offset-1 full-height">
                 <LargeLogo id="large_logo" className="large-logo"/>
-                <SevaFormContainer userSevaFormsRequest={userSevaFormsRequest}  imageUploadRequest={imageUploadRequest}  addToast={addToast} deleteToast = {deleteToast} /> 
+                <SevaFormContainer userSevaFormsRequest={userSevaFormsRequest} tagValue={tagValue} imageUploadRequest={imageUploadRequest}  addToast={addToast} deleteToast = {deleteToast} /> 
               </div>
             </div>
         );
@@ -37,7 +39,8 @@ function mapStateToProps(state) {
 	  return {
 		  seva:state.sevaFormReducer,
 		  rashi:state.rashiList,
-		  nakshatra:state.nakshtraList
+		  nakshatra:state.nakshtraList,
+		  value:state.valueList
 	  };
 	}
 function mapDispatchToProps(dispatch) {
@@ -47,6 +50,7 @@ function mapDispatchToProps(dispatch) {
 		rashiRequest: bindActionCreators({ rashiRequest }, dispatch),
 		nakshatraRequest: bindActionCreators({ nakshatraRequest }, dispatch),
 		addToast:bindActionCreators({ addToast }, dispatch),
+		valueRequest: bindActionCreators({ valueRequest }, dispatch),
 	  };
 	}
 
