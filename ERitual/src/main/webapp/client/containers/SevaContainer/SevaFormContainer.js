@@ -297,11 +297,11 @@ class SevaFormContainer extends Component {
 	
 	 sevaTagRenderOptions() {
 	    	console.log("this.props",this.props);
-	    	if(this.props.tag!=undefined){
-	    	if(this.props.tag.length!=0){
-	    		const tagList = this.props.tag.data.items.map((d) => 
+	    	if(this.props.tagValue!=undefined){
+	    	if(this.props.tagValue.length!=0){
+	    		const tagList = this.props.tagValue.data.items.map((d) => 
 	    		{
-	    			return (<option key={d.key}>{d.key}</option>
+	    			return (<option key={d.value}>{d.value}</option>
 	    			)
 	    			});
 	    		return tagList;

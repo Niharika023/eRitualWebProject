@@ -17,12 +17,12 @@ class SevaForm extends Component {
 		this.props.valueRequest();
 	}
     render() {
-      const {userSevaFormsRequest,imageUploadRequest,valueRequest,value, seva,addToast} = this.props;
+      const {userSevaFormsRequest,imageUploadRequest,tagValue,valueRequest,value, seva,addToast} = this.props;
         return (
             <div className="row full-height">
               <div className="col-md-10 col-md-offset-1 full-height">
                 <LargeLogo id="large_logo" className="large-logo"/>
-                <SevaFormContainer userSevaFormsRequest={userSevaFormsRequest} tagValue={tagValue} imageUploadRequest={imageUploadRequest}  addToast={addToast} deleteToast = {deleteToast} /> 
+                <SevaFormContainer userSevaFormsRequest={userSevaFormsRequest} valueRequest={valueRequest} tagValue={tagValue} imageUploadRequest={imageUploadRequest}  addToast={addToast} deleteToast = {deleteToast} /> 
               </div>
             </div>
         );
@@ -40,7 +40,8 @@ function mapStateToProps(state) {
 		  seva:state.sevaFormReducer,
 		  rashi:state.rashiList,
 		  nakshatra:state.nakshtraList,
-		  value:state.valueList
+		  tagValue:state.valueList,
+		  tagConfig:state.tagConfigReducer,
 	  };
 	}
 function mapDispatchToProps(dispatch) {
@@ -54,4 +55,4 @@ function mapDispatchToProps(dispatch) {
 	  };
 	}
 
-export default connect(mapStateToProps, {userSevaFormsRequest,imageUploadRequest,addToast} )(SevaForm)
+export default connect(mapStateToProps, {userSevaFormsRequest,imageUploadRequest,addToast,valueRequest} )(SevaForm)

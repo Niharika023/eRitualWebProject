@@ -9,6 +9,7 @@ import validateInput from '../../validations/tagConfigValidation';
 import TextFieldGroup from '../../components/common/TextFieldGroup';
 import setAuthToken from '../../utils/setAuthToken';
 import Autosuggest from 'react-autosuggest';
+import _ from 'lodash';
 
 class TagConfigFormContainer extends Component {
 	constructor(props){
@@ -23,7 +24,8 @@ class TagConfigFormContainer extends Component {
 				isLoading:false,
 				firstTimeFormSubmit:false,
 		        submitApplied:false,
-		        scroll:''
+		        scroll:'',
+		        selectedTagValues:[]
 
 		}
 
@@ -31,7 +33,7 @@ class TagConfigFormContainer extends Component {
 		this.onSubmit = this.onSubmit.bind(this);
 		this.scrollPage=this.scrollPage.bind(this);
 		this.onClick=this.onClick.bind(this);
-
+		this.removeTag = this.removeTag.bind(this)
 	}
 
 
@@ -60,13 +62,16 @@ class TagConfigFormContainer extends Component {
 	     if(this && !this.props.tagConfig) {
 	    	 return [];
 	     }
+	     if(this && this.props.tagConfig.tagConfigData.length==0) {
+	    	 return [`Add ${this.state.value} to the list?`];
+	     }
 		 if(this && this.props.tagConfig.tagConfigData!=undefined){
 	    	if(this.props.tagConfig.tagConfigData.length!=0){
 	    		const tagList = this.props.tagConfig.tagConfigData.map((d) => 
 	    		{
 	    			return d.key;
 	    		});
-	    		return tagList;
+	    		return _.difference(tagList, this.state.selectedTagValues);
 	    	}
 		 }
 	    	
@@ -80,7 +85,7 @@ class TagConfigFormContainer extends Component {
 		        </span>
 		      );
 		    }
-		 return <div>{suggestion}</div>
+		 return suggestion
 	 }
 	 
 	 valueRenderOptions() {
@@ -185,17 +190,42 @@ class TagConfigFormContainer extends Component {
 	      return this.state.value;
 	    }
 	    
-	    return suggestion.name;
+	    return suggestion;
 	  };
 	  
 	  onSuggestionSelected(event, { suggestion }){
 		    if (suggestion.isAddNew) {
 		      console.log('Add new:', this.state.value);
 		    }
+		   this.setState({
+			   selectedTagValues : suggestion.toString().indexOf('to the list') == -1 ? this.state.selectedTagValues.concat(suggestion.toString()) : this.state.selectedTagValues.concat(this.state.value)
+		   },() => {
+			   document.querySelector('.react-autosuggest__input').value = "";
+		   });
 		  };
 	
 	onSuggestionsClearRequested() {
 		
+	}
+	
+	createTag() {
+		let tagsList = this.state.selectedTagValues.map((tag) => 
+		{
+			return (
+					<li key={tag} className = "tag"><span>{tag}</span><a className="close-tag" onClick = {(event) => {event.preventDefault();this.removeTag(tag);}}>x</a></li>
+			 )
+		});
+		return tagsList;
+		
+	}
+	
+	removeTag(tag) {
+		console.log("selected tag ",tag);
+		let selectedTagList = this.state.selectedTagValues;
+		selectedTagList = [...selectedTagList.slice(0,selectedTagList.indexOf(tag)),...selectedTagList.slice(selectedTagList.indexOf(tag)+1)]
+		this.setState({
+			   selectedTagValues : selectedTagList
+		});
 	}
 	
 	render() {
@@ -251,8 +281,11 @@ class TagConfigFormContainer extends Component {
 			        getSuggestionValue={this.getSuggestionValue.bind(this)}
 			        renderSuggestion={this.renderSuggestion.bind(this)}
 				    inputProps={inputProps}
+				    focusFirstSuggestion={true}
+				    onSuggestionSelected={this.onSuggestionSelected.bind(this)}
 				  />
-		      	<select
+		      	  <ul className = "selectedTags">{this.createTag()}</ul>
+				  <select
 				        onChange={this.handleDropDownChange} 
 		      		name="tag"
 				      >
