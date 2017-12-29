@@ -7,6 +7,7 @@ import {imageUploadRequest} from '../../actions/sevaFormAction';
 import {rashiRequest} from '../../actions/sevaFormAction';
 import {nakshatraRequest} from '../../actions/sevaFormAction';
 import {valueRequest} from '../../actions/tagConfigFormAction';
+import {audVidDetailsFormrequest} from '../../actions/sevaFormAction';
 import {LargeLogo} from '../common/Logos';
 import { bindActionCreators } from 'redux';
 import {addToast, deleteToast} from '../../actions/Toasts';
@@ -17,12 +18,12 @@ class SevaForm extends Component {
 		this.props.valueRequest();
 	}
     render() {
-      const {userSevaFormsRequest,imageUploadRequest,tagValue,valueRequest,value, seva,addToast} = this.props;
+      const {userSevaFormsRequest,imageUploadRequest,tagValue,valueRequest,value, seva,addToast,audVidDetailsFormrequest} = this.props;
         return (
             <div className="row full-height">
               <div className="col-md-10 col-md-offset-1 full-height">
                 <LargeLogo id="large_logo" className="large-logo"/>
-                <SevaFormContainer userSevaFormsRequest={userSevaFormsRequest} valueRequest={valueRequest} tagValue={tagValue} imageUploadRequest={imageUploadRequest}  addToast={addToast} deleteToast = {deleteToast} /> 
+                <SevaFormContainer userSevaFormsRequest={userSevaFormsRequest} valueRequest={valueRequest} tagValue={tagValue} imageUploadRequest={imageUploadRequest}  addToast={addToast} deleteToast = {deleteToast} audVidDetailsFormrequest = {audVidDetailsFormrequest}/> 
               </div>
             </div>
         );
@@ -52,7 +53,8 @@ function mapDispatchToProps(dispatch) {
 		nakshatraRequest: bindActionCreators({ nakshatraRequest }, dispatch),
 		addToast:bindActionCreators({ addToast }, dispatch),
 		valueRequest: bindActionCreators({ valueRequest }, dispatch),
+		audVidDetailsFormrequest : bindActionCreators({ audVidDetailsFormrequest }, dispatch),
 	  };
 	}
 
-export default connect(mapStateToProps, {userSevaFormsRequest,imageUploadRequest,addToast,valueRequest} )(SevaForm)
+export default connect(mapStateToProps, {userSevaFormsRequest,imageUploadRequest,addToast,valueRequest,audVidDetailsFormrequest} )(SevaForm)

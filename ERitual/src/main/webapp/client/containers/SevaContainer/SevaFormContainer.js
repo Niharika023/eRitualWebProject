@@ -19,6 +19,9 @@ class SevaFormContainer extends Component {
 				image:'',
 				sevaUserName:false,
 				name: '',
+				url:'',
+				tags : '',
+				metadata:'',
 				hours:null,
 				minutes:null,
 				selectedTime:null,
@@ -75,7 +78,8 @@ class SevaFormContainer extends Component {
 		this.handleFile=this.handleFile.bind(this);
 		this.onClick=this.onClick.bind(this);
 		this.selectAudVid = this.selectAudVid.bind(this);
-		//this.SelectTag = this.SelectTag.bind(this);
+		this.SelectTag = this.SelectTag.bind(this);
+		this.onSubmitAudVidUrl = this.onSubmitAudVidUrl.bind(this);
 	}
 
 	//method used to close the dialogue box for image upload
@@ -86,9 +90,20 @@ class SevaFormContainer extends Component {
 			'triggerUploadVideo':false,
 		});
 	}
-
 	
-	//For Type DropDown
+	
+	//on select tag
+	SelectTag(event){
+		if(event.target.value=='gh,re,g'){
+			this.setState({triggerUploadImg:true});
+			this.setState({triggerUploadVidAudPdf:true});
+		}
+		else{
+		//this.setState({triggerUploadVideo:true});
+		this.setState({triggerUploadImg:true});
+		this.setState({triggerUploadVidAudPdf:false});
+		}
+	}
 	onSelect(event){
 		if(event.target.value=='text'){
 			this.setState({triggerUploadVideo:false});
@@ -212,7 +227,54 @@ class SevaFormContainer extends Component {
 			this.isValid();
 		}
 	}
-
+     
+	onSubmitAudVidUrl(event){
+		event.preventDefault();
+		
+		let audVidDetails= {
+				"name":this.state.typename,
+				"description":this.state.description,
+				"tags":this.state.tags,
+				"items":[{
+					"url":this.state.url,
+					"metadata":{
+						"onclick":this.state.metadata
+						} 
+					
+							}]
+				
+				
+				
+		}
+		alert("vid deatils"+JSON.stringify(audVidDetails));
+		this.props.audVidDetailsFormrequest(audVidDetails).then(
+				(res) => {
+					if(!res.payload.response && res.payload.status==600) {
+						this.props.addToast({  type:'error', 
+							text:`Sorry,you are not authorized to create or update seva, please contact to your  admin`, 
+							toastType:'auto'  });
+						this.context.router.push('/ERitual/seva');	
+					}
+					else if(res.payload.status==204){
+						this.setState({ errors : { "form" : "Seva Name already exist" }, isLoading : false })
+					}
+					else{
+						res.payload.data=JSON.parse(decodeURIComponent(res.payload.data.replace(/\+/g,'%20')));
+						let sevaFormData= res.payload.data;
+						if(sevaFormData.message!= null) {
+							this.setState({ errors : { "form" : sevaFormData.message }, isLoading : false })
+						}
+						else {
+							this.props.addToast({  type:'success', 
+								text:`Seva created successfully`, 
+								toastType:'auto'  });
+							this.context.router.push('/ERitual/seva');
+						}
+					}
+				},
+			);
+	}
+	
 	onSubmit(event) {
 		event.preventDefault();
 		this.state.submitApplied=true;
@@ -385,7 +447,7 @@ class SevaFormContainer extends Component {
 		};
 		
 
-		const {errors ,success,metadata,videoUrl,tags,image,url,showUrl,sevaUserName,message,showMessage, name,selectedTime,preRequisite,imageUploadSuccess,gotra,rashi,sevaImage, nakshatra, description,amount,active,inActive,isLoading,checked,triggerUploadVidAudPdf,triggerUploadImg} = this.state;
+		const {errors ,success,metadata,videoUrl,tags,image,url,showUrl,typename,sevaUserName,message,showMessage, name,selectedTime,preRequisite,imageUploadSuccess,gotra,rashi,sevaImage, nakshatra, description,amount,active,inActive,isLoading,checked,triggerUploadVidAudPdf,triggerUploadImg} = this.state;
 		return (
 				<div>
 				<form className="p20 user-entry-forms details-form" onSubmit={this.onSubmit} id="seva-form">
@@ -431,17 +493,7 @@ class SevaFormContainer extends Component {
 									label="Tags"
 										/>*/}
 				</div>
-				<label>Upload Image</label>
-				<div className="row mb10">
-				<div className="col-xs-12">
-				{imageUploadSuccess && <img src = {sevaImage} width="100%"/>}
-				<div className="pull-right logo-container" onClick={this.selectLogoClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
-				{this.state.logoImageOnCard != '' && <img ref="logoOnCard" src={this.state.logoImageOnCard} style={uploadedImageStyles}/> }
-				<button ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload</button>
-				</div>
-				</div>
-				</div>
-				 <div className="col-xs-6">
+				{triggerUploadVidAudPdf && <div className="col-xs-6">
 				<label>Type</label>
 				<select name="type" className=" form-control  font-color " onChange={this.selectAudVid}>
 				<option value="">Select Type</option>
@@ -451,7 +503,16 @@ class SevaFormContainer extends Component {
 				<option value="text">Text</option>
 				</select>
 				
+				</div>}
+				{triggerUploadImg && <div className="col-xs-6 mt20">
+				<label>Upload Image</label>
+				{imageUploadSuccess && <img src = {sevaImage} width="100%"/>}
+				<div className="pull-right logo-container" onClick={this.selectLogoClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
+				{this.state.logoImageOnCard != '' && <img ref="logoOnCard" src={this.state.logoImageOnCard} style={uploadedImageStyles}/> }
+				 <button ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload</button>
 				</div>
+				</div>}
+				
 				</div>
 				{/*<div className="row mb10">
 				<div className="col-xs-12">
@@ -573,15 +634,37 @@ class SevaFormContainer extends Component {
 				<button className = 'close-modal' onClick = {this.closeModal}>x</button>
 				{videoUrl}
 			<form onSubmit={this.onSubmitAudVidUrl} id="vid-aud-url-form">
+			<div className="row">
+			 <div className="col-md-12">
+		      <TextFieldGroup
+		       error={errors.name}
+	       	   onChange={this.onChange}
+		       value={typename}
+		       field="typename"
+			    label="Type Name"
+				/>
+		    </div>
+		    </div>
 				<div className="row">
-				
+				 <div className="col-md-12">
+				  <TextFieldGroup
+				  error={errors.name}
+				  onChange={this.onChange}
+				  value={url}
+				  field="url"
+				  label="url"
+						/>
+				    </div>
+				    </div>
+				    <div className="row">
+					
 					 <div className="col-md-12">
-				   	  <TextFieldGroup
+				   <TextFieldGroup
 				error={errors.name}
 				onChange={this.onChange}
-				value={name}
-				field="url"
-					label="url"
+				value={metadata}
+				field="metadata"
+					label="Metadata"
 						/>
 				    </div>
 				    </div>
@@ -590,7 +673,7 @@ class SevaFormContainer extends Component {
 				   	  <TextFieldGroup
 				       error={errors.name}
 				     onChange={this.onChange}
-				   value={name}
+				   value={tags}
 				field="tags"
 					label="Tags"
 						/>

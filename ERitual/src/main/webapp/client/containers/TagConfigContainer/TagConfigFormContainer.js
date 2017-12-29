@@ -8,7 +8,7 @@ import Dropdown from 'react-dropdown';
 import validateInput from '../../validations/tagConfigValidation';
 import TextFieldGroup from '../../components/common/TextFieldGroup';
 import setAuthToken from '../../utils/setAuthToken';
-import Autosuggest from 'react-autosuggest';
+//import Autosuggest from 'react-autosuggest';
 import _ from 'lodash';
 
 class TagConfigFormContainer extends Component {

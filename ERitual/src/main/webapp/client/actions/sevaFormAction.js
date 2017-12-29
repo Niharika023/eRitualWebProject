@@ -5,6 +5,7 @@ export const GET_SEVA_BY_ID = 'GET_SEVA_BY_ID';
 export const UPDATE_SEVA='UPDATE_SEVA';
 export const IMAGE_STREAM='IMAGE_STREAM';
 export const CLEAR_SEVA = 'CLEAR_SEVA';
+export const ADDAUDVID_INSEVA = 'ADDAUDVID_INSEVA';
 export function setSevaData(sevaData) {
 	  return {
 	    type: CREATE_SEVA,
@@ -18,6 +19,14 @@ export function userSevaFormsRequest(seva) {
 	    payload : request
 	  }
 }
+export function audVidDetailsFormrequest(audVidDetails) {
+		const request = axios.post('http://localhost:8080/ERitual/er/seva/aurVidDetails',audVidDetails);
+		  return {
+		    type    : ADDAUDVID_INSEVA,
+		    payload : request
+		  }
+	}
+
 export function clearSevaData() {
 	return {
 	    type    : CLEAR_SEVA,
