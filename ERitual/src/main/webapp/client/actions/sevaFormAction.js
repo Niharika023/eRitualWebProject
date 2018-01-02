@@ -2,6 +2,7 @@ import axios from 'axios';
 
 export const CREATE_SEVA = 'CREATE_SEVA';
 export const GET_SEVA_BY_ID = 'GET_SEVA_BY_ID';
+export const GET_TAGCONFIG_BY_KEY = 'GET_TAGCONFIG_BY_KEY';
 export const UPDATE_SEVA='UPDATE_SEVA';
 export const IMAGE_STREAM='IMAGE_STREAM';
 export const CLEAR_SEVA = 'CLEAR_SEVA';
@@ -19,8 +20,18 @@ export function userSevaFormsRequest(seva) {
 	    payload : request
 	  }
 }
+
+export function tagByKeyRequest() {
+	let key='seva';
+	const request = axios.get('http://localhost:8080/ERitual/er/tagConfig/get/byKey'+"?key="+ key);
+	  return {
+	    type    : GET_TAGCONFIG_BY_KEY,
+	    payload : request
+	  }
+}
+
 export function audVidDetailsFormrequest(audVidDetails) {
-		const request = axios.post('http://localhost:8080/ERitual/er/seva/aurVidDetails',audVidDetails);
+		const request = axios.post('http://localhost:8080/ERitual/er/seva/content_create',audVidDetails);
 		  return {
 		    type    : ADDAUDVID_INSEVA,
 		    payload : request

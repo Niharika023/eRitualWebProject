@@ -64,6 +64,8 @@ class SevaFormContainer extends Component {
 				metadata:'',
 				triggerUploadVidAudPdf: false,
 				triggerUploadImg: true,
+				contentId:'',
+				tag:''
 		}
 
 		this.onChange = this.onChange.bind(this);// bind(this) is needed here,
@@ -94,7 +96,8 @@ class SevaFormContainer extends Component {
 	
 	//on select tag
 	SelectTag(event){
-		if(event.target.value=='gh,re,g'){
+		this.state.tag=event.target.value;
+		if(this.state.tag=='Special Package'){
 			this.setState({triggerUploadImg:true});
 			this.setState({triggerUploadVidAudPdf:true});
 		}
@@ -242,33 +245,31 @@ class SevaFormContainer extends Component {
 						} 
 					
 							}]
-				
-				
-				
 		}
-		alert("vid deatils"+JSON.stringify(audVidDetails));
 		this.props.audVidDetailsFormrequest(audVidDetails).then(
 				(res) => {
-					if(!res.payload.response && res.payload.status==600) {
+					if(!res.payload.data && res.payload.status==600) {
 						this.props.addToast({  type:'error', 
 							text:`Sorry,you are not authorized to create or update seva, please contact to your  admin`, 
 							toastType:'auto'  });
 						this.context.router.push('/ERitual/seva');	
 					}
 					else if(res.payload.status==204){
-						this.setState({ errors : { "form" : "Seva Name already exist" }, isLoading : false })
+						this.setState({ errors : { "form" : "Name already exist" }, isLoading : false })
 					}
 					else{
 						res.payload.data=JSON.parse(decodeURIComponent(res.payload.data.replace(/\+/g,'%20')));
-						let sevaFormData= res.payload.data;
-						if(sevaFormData.message!= null) {
+						let contentFormData= res.payload.data;
+						this.state.contentId=contentFormData.id;
+						this.closeModal();
+						if(contentFormData.message!= null) {
 							this.setState({ errors : { "form" : sevaFormData.message }, isLoading : false })
 						}
 						else {
 							this.props.addToast({  type:'success', 
-								text:`Seva created successfully`, 
+								text:`Data uploaded successfully`, 
 								toastType:'auto'  });
-							this.context.router.push('/ERitual/seva');
+							this.context.router.push('/ERitual/sevaForm');
 						}
 					}
 				},
@@ -312,7 +313,9 @@ class SevaFormContainer extends Component {
 					"available":this.state.available,
 					"amount":this.state.amount,
 					"imageId":this.state.imageId,
-					"time":this.state.time
+					"time":this.state.time,
+					"hostedContentId":this.state.contentId,
+					"tags":this.state.tag
 			}
 			this.props.userSevaFormsRequest(seva).then(
 					(res) => {
@@ -359,11 +362,11 @@ class SevaFormContainer extends Component {
 	
 	 sevaTagRenderOptions() {
 	    	console.log("this.props",this.props);
-	    	if(this.props.tagValue!=undefined){
-	    	if(this.props.tagValue.length!=0){
-	    		const tagList = this.props.tagValue.data.items.map((d) => 
+	    	if(this.props.tagConfigData!=undefined){
+	    	if(this.props.tagConfigData.length!=0){
+	    		const tagList = this.props.tagConfigData.tagByKeyConfig.value.map((d) => 
 	    		{
-	    			return (<option key={d.value}>{d.value}</option>
+	    			return (<option key={d}>{d}</option>
 	    			)
 	    			});
 	    		return tagList;
@@ -625,7 +628,7 @@ class SevaFormContainer extends Component {
 				{this.state.triggerUpload && <div className="modal-bg"><div className="file-upload-container">
 				{this.state.logoImage != '' && <img  className="full-width logo-upload-preview mb20" src={this.state.logoImage}/> }
 				<button className = 'close-modal' onClick = {this.closeModal}>x</button>
-				<FileUpload options={options} className="upload-btn-container">
+				<FileUpload options={options} clascloseModalsName="upload-btn-container">
 				<button ref="chooseBtn" className="btn btn-primary mr20">Choose File</button>
 				<button ref="uploadBtn" className="btn btn-primary pull-right">Upload</button>
 				</FileUpload>

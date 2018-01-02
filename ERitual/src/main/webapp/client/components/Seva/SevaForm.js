@@ -6,7 +6,7 @@ import {userSevaFormsRequest} from '../../actions/sevaFormAction';
 import {imageUploadRequest} from '../../actions/sevaFormAction';
 import {rashiRequest} from '../../actions/sevaFormAction';
 import {nakshatraRequest} from '../../actions/sevaFormAction';
-import {valueRequest} from '../../actions/tagConfigFormAction';
+import {tagByKeyRequest} from '../../actions/sevaFormAction';
 import {audVidDetailsFormrequest} from '../../actions/sevaFormAction';
 import {LargeLogo} from '../common/Logos';
 import { bindActionCreators } from 'redux';
@@ -15,15 +15,17 @@ import {addToast, deleteToast} from '../../actions/Toasts';
 class SevaForm extends Component {
 	componentDidMount(){
 		this.props.seva;
-		this.props.valueRequest();
+		this.props.tagByKeyRequest();
+		this.props.tagByKey;
+		this.props.tagConfigData;
 	}
     render() {
-      const {userSevaFormsRequest,imageUploadRequest,tagValue,valueRequest,value, seva,addToast,audVidDetailsFormrequest} = this.props;
+      const {userSevaFormsRequest,imageUploadRequest,tagByKey,tagByKeyRequest,value,tagConfigData, seva,addToast,audVidDetailsFormrequest} = this.props;
         return (
             <div className="row full-height">
               <div className="col-md-10 col-md-offset-1 full-height">
                 <LargeLogo id="large_logo" className="large-logo"/>
-                <SevaFormContainer userSevaFormsRequest={userSevaFormsRequest} valueRequest={valueRequest} tagValue={tagValue} imageUploadRequest={imageUploadRequest}  addToast={addToast} deleteToast = {deleteToast} audVidDetailsFormrequest = {audVidDetailsFormrequest}/> 
+                <SevaFormContainer userSevaFormsRequest={userSevaFormsRequest} tagConfigData={tagConfigData} tagByKeyRequest={tagByKeyRequest} tagByKey={tagByKey} imageUploadRequest={imageUploadRequest}  addToast={addToast} deleteToast = {deleteToast} audVidDetailsFormrequest = {audVidDetailsFormrequest}/> 
               </div>
             </div>
         );
@@ -43,6 +45,7 @@ function mapStateToProps(state) {
 		  nakshatra:state.nakshtraList,
 		  tagValue:state.valueList,
 		  tagConfig:state.tagConfigReducer,
+		  tagConfigData:state.tagConfigFormReducer
 	  };
 	}
 function mapDispatchToProps(dispatch) {
@@ -52,9 +55,9 @@ function mapDispatchToProps(dispatch) {
 		rashiRequest: bindActionCreators({ rashiRequest }, dispatch),
 		nakshatraRequest: bindActionCreators({ nakshatraRequest }, dispatch),
 		addToast:bindActionCreators({ addToast }, dispatch),
-		valueRequest: bindActionCreators({ valueRequest }, dispatch),
+		tagByKeyRequest: bindActionCreators({ tagByKeyRequest }, dispatch),
 		audVidDetailsFormrequest : bindActionCreators({ audVidDetailsFormrequest }, dispatch),
 	  };
 	}
 
-export default connect(mapStateToProps, {userSevaFormsRequest,imageUploadRequest,addToast,valueRequest,audVidDetailsFormrequest} )(SevaForm)
+export default connect(mapStateToProps, {userSevaFormsRequest,imageUploadRequest,addToast,tagByKeyRequest,audVidDetailsFormrequest} )(SevaForm)
