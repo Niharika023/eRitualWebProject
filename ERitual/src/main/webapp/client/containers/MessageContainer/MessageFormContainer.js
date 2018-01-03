@@ -20,6 +20,7 @@ class MessageFormContainer extends Component {
 				tags : '',
 				metadata:'',
 				image:'',
+				bannertags:'',
 				errors:{},
 				success:{},
 				isLoading:false,
@@ -222,7 +223,7 @@ class MessageFormContainer extends Component {
 				}
 		};
 
-		const {errors ,success,image,message,videoUrl,typename,url,metadata,tags,description,imageUploadSuccess,showMessage,messageImage,isLoading,title} = this.state;
+		const {errors ,success,image,message,videoUrl,bannertags,typename,url,metadata,tags,description,imageUploadSuccess,showMessage,messageImage,isLoading,title} = this.state;
 		return (
 				<div>
         		<form className="p20 user-entry-forms details-form" onSubmit={this.onSubmit}>
@@ -299,16 +300,49 @@ class MessageFormContainer extends Component {
             {this.state.triggerUpload && <div className="modal-bg"><div className="file-upload-container">
               {this.state.logoImage != '' && <img  className="full-width logo-upload-preview mb20" src={this.state.logoImage}/> }
               <button className = 'close-modal' onClick = {this.closeModal}>x</button>
-              <FileUpload options={options} className="upload-btn-container">
+              <form>
+              <FileUpload options={options} >
               <div className = "row">
-               <div className="col-md-6">
+               <div className="col-xs-12">
+               <button ref="chooseBtn" className="btn btn-primary mr20">Choose Image</button>
                </div>
-               <div className="col-md-6">
-               </div>
+              
               </div>
-                <button ref="chooseBtn" className="btn btn-primary mr20">Choose File</button>
-                <button ref="uploadBtn" className="btn btn-primary pull-right">Upload</button>
+              <div className= "row">
+              <div className="col-xs-12">
+              <label>Image Description</label>
+				<textarea 
+				label="Message"
+					cols="38"
+						rows="6"
+							onChange={this.onChange}
+				name="message"
+					placeholder = "Type something.."
+						value={message}
+				className="wordText messageColor"
+					/>
+              </div>
+              </div>
+              <div className="row">
+	    		 <div className="col-md-12">
+	   	  <TextFieldGroup
+	       error={errors.name}
+	     onChange={this.onChange}
+	   value={bannertags}
+	field="tags"
+		label="Tags"
+			/>
+	    </div> 
+	    </div>
+              <div className = "row">
+                <div className="col-md-12 text-center">
+                <button ref="uploadBtn" className="btn btn-primary">Upload</button>
+                </div>
+              </div>
+               
+              
               </FileUpload>
+              </form>
             </div></div>}
               {this.state.triggerUploadVideo && <div className="modal-bg"><div className="video-upload-container">
 				<button className = 'close-modal' onClick = {this.closeModal}>x</button>
