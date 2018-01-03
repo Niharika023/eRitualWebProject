@@ -16,6 +16,9 @@ class MessageFormContainer extends Component {
 		// We will be using the state to control the input. This will ensure
 		// that the state will always hold the lastest
 		this.state = {
+				url:'',
+				tags : '',
+				metadata:'',
 				image:'',
 				errors:{},
 				success:{},
@@ -219,13 +222,13 @@ class MessageFormContainer extends Component {
 				}
 		};
 
-		const {errors ,success,image,message,videoUrl,imageUploadSuccess,showMessage,messageImage,isLoading,title} = this.state;
+		const {errors ,success,image,message,videoUrl,typename,url,metadata,tags,description,imageUploadSuccess,showMessage,messageImage,isLoading,title} = this.state;
 		return (
 				<div>
         		<form className="p20 user-entry-forms details-form" onSubmit={this.onSubmit}>
                 <h1 className="mt0 mb20 text-center page-header page-hdrCstm">Sri Samasthanam Form</h1>
                 { errors.form && <div className="alert alert-danger">{errors.form}</div> }
-                <label>Upload Image</label>
+                <label>Upload Banner</label>
                 <div className="row mb10">
                 <div className="col-xs-12">
 	                {imageUploadSuccess && <img src = {messageImage} width="100%"/>}
@@ -246,22 +249,31 @@ class MessageFormContainer extends Component {
                   />
                 </div>
                   <div className="col-xs-6">
-  				<label>Type</label>
-  				<select name="type" className=" form-control  font-color " onChange={this.onSelect}>
-  				<option value="">Select Type</option>
-  				<option value="audio" >Audio</option>
-  				<option value="video"  >Video</option>
-  				<option value="pdf">Pdf</option>
-  				<option value="text">Text</option>
-  				</select>
-  				</div>
+				  <label>Tags</label>
+				<select name="type" className=" form-control  font-color" onChange={this.SelectTag}>
+				<option value=""> Select Tags</option>
+			
+				</select>
+				
+				</div>
+               
               </div>
               <div className="row">
+              <div className="col-xs-6">
+				<label>Type</label>
+				<select name="type" className=" form-control  font-color " onChange={this.onSelect}>
+				<option value="">Select Type</option>
+				<option value="audio" >Audio</option>
+				<option value="video"  >Video</option>
+				<option value="pdf">Pdf</option>
+				<option value="text">Text</option>
+				</select>
+				</div>
 				<div className="col-xs-6">
 				 <label>Description</label>
 				<textarea 
 				label="Message"
-					cols="84"
+					cols="38"
 						rows="6"
 							onChange={this.onChange}
 				name="message"
@@ -288,6 +300,12 @@ class MessageFormContainer extends Component {
               {this.state.logoImage != '' && <img  className="full-width logo-upload-preview mb20" src={this.state.logoImage}/> }
               <button className = 'close-modal' onClick = {this.closeModal}>x</button>
               <FileUpload options={options} className="upload-btn-container">
+              <div className = "row">
+               <div className="col-md-6">
+               </div>
+               <div className="col-md-6">
+               </div>
+              </div>
                 <button ref="chooseBtn" className="btn btn-primary mr20">Choose File</button>
                 <button ref="uploadBtn" className="btn btn-primary pull-right">Upload</button>
               </FileUpload>
@@ -295,23 +313,76 @@ class MessageFormContainer extends Component {
               {this.state.triggerUploadVideo && <div className="modal-bg"><div className="video-upload-container">
 				<button className = 'close-modal' onClick = {this.closeModal}>x</button>
 				{videoUrl}
+				<form onSubmit={this.onSubmitAudVidUrl} id="vid-aud-url-form">
 				<div className="row">
-				<div className="col-md-6">
-				<label htmlFor="file-upload" className="">
-				<i className="btn btn-lg btn-primary mr50" aria-hidden="true">Choose File
-				</i>
-				</label>
-				<input
-				name="file"
-					type="file"
-						id="file-upload"
-							onChange={this.handleFile} 
-				/>
-				</div>
-				<div className="col-md-6">
-				<button ref="uploadBtn" className="btn btn-primary ">Upload</button>
-				</div>
-				</div>
+				 <div className="col-md-12">
+			      <TextFieldGroup
+			       error={errors.name}
+		       	   onChange={this.onChange}
+			       value={typename}
+			       field="typename"
+				    label="Type Name"
+					/>
+			    </div>
+			    </div>
+					<div className="row">
+					 <div className="col-md-12">
+					  <TextFieldGroup
+					  error={errors.name}
+					  onChange={this.onChange}
+					  value={url}
+					  field="url"
+					  label="url"
+							/>
+					    </div>
+					    </div>
+					    <div className="row">
+						
+						 <div className="col-md-12">
+					   <TextFieldGroup
+					error={errors.name}
+					onChange={this.onChange}
+					value={metadata}
+					field="metadata"
+						label="Metadata"
+							/>
+					    </div>
+					    </div>
+					    <div className="row">
+					    		 <div className="col-md-12">
+					   	  <TextFieldGroup
+					       error={errors.name}
+					     onChange={this.onChange}
+					   value={tags}
+					field="tags"
+						label="Tags"
+							/>
+					    </div> 
+					    </div>
+	                  <div className="row">
+					    <div className="col-md-12">
+					   	  <label>Description</label>
+					<textarea 
+					label="Description"
+						cols="35"
+							rows="6"
+								onChange={this.onChange}
+					name="description"
+						placeholder = "Description"
+							value={description}
+					className="wordText messageColor"
+						/>
+					  </div>
+					</div>
+	                <div className="row mr15">
+	                  <div className="text-center">
+	                   <button className="btn btn-lg btn-primary">
+						Submit
+					   </button>
+	                  </div>                	
+	                </div>
+
+						</form>
 				</div>
 				</div>}
         </div>
