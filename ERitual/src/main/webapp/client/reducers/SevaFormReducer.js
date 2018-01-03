@@ -16,6 +16,7 @@ export default function(state = [], action) {
 	      }
 	      break;
 	 case GET_SEVA_BY_ID:
+		 console.log(action.payload.data);
 		 return {
 		 	editSeva: JSON.parse(decodeURIComponent(action.payload.data.replace(/\+/g,'%20')))
 	      }

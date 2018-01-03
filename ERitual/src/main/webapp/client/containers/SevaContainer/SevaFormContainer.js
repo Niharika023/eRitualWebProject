@@ -65,7 +65,8 @@ class SevaFormContainer extends Component {
 				triggerUploadVidAudPdf: false,
 				triggerUploadImg: true,
 				contentId:'',
-				tag:''
+				tag:'',
+				type:''
 		}
 
 		this.onChange = this.onChange.bind(this);// bind(this) is needed here,
@@ -97,18 +98,19 @@ class SevaFormContainer extends Component {
 	//on select tag
 	SelectTag(event){
 		this.state.tag=event.target.value;
-		if(this.state.tag=='Special Package'){
+		if(this.state.tag=='Special Packages'){
 			this.setState({triggerUploadImg:true});
-			this.setState({triggerUploadVidAudPdf:true});
+			this.setState({triggerUploadVidAudPdf:false});
+			
 		}
 		else{
 		//this.setState({triggerUploadVideo:true});
-		this.setState({triggerUploadImg:true});
-		this.setState({triggerUploadVidAudPdf:false});
+			this.setState({triggerUploadImg:true});
+			this.setState({triggerUploadVidAudPdf:true});
 		}
 	}
 	onSelect(event){
-		if(event.target.value=='text'){
+		if(event.target.value=='pdf'){
 			this.setState({triggerUploadVideo:false});
 			this.setState({showMessage:true});
 		}
@@ -240,6 +242,7 @@ class SevaFormContainer extends Component {
 				"tags":this.state.tags,
 				"items":[{
 					"url":this.state.url,
+					"type":this.state.type,
 					"metadata":{
 						"onclick":this.state.metadata
 						} 
@@ -248,6 +251,7 @@ class SevaFormContainer extends Component {
 		}
 		this.props.audVidDetailsFormrequest(audVidDetails).then(
 				(res) => {
+					console.log("res.payload.data",res.payload.data)
 					if(!res.payload.data && res.payload.status==600) {
 						this.props.addToast({  type:'error', 
 							text:`Sorry,you are not authorized to create or update seva, please contact to your  admin`, 
@@ -315,8 +319,9 @@ class SevaFormContainer extends Component {
 					"imageId":this.state.imageId,
 					"time":this.state.time,
 					"hostedContentId":this.state.contentId,
-					"tags":this.state.tag
+					"tags":this.state.tag,
 			}
+			console.log("sevaaa",seva);
 			this.props.userSevaFormsRequest(seva).then(
 					(res) => {
 						if(!res.payload.response && res.payload.status==600) {
@@ -357,6 +362,7 @@ class SevaFormContainer extends Component {
 		this.setState({triggerUpload:true});
 	}
 	selectAudVid(event) {
+		this.state.type=event.target.value;
 		this.setState({triggerUploadVideo:true});
 	}
 	
@@ -364,7 +370,10 @@ class SevaFormContainer extends Component {
 	    	console.log("this.props",this.props);
 	    	if(this.props.tagConfigData!=undefined){
 	    	if(this.props.tagConfigData.length!=0){
-	    		const tagList = this.props.tagConfigData.tagByKeyConfig.value.map((d) => 
+	    		let tagArr=[];
+	    	tagArr=(this.props.tagConfigData.tagByKeyConfig.value.tags).split(",");
+	    	console.log("tags",tagArr);
+	    		const tagList = tagArr.map((d) => 
 	    		{
 	    			return (<option key={d}>{d}</option>
 	    			)
@@ -674,7 +683,7 @@ class SevaFormContainer extends Component {
 				    <div className="row">
 				    		 <div className="col-md-12">
 				   	  <TextFieldGroup
-				       error={errors.name}
+				       error={errors.name} 
 				     onChange={this.onChange}
 				   value={tags}
 				field="tags"
