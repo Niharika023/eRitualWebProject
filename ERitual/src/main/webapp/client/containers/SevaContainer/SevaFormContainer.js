@@ -68,7 +68,8 @@ class SevaFormContainer extends Component {
 				tag:'',
 				type:'',
 				showTextBox:false,
-				videoDescription:''
+				videoDescription:'',
+				pickedUrl:''
 		}
 
 		this.onChange = this.onChange.bind(this);// bind(this) is needed here,
@@ -268,6 +269,8 @@ class SevaFormContainer extends Component {
 						let contentFormData= res.payload.data;
 						this.state.contentId=contentFormData.id;
 						this.closeModal();
+						this.setState({pickedUrl:this.state.url});
+						alert("Selected Url"+this.state.pickedUrl);
 						if(contentFormData.message!= null) {
 							this.setState({ errors : { "form" : sevaFormData.message }, isLoading : false })
 						}
@@ -524,6 +527,7 @@ class SevaFormContainer extends Component {
 				<option value="pdf">Pdf</option>
 				<option value="text">Text</option>
 				</select>
+				<span>URL is: {this.state.pickedUrl}</span>
 				</div>}
 				{triggerUploadImg && <div className="col-xs-6 mt20">
 				<label>Upload Image</label>

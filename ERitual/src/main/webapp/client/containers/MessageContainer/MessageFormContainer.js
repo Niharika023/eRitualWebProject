@@ -40,7 +40,8 @@ class MessageFormContainer extends Component {
 				bannerTags:'',
 				triggerUploadImg:true,
 				triggerUploadBanner:false,
-				videoDescription:''
+				videoDescription:'',
+				selectedUrl :''
 				
 		}
 
@@ -227,6 +228,7 @@ class MessageFormContainer extends Component {
 						let contentFormData= res.payload.data;
 						this.state.contentId=contentFormData.id;
 						this.closeModal();
+						this.setState({selectedUrl:this.state.url});
 						if(contentFormData.message!= null) {
 							this.setState({ errors : { "form" : sevaFormData.message }, isLoading : false })
 						}
@@ -382,6 +384,7 @@ class MessageFormContainer extends Component {
 				<option value="pdf">Pdf</option>
 				<option value="text">Text</option>
 				</select>
+				<span>Url is : {this.state.selectedUrl}</span>
 				</div>}
               {triggerUploadImg && <div className="col-xs-6 mt20">
               <label>Upload Image</label>
