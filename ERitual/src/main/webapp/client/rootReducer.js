@@ -20,6 +20,7 @@ import tagConfigFormReducer from './reducers/TagConfigFormReducer';
 import tagList from './reducers/tagListReducer';
 import valueList from './reducers/valueListReducer';
 import tagConfigReducer from './reducers/TagConfigReducer';
+import aboutUsReducer from './reducers/AboutUsReducer';
 
 export default combineReducers({
   toasts,
@@ -42,4 +43,5 @@ export default combineReducers({
   tagList,
   valueList,
   tagConfigReducer,
+  aboutUsReducer,
 });

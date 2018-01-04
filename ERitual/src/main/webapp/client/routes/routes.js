@@ -26,8 +26,10 @@ import otpVerification from '../components/Login/OtpVerification';
 import MessageDetail from '../components/Message/MessageDetails';
 import TagConfigForm from '../components/TagConfig/TagConfigForm';
 import TagConfig from '../containers/TagConfigContainer/TagConfigListForm';
+import AboutUs from '../components/AboutUs/aboutUsForm';
 /*import Otp from '../components/login/Otp';
 */
+
 
 import requireAuth from '../utils/requireAuth';
 
@@ -56,5 +58,6 @@ export default (
     <Route path= "message" component={Message} />
     <Route path= "tagConfigForm" component={TagConfigForm} />
     <Route path= "tagConfig" component={TagConfig} />
+    <Route path= "aboutUs" component={AboutUs} />
   </Route>
 )
