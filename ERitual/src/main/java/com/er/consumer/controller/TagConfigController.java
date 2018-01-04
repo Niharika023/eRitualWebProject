@@ -37,9 +37,9 @@ public class TagConfigController {
 	public void getTagConfigList(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 		String url =null;
 		String queryParameter="";
-		if( request.getParameter("search") != null)
-			queryParameter= ";keyLike=" +request.getParameter("search");
-		if( request.getParameter("search") != null)
+		if( request.getParameter("keyLike") != null)
+			queryParameter= ";keyLike=" +request.getParameter("keyLike");
+		if( request.getParameter("valueLike") != null)
 			queryParameter= ";valueLike=" +request.getParameter("valueLike");
 		if(request.getParameter("orderByKey") != null)
 			queryParameter+=";orderByKey="+request.getParameter("orderByKey");

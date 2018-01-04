@@ -6,11 +6,9 @@ import jwt from 'jsonwebtoken';
 import Dropdown from 'react-dropdown';
 
 import validateInput from '../../validations/tagConfigValidation';
-import valueList from '../../components/TagConfig/valueList';
-import keyList from '../../components/TagConfig/keyList';
 import TextFieldGroup from '../../components/common/TextFieldGroup';
 import setAuthToken from '../../utils/setAuthToken';
-//import Autosuggest from 'react-autosuggest';
+import Autosuggest from 'react-autosuggest';
 import _ from 'lodash';
 
 class TagConfigFormContainer extends Component {
@@ -28,7 +26,7 @@ class TagConfigFormContainer extends Component {
 		        submitApplied:false,
 		        scroll:'',
 		        selectedTagValues:[],
-		        selectedValues:[]
+		        configValue:''
 
 		}
 
@@ -36,8 +34,7 @@ class TagConfigFormContainer extends Component {
 		this.onSubmit = this.onSubmit.bind(this);
 		this.scrollPage=this.scrollPage.bind(this);
 		this.onClick=this.onClick.bind(this);
-		this.removeTag = this.removeTag.bind(this);
-		this.valueRenderOptions=this.valueRenderOptions.bind(this);
+		this.removeTag = this.removeTag.bind(this)
 	}
 
 
@@ -52,27 +49,14 @@ class TagConfigFormContainer extends Component {
 	}
 	
 	onTagChange (event, { newValue }) {
-		console.log("event",event.target.name);
-		if(event.target.name=='key'){
 	    this.setState({
 	      value: newValue
 	    });
-		}
-		else{
-			this.setState({
-			      tagValue: newValue
-			    });
-		}
 	  };
 	  
 	onSuggestionsFetchRequested({ value }) {
-		console.log("suggestion fetch",value);
+		console.log(value);
 		this.props.tagConfigRenderList(value).then(this.keyRenderOptions)
-	}
-	
-	onSuggestionsFetchValueRequested({ value }) {
-		console.log("suggestion fetc value",value);
-		this.props.tagConfigRenderList(value).then(this.valueRenderOptions)
 	}
 	
 	 keyRenderOptions() {
@@ -105,31 +89,19 @@ class TagConfigFormContainer extends Component {
 		 return suggestion
 	 }
 	 
-	 renderValueSuggestion(suggestion){
-		 if (suggestion.isAddNew) {
-		      return (
-		        <span>
-		          [+] Add new: <strong>{this.state.tagValue}</strong>
-		        </span>
-		      );
-		    }
-		 return suggestion
-	 }
+	 valueRenderOptions() {
+	    	if(this.props.tag!=undefined){
+	    	if(this.props.tag.length!=0){
+	    		const valueList = this.props.tag.data.items.map((d) => 
+	    		{
+	    			return (<option key={d.value}>{d.value}</option>
+	    			)
+	    			});
+	    		return valueList;
+	    	}
+	    	}
+	    }
 	 
-		 valueRenderOptions() {
-		    	console.log("this.props",this.props);
-		    	if(this.props.tag!=undefined){
-		    	if(this.props.tag.length!=0){
-		    		const valueList = this.props.tag.data.items.map((d) => 
-		    		{
-		    			return (<option key={d.value}>{d.value}</option>
-		    			)
-		    			});
-		    		return valueList;
-		    	}
-		    	}
-		    }
-		 
 	onClick(event){
 		this.context.router.push('/ERitual/tagConfig');
 	}
@@ -178,10 +150,15 @@ class TagConfigFormContainer extends Component {
 		//condition for checking the validation
 		if(this.isValid()) {
 			this.setState({ errors: {}, isLoading:true });
-			let tagKey=this.state.tagKey;
-			let value=this.state.value
-			let tagConfig= {}
-			tagConfig[tagKey]=value;
+			alert(this.state.value);
+			let tagConfig= {
+					value:{
+						"type":"about-us",
+						"title":"about-us",
+						"tags":this.state.value
+					}
+			}
+			console.log("tagConfig",tagConfig);
 			this.props.userTagConfigFormsRequest(tagConfig).then(
 					(res) => {
 						//condition for unauthorized admin
@@ -221,14 +198,6 @@ class TagConfigFormContainer extends Component {
 	    return suggestion;
 	  };
 	  
-	  getSuggestionTagValue(suggestion) {
-		    if (suggestion.isAddNew) {
-		      return this.state.tagValue;
-		    }
-		    
-		    return suggestion;
-		  };
-	  
 	  onSuggestionSelected(event, { suggestion }){
 		    if (suggestion.isAddNew) {
 		      console.log('Add new:', this.state.value);
@@ -239,17 +208,6 @@ class TagConfigFormContainer extends Component {
 			   document.querySelector('.react-autosuggest__input').value = "";
 		   });
 		  };
-		  
-		  onSuggestionValueSelected(event, { suggestion }){
-			    if (suggestion.isAddNew) {
-			      console.log('Add new:', this.state.tagValue);
-			    }
-			   this.setState({
-				   selectedValues : suggestion.toString().indexOf('to the list') == -1 ? this.state.selectedValues.concat(suggestion.toString()) : this.state.selectedValues.concat(this.state.tagValue)
-			   },() => {
-				   document.querySelector('.react-autosuggest__input').value = "";
-			   });
-			  };
 	
 	onSuggestionsClearRequested() {
 		
@@ -276,19 +234,12 @@ class TagConfigFormContainer extends Component {
 	}
 	
 	render() {
-		const {errors ,success,tagKey,value,isLoading,checked} = this.state;
+		const {errors ,success,configValue,tagKey,value,isLoading,checked} = this.state;
 		const inputProps = {
-	      placeholder: 'key',
-	      name:'key',
+	      placeholder: 'Type a programming language',
 	      value,
 	      onChange: this.onTagChange.bind(this)
 	    };
-		const inputValueProps = {
-			      placeholder: 'value',
-			      name:'value',
-			      value,
-			      onChange: this.onTagChange.bind(this)
-			    };
 		const suggestions = ["a","b"];
 		return (
 				<form className="p20 user-entry-forms details-form" onSubmit={this.onSubmit} id="tagConfig-form">
@@ -300,9 +251,8 @@ class TagConfigFormContainer extends Component {
 				</div>
 				{ errors.form && <div className="alert alert-danger">{errors.form}</div> }
 				<div className="row mb10">
-				  <div className="col-xs-6 ">
-				  <keyList/>
-				  {/*<Autosuggest
+				<div className="col-xs-6 ">
+				  <Autosuggest
 			        suggestions={this.keyRenderOptions() ? this.keyRenderOptions() : [] }
 			        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested.bind(this)}
 			        onSuggestionsClearRequested={this.onSuggestionsClearRequested.bind(this)}
@@ -312,22 +262,19 @@ class TagConfigFormContainer extends Component {
 				    focusFirstSuggestion={true}
 				    onSuggestionSelected={this.onSuggestionSelected.bind(this)}
 				  />
-		      	  <ul className = "selectedTags">{this.createTag()}</ul>*/}
+		      	  <ul className = "selectedTags">{this.createTag()}</ul>
 			  </div>
-			  <div className="col-xs-6 ">
-			  <valueList
-			  />
-			 {/* <Autosuggest
-		        suggestions={this.valueRenderOptions() ? this.valueRenderOptions() : [] }
-		        onSuggestionsFetchRequested={this.onSuggestionsFetchValueRequested.bind(this)}
-		        onSuggestionsClearRequested={this.onSuggestionsClearRequested.bind(this)}
-		        getSuggestionValue={this.getSuggestionTagValue.bind(this)}
-		        renderSuggestion={this.renderValueSuggestion.bind(this)}
-			    inputProps={inputValueProps}
-			    focusFirstSuggestion={true}
-			    onSuggestionSelected={this.onSuggestionValueSelected.bind(this)}
-			  />*/}
-		  </div>
+				<div className="col-xs-6 col-md-6">
+				<TextFieldGroup
+				error={errors.value}
+				label="value"
+					onChange={this.onChange}
+				value={configValue}
+				name="configValue"
+				field="configValue"
+					/>
+					</div>
+				  
 				</div>
 				<div className="row mt30">
 				<div className="col-md-4 col-md-offset-4">

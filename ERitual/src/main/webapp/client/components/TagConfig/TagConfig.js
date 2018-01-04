@@ -8,12 +8,14 @@ const TagConfig = ({tagConfigRenderList,deleteTagConfig}) => {
 	if(tagConfigRenderList.length == 0 ) {
 		return <tbody><tr><td>Loading</td></tr></tbody>
 	}
+	console.log("y",tagConfigRenderList.tagConfigData);
 	const  tagConfigList = tagConfigRenderList.tagConfigData.map((item,index) => {
+		
       return ( 
     		  
     		  <tr className="font-color p-ver-70" key={index}>
               <td className="col-sm-2" > {item.key}</td>
-              <td className="col-sm-2" > {item.value}</td>
+              <td className="col-sm-2" > {item.value.tags}</td>
               <td className="col-sm-2" > <tr>
             	<td>
           		<ul className="nav navbar-nav row ">

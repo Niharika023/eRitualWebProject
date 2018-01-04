@@ -6,7 +6,8 @@ import jwt from 'jsonwebtoken';
 import Dropdown from 'react-dropdown';
 import AboutUsForm from '../../components/AboutUs/aboutUsForm';
 import TextFieldGroup from '../../components/common/TextFieldGroup';
-
+import validateInput from '../../validations/aboutUsValidation';
+import setAuthToken from '../../utils/setAuthToken';
 
 
 class AboutUsFormContainer extends Component {
@@ -25,6 +26,7 @@ class AboutUsFormContainer extends Component {
 		firstTimeFormSubmit:false,
         submitApplied:false,
         scroll:'',
+        tagValue:''
         
       }
 
@@ -91,12 +93,15 @@ class AboutUsFormContainer extends Component {
 		//condition for checking the validation
 		if(this.isValid()) {
 			this.setState({ errors: {}, isLoading:true });
-			let configuration= {
-					"key":"ui.tab.about-us",
-					"overview":this.state.overview,
-					"panchanga":this.state.panchanga,
+			this.state.tagValue=this.state.overview +","+this.state.panchanga;
+			let tagConfig= {
+					"ui.tab.about-us":{
+						"type":"about-us",
+						"title":"about-us",
+						"tags":this.state.tagValue
+					}
 			}
-			this.props.userAboutUsFormsRequest(aboutUs).then(
+			this.props.userTagConfigFormsRequest(tagConfig).then(
 					(res) => {
 						//condition for unauthorized admin
 						if(!res.payload.response && res.payload.status==600) {
@@ -148,6 +153,7 @@ class AboutUsFormContainer extends Component {
 					cols="83"
 						rows="8"
 				name="overview"
+					onChange={this.onChange}
 					placeholder = "Overview"
 						value={overview}
 				className="wordText messageColor"
@@ -162,6 +168,7 @@ class AboutUsFormContainer extends Component {
 				cols="83"
 					rows="8"
 			name="panchanga"
+				onChange={this.onChange}
 				placeholder = "Panchanga"
 					value={panchanga}
 			className="wordText messageColor"
