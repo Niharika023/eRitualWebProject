@@ -1,4 +1,4 @@
-import { CREATE_ABOUT_US } from  '../actions/AboutUsAction';
+import { CREATE_ABOUT_US } from  '../actions/aboutUsAction';
 
 export default function(state = [], action) {
 	switch (action.type) {

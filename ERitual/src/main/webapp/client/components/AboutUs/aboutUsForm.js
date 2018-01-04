@@ -1,11 +1,12 @@
 import React,{Component} from 'react';
-import AboutUsFormContainer from '../../containers/AboutUsContainer/AboutUsFormContainer';
+import AboutUsFormContainer from '../../containers/AboutUsContainer/aboutUsFormContainer';
 import { Link } from 'react-router';
 import { setAboutUs } from '../../actions/AboutUsAction'
 import {LargeLogo} from '../common/Logos';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {addToast, deleteToast} from '../../actions/Toasts';
+import TextFieldGroup from '../../components/common/TextFieldGroup';
 
 class AboutUsForm extends Component {
 	componentDidMount(){
