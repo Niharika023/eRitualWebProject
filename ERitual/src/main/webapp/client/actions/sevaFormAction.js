@@ -21,8 +21,8 @@ export function userSevaFormsRequest(seva) {
 	  }
 }
 
-export function tagByKeyRequest() {
-	let key='ui.tab.e-Seva';
+export function tagByKeyRequest(key) {
+	
 	const request = axios.get('http://localhost:8080/ERitual/er/tagConfig/get/byKey'+"?key="+ key);
 	  return {
 	    type    : GET_TAGCONFIG_BY_KEY,

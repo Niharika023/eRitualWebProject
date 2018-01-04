@@ -13,9 +13,9 @@ export default function validateInput(data) {
 	    errors.name = "Please enter the valid  Name";
 	  }
 
-if(Validator.isEmpty(data.description)){
+/*if(Validator.isEmpty(data.description)){
 	errors.description = "Please enter the description";
-}
+}*/
 if(data.amount==''){
 	errors.amount = "Please enter the amount ";
 

@@ -24,7 +24,7 @@ const Message = ({messageRenderList,deleteMessage}) => {
     		  <td className="col-sm-2"><Link to={{ pathname: '/ERitual/messageDetail/'+item.id}}  className=" link-secondary  active ">{item.title}
     		  </Link>
     		  </td>
-              <td className="col-sm-2" > {message}</td>
+              <td className="col-sm-2" > {item.tags}</td>
               <td className="col-sm-2" > {formattedDate}</td>
               <td className="col-sm-2" > <tr>
             	<td>

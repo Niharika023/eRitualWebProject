@@ -393,7 +393,7 @@ class MessageListForm extends Component {
 							<thead>
 							<tr className="font-color ">
 							<th className="tabel-header">Title</th>
-							<th className="tabel-header">Message</th>
+							<th className="tabel-header">Tags</th>
 							<th className="tabel-header">Time</th>
 							<th className="tabel-header">Actions</th>
 							</tr>

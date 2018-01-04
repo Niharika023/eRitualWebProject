@@ -14,8 +14,9 @@ import {addToast, deleteToast} from '../../actions/Toasts';
 
 class SevaForm extends Component {
 	componentDidMount(){
+		let key='ui.tab.e-Seva';
 		this.props.seva;
-		this.props.tagByKeyRequest();
+		this.props.tagByKeyRequest(key);
 		this.props.tagByKey;
 		this.props.tagConfigData;
 	}

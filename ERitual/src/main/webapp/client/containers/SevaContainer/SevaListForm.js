@@ -379,7 +379,7 @@ class SevaListForm extends Component {
 								<option value="asc">Sort By Ascending</option>
 								<option value="desc">Sort By Descending</option>
 							</select>
-							<div className="form-control">
+							{/*<div className="form-control">
 							<a  className=" font-color mb10 link-secondary coursor-pointer" data-toggle="collapse" data-target="#demo">Availability</a>
 							<div id="demo" className="collapse ">
 							  <label>Include available</label>
@@ -392,14 +392,14 @@ class SevaListForm extends Component {
 							  </div>
 								</div>
 							<div name="Availability" className=" font-color mb10 link-secondary coursor-pointer" onChange={this.changeSort}>
-						</div>
+						</div>*/}
 							</div>
 							<div className="col-md-9 "> 
 								<table className="table table-bordered table-striped">
 									<thead>
 										<tr className="font-color">
 											<th className="tabel-header">Name</th>
-											<th className="tabel-header">Description</th>
+											<th className="tabel-header">Tags</th>
 											<th className="tabel-header">Amount</th>
 											<th className="tabel-header">Time</th>
 											<th className="tabel-header">Available</th>

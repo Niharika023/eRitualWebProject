@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
-import AboutUsFormContainer from '../../containers/AboutUsContainer/aboutUsFormContainer';
+import AboutUsFormContainer from '../../containers/AboutUsContainer/AboutUsFormContainer';
 import { Link } from 'react-router';
-import { setAboutUs } from '../../actions/AboutUsAction'
+import { setAboutUs } from '../../actions/aboutUsAction'
 import {LargeLogo} from '../common/Logos';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';

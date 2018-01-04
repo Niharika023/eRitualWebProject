@@ -7,9 +7,6 @@ export default function validateInput(data) {
       if(Validator.isEmpty(data.title)) {
         errors.title = "Please enter title";
     }
-     if(Validator.isEmpty(data.message)) {
-        errors.message = "Please enter message";
-      }
     return {
         errors,
         isValid:isEmpty(errors)

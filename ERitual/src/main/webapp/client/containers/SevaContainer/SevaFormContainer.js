@@ -66,7 +66,9 @@ class SevaFormContainer extends Component {
 				triggerUploadImg: true,
 				contentId:'',
 				tag:'',
-				type:''
+				type:'',
+				showTextBox:false,
+				videoDescription:''
 		}
 
 		this.onChange = this.onChange.bind(this);// bind(this) is needed here,
@@ -238,7 +240,7 @@ class SevaFormContainer extends Component {
 		
 		let audVidDetails= {
 				"name":this.state.typename,
-				"description":this.state.description,
+				"description":this.state.videoDescription,
 				"tags":this.state.tags,
 				"items":[{
 					"url":this.state.url,
@@ -259,7 +261,7 @@ class SevaFormContainer extends Component {
 						this.context.router.push('/ERitual/seva');	
 					}
 					else if(res.payload.status==204){
-						this.setState({ errors : { "form" : "Name already exist" }, isLoading : false })
+						this.setState({ errors : { "form" : "NameselectAudVid already exist" }, isLoading : false })
 					}
 					else{
 						res.payload.data=JSON.parse(decodeURIComponent(res.payload.data.replace(/\+/g,'%20')));
@@ -281,6 +283,7 @@ class SevaFormContainer extends Component {
 	}
 	
 	onSubmit(event) {
+		console.log("hello");
 		event.preventDefault();
 		this.state.submitApplied=true;
 
@@ -363,7 +366,14 @@ class SevaFormContainer extends Component {
 	}
 	selectAudVid(event) {
 		this.state.type=event.target.value;
+		if(this.state.type=='text'){
+			this.state.showTextBox=true;	
+			this.setState({triggerUploadVideo:false});
+			}
+		else{
 		this.setState({triggerUploadVideo:true});
+		this.state.showTextBox=false;	
+		}
 	}
 	
 	 sevaTagRenderOptions() {
@@ -459,7 +469,7 @@ class SevaFormContainer extends Component {
 		};
 		
 
-		const {errors ,success,metadata,videoUrl,tags,image,url,showUrl,typename,sevaUserName,message,showMessage, name,selectedTime,preRequisite,imageUploadSuccess,gotra,rashi,sevaImage, nakshatra, description,amount,active,inActive,isLoading,checked,triggerUploadVidAudPdf,triggerUploadImg} = this.state;
+		const {errors ,success,metadata,videoUrl,videoDescription,showTextBox,tags,image,url,showUrl,typename,sevaUserName,message,showMessage, name,selectedTime,preRequisite,imageUploadSuccess,gotra,rashi,sevaImage, nakshatra, description,amount,active,inActive,isLoading,checked,triggerUploadVidAudPdf,triggerUploadImg} = this.state;
 		return (
 				<div>
 				<form className="p20 user-entry-forms details-form" onSubmit={this.onSubmit} id="seva-form">
@@ -514,7 +524,6 @@ class SevaFormContainer extends Component {
 				<option value="pdf">Pdf</option>
 				<option value="text">Text</option>
 				</select>
-				
 				</div>}
 				{triggerUploadImg && <div className="col-xs-6 mt20">
 				<label>Upload Image</label>
@@ -524,7 +533,18 @@ class SevaFormContainer extends Component {
 				 <button ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload</button>
 				</div>
 				</div>}
-				
+				{showTextBox && <div>
+				    <div className="col-md-6">
+				<textarea 
+					cols="43"
+						rows="6"
+							onChange={this.onChange}
+				name="description"
+					placeholder = "Type something.."
+						value={description}
+				className="wordText messageColor"
+					/>
+				  </div></div>}
 				</div>
 				{/*<div className="row mb10">
 				<div className="col-xs-12">
@@ -699,9 +719,9 @@ class SevaFormContainer extends Component {
 					cols="35"
 						rows="6"
 							onChange={this.onChange}
-				name="description"
+				name="videoDescription"
 					placeholder = "Description"
-						value={description}
+						value={videoDescription}
 				className="wordText messageColor"
 					/>
 				  </div>
