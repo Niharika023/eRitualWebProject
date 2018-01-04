@@ -39,7 +39,6 @@ class TagConfigFormContainer extends Component {
 
 
 	onChange(event) {
-	    console.log("value ", event.target.name);  
 	    this.state.submitApplied=false;
 		this.setState({ [event.target.name]:event.target.value}, function() {
 			if(this.state.firstTimeFormSubmit) {

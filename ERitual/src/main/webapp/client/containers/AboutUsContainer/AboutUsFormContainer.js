@@ -26,7 +26,8 @@ class AboutUsFormContainer extends Component {
 		firstTimeFormSubmit:false,
         submitApplied:false,
         scroll:'',
-        tagValue:''
+        tagValue:'',
+        tags:''
         
       }
 
@@ -93,12 +94,10 @@ class AboutUsFormContainer extends Component {
 		//condition for checking the validation
 		if(this.isValid()) {
 			this.setState({ errors: {}, isLoading:true });
-			this.state.tagValue=this.state.overview +","+this.state.panchanga;
 			let tagConfig= {
 					"ui.tab.about-us":{
-						"type":"about-us",
-						"title":"about-us",
-						"tags":this.state.tagValue
+						"overview":this.state.overview,
+						"panchanga":this.state.panchanga
 					}
 			}
 			this.props.userTagConfigFormsRequest(tagConfig).then(
@@ -162,7 +161,7 @@ class AboutUsFormContainer extends Component {
   		 </div>
   		<div className="row">
 		  <div className="col-md-12">
-		  <label>OverView</label>
+		  <label>Panchanga</label>
 			<textarea 
 			label="Panchanga"
 				cols="83"
