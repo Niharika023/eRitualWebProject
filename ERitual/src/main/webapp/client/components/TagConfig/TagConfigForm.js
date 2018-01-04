@@ -22,7 +22,7 @@ class TagConfigForm extends Component {
             <div className="row full-height">
               <div className="col-md-8 col-md-offset-2 full-height">
                 <LargeLogo id="large_logo" className="large-logo"/>
-                <TagConfigFormContainer userTagConfigFormsRequest={userTagConfigFormsRequest} tagConfig={tagConfig} tagConfigRenderList = {tagConfigRenderList} addToast={addToast} tag = {tag} tagValue={tagValue} deleteToast = {deleteToast}/> 
+                <TagConfigFormContainer userTagConfigFormsRequest={userTagConfigFormsRequest} valueRequest={valueRequest} tagConfig={tagConfig} tagConfigRenderList = {tagConfigRenderList} addToast={addToast} tag = {tag} tagValue={tagValue} deleteToast = {deleteToast}/> 
               </div>
             </div>
         );

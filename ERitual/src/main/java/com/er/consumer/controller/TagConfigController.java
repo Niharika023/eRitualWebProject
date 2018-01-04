@@ -31,6 +31,7 @@ public class TagConfigController {
 	private static final String DELETE_TAGCONFIG_ID="/delete";
 	private static final String TAGCONFIG_LIST_BY_ID="/get/byId";
 	private static final String UPDATE_TAGCONFIG="/update";
+	private static final String TAG_LIST_BY_KEY="/get/byKey";
 	
 	@RequestMapping(value = TAGCONFIG_LIST, method = RequestMethod.GET)
 	public void getTagConfigList(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
@@ -38,6 +39,8 @@ public class TagConfigController {
 		String queryParameter="";
 		if( request.getParameter("search") != null)
 			queryParameter= ";keyLike=" +request.getParameter("search");
+		if( request.getParameter("search") != null)
+			queryParameter= ";valueLike=" +request.getParameter("valueLike");
 		if(request.getParameter("orderByKey") != null)
 			queryParameter+=";orderByKey="+request.getParameter("orderByKey");
 		if(request.getParameter("pageSize") != null)
@@ -93,15 +96,28 @@ public class TagConfigController {
 	
 	@RequestMapping(value = TAGCONFIG_LIST_BY_ID, method = RequestMethod.GET)
 	public void getTagConfigListById(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-		String donationId=null;
-		if( request.getParameter("donationId") != null)
-			donationId= request.getParameter("donationId"); 
+		String tagConfigId=null;
+		if( request.getParameter("tagConfigId") != null)
+			tagConfigId= request.getParameter("tagConfigId"); 
 		CommonUtility.isSessionActive(response, (String) session.getAttribute("access_token"));
-		String url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/donation/get/"+donationId;
+		String url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/configuration/get/"+tagConfigId;
 		ServiceResponse responseObj = HttpUtil.sendGet(url, (String) session.getAttribute("access_token"));
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 		
 	}
+	
+	@RequestMapping(value = TAG_LIST_BY_KEY, method = RequestMethod.GET)
+	public void getSevaListByKey(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+		String key=null;
+		if( request.getParameter("key") != null)
+			key= request.getParameter("key"); 
+		CommonUtility.isSessionActive(response, (String) session.getAttribute("access_token"));
+		String url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/configuration/get/"+key;
+		ServiceResponse responseObj = HttpUtil.sendGet(url, (String) session.getAttribute("access_token"));
+		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
+		
+	}
+	
 	@RequestMapping(value = UPDATE_TAGCONFIG, method = RequestMethod.POST)
 	public void updateTagConfig(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 		CommonUtility.isSessionActive(response, (String) session.getAttribute("access_token"));

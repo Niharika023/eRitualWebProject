@@ -23,7 +23,12 @@ class DonationFormContainer extends Component {
 				isLoading:false,
 				firstTimeFormSubmit:false,
 		        submitApplied:false,
-		        scroll:''
+		        scroll:'',
+		        videoUrl:'',
+				triggerUploadVidAudPdf: false,
+				bannerTags:'',
+				triggerUploadImg:true,
+				triggerUploadBanner:false
 
 		}
 
@@ -31,6 +36,9 @@ class DonationFormContainer extends Component {
 		this.onSubmit = this.onSubmit.bind(this);
 		this.scrollPage=this.scrollPage.bind(this);
 		this.onClick=this.onClick.bind(this);
+		this.SelectTag=this.SelectTag.bind(this);
+		this.selectAudVid=this.selectAudVid.bind(this);
+		this.onSubmitAudVidUrl = this.onSubmitAudVidUrl.bind(this);
 
 	}
 
@@ -49,6 +57,24 @@ class DonationFormContainer extends Component {
 		this.context.router.push('/ERitual/donation');
 	}
 
+	//on select tag
+	SelectTag(event){
+		this.state.tag=event.target.value;
+		if(this.state.tag=='Banner'){
+			this.setState({triggerUploadBanner:true});
+			this.setState({triggerUploadImg:false});
+			this.setState({triggerUploadVidAudPdf:false});
+			this.setState({showTextBox:false});
+			
+		}
+		else{
+		//this.setState({triggerUploadVideo:true});
+			this.setState({triggerUploadImg:true});
+			this.setState({triggerUploadBanner:false});
+			this.setState({triggerUploadVidAudPdf:true});
+			this.setState({showTextBox:false});
+		}
+	}
 
 	// method to check the validity of the form
 	isValid() {

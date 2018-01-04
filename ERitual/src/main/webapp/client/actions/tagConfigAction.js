@@ -13,24 +13,25 @@ export function setTagConfigData(tagConfigData) {
 
 export function tagConfigRenderList(search,searchData,pageSize,pageNumber) {
 	let concatStr="?";
-	if(search !=""){
-		concatStr=concatStr+"search="+ search+"&";
+	if(search && search.keyLike !="" !=""){
+		concatStr=concatStr+"keyLike="+ search.keyLike+"&";
 	}
 	else
 		{
-		concatStr = concatStr + "search=&";
+		concatStr = concatStr + "keyLike=&";
+		}
+	if(search && search.valueLike !="" !="" !=""){
+		concatStr=concatStr+"valueLike="+ search.valueLike+"&";
+	}
+	else
+		{
+		concatStr = concatStr + "valueLike=&";
 		}
 	if(searchData && searchData.orderByName !=""){
 		concatStr=concatStr+"orderByKey="+ searchData.orderByName+"&";
 	}
 	else{
 		concatStr = concatStr + "orderByKey=&";
-	}
-	if(searchData && searchData.orderByAmount !=""){
-		concatStr=concatStr+"orderByAmount="+ searchData.orderByAmount+"&";
-	}
-	else{
-		concatStr = concatStr + "orderByAmount=&";
 	}
 	if(searchData && searchData.orderByUpdatedTS !=""){
 		concatStr=concatStr+"orderByUpdatedTS="+ searchData.orderByUpdatedTS+"&";
