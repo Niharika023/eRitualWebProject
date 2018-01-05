@@ -11,9 +11,6 @@ export default function validateInput(data) {
     if((/^\s/.test(data.name))|| (/\s$/.test(data.name))) {
         errors.name = "Please enter the valid  Name";
       }
-      if(Validator.isEmpty(data.description)) {
-        errors.description = "Please enter description";
-    }
      if(Validator.isEmpty(data.amount)) {
         errors.amount = "Please enter donation amount";
       }

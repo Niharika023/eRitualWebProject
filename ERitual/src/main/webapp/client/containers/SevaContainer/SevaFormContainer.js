@@ -63,7 +63,7 @@ class SevaFormContainer extends Component {
 				showUrl:false,
 				metadata:'',
 				triggerUploadVidAudPdf: false,
-				triggerUploadImg: true,
+				triggerUploadImg: false,
 				contentId:'',
 				tag:'',
 				type:'',
@@ -103,12 +103,10 @@ class SevaFormContainer extends Component {
 		this.state.tag=event.target.value;
 		if(this.state.tag=='Special Packages'){
 			this.setState({triggerUploadImg:true});
-			this.setState({triggerUploadVidAudPdf:false});
-			
 		}
 		else{
 		//this.setState({triggerUploadVideo:true});
-			this.setState({triggerUploadImg:true});
+			this.setState({triggerUploadImg:false});
 			this.setState({triggerUploadVidAudPdf:true});
 		}
 	}
@@ -365,6 +363,7 @@ class SevaFormContainer extends Component {
 	}
 
 	selectLogoClick(event) {
+		event.preventDefault();
 		this.setState({triggerUpload:true});
 	}
 	selectAudVid(event) {
@@ -472,7 +471,7 @@ class SevaFormContainer extends Component {
 		};
 		
 
-		const {errors ,success,metadata,videoUrl,videoDescription,showTextBox,tags,image,url,showUrl,typename,sevaUserName,message,showMessage, name,selectedTime,preRequisite,imageUploadSuccess,gotra,rashi,sevaImage, nakshatra, description,amount,active,inActive,isLoading,checked,triggerUploadVidAudPdf,triggerUploadImg} = this.state;
+		const {errors ,success,metadata,videoUrl,specialPackageShow,videoDescription,showTextBox,tags,image,url,showUrl,typename,sevaUserName,message,showMessage, name,selectedTime,preRequisite,imageUploadSuccess,gotra,rashi,sevaImage, nakshatra, description,amount,active,inActive,isLoading,checked,triggerUploadVidAudPdf,triggerUploadImg} = this.state;
 		return (
 				<div>
 				<form className="p20 user-entry-forms details-form" onSubmit={this.onSubmit} id="seva-form">
@@ -518,17 +517,6 @@ class SevaFormContainer extends Component {
 									label="Tags"
 										/>*/}
 				</div>
-				{triggerUploadVidAudPdf && <div className="col-xs-6">
-				<label>Type</label>
-				<select name="type" className=" form-control  font-color " onChange={this.selectAudVid}>
-				<option value="">Select Type</option>
-				<option value="audio" >Audio</option>
-				<option value="video"  >Video</option>
-				<option value="pdf">Pdf</option>
-				<option value="text">Text</option>
-				</select>
-				<span>URL is: {this.state.pickedUrl}</span>
-				</div>}
 				{triggerUploadImg && <div className="col-xs-6 mt20">
 				<label>Upload Image</label>
 				{imageUploadSuccess && <img src = {sevaImage} width="100%"/>}
@@ -537,19 +525,19 @@ class SevaFormContainer extends Component {
 				 <button ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload</button>
 				</div>
 				</div>}
-				{showTextBox && <div>
-				    <div className="col-md-6">
-				<textarea 
-					cols="43"
-						rows="6"
-							onChange={this.onChange}
-				name="description"
-					placeholder = "Type something.."
-						value={description}
-				className="wordText messageColor"
-					/>
-				  </div></div>}
-				</div>
+				<div className="col-md-6">
+			    <label>Description</label>
+			<textarea 
+				cols="43"
+					rows="6"
+						onChange={this.onChange}
+			name="description"
+				placeholder = "Description"
+					value={description}
+			className="wordText messageColor"
+				/>
+			  </div>
+			</div>
 				{/*<div className="row mb10">
 				<div className="col-xs-12">
 				<label className="mr10">Pre-Requisite</label>

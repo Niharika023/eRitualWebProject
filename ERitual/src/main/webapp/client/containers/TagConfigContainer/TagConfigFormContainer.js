@@ -62,7 +62,7 @@ class TagConfigFormContainer extends Component {
 	     if(this && !this.props.tagConfig) {
 	    	 return [];
 	     }
-	     if(this && this.props.tagConfig.tagConfigData.length==0) {
+	     if(this && this.props.tagConfig.tagConfigData.length==0 && this.state.selectedTagValues.indexOf(this.state.value) == -1) {
 	    	 return [`Add ${this.state.value} to the list?`];
 	     }
 		 if(this && this.props.tagConfig.tagConfigData!=undefined){
@@ -224,7 +224,6 @@ class TagConfigFormContainer extends Component {
 	}
 	
 	removeTag(tag) {
-		console.log("selected tag ",tag);
 		let selectedTagList = this.state.selectedTagValues;
 		selectedTagList = [...selectedTagList.slice(0,selectedTagList.indexOf(tag)),...selectedTagList.slice(selectedTagList.indexOf(tag)+1)]
 		this.setState({
@@ -235,7 +234,7 @@ class TagConfigFormContainer extends Component {
 	render() {
 		const {errors ,success,configValue,tagKey,value,isLoading,checked} = this.state;
 		const inputProps = {
-	      placeholder: 'Type a programming language',
+	      placeholder: 'Key',
 	      value,
 	      onChange: this.onTagChange.bind(this)
 	    };
@@ -251,6 +250,7 @@ class TagConfigFormContainer extends Component {
 				{ errors.form && <div className="alert alert-danger">{errors.form}</div> }
 				<div className="row mb10">
 				<div className="col-xs-6 ">
+				<label>Key</label>
 				  <Autosuggest
 			        suggestions={this.keyRenderOptions() ? this.keyRenderOptions() : [] }
 			        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested.bind(this)}
@@ -263,10 +263,10 @@ class TagConfigFormContainer extends Component {
 				  />
 		      	  <ul className = "selectedTags">{this.createTag()}</ul>
 			  </div>
-				<div className="col-xs-6 col-md-6">
+				<div className="col-xs-5 col-md-5">
 				<TextFieldGroup
 				error={errors.value}
-				label="value"
+				label="Value"
 					onChange={this.onChange}
 				value={configValue}
 				name="configValue"

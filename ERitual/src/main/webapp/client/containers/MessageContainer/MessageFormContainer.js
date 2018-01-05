@@ -34,15 +34,16 @@ class MessageFormContainer extends Component {
 				messageImage:"",
 				title:'',
 				message:'',
-				showMessage:false,
+				showMessage:true,
 				videoUrl:'',
 				triggerUploadVidAudPdf: false,
 				bannerTags:'',
-				triggerUploadImg:true,
+				triggerUploadImg:false,
 				triggerUploadBanner:false,
 				videoDescription:'',
 				selectedUrl :'',
 				triggerSelectedUrl: false,
+				showTextBox:false
 				
 		}
 
@@ -81,20 +82,20 @@ class MessageFormContainer extends Component {
 			this.setState({triggerUploadBanner:true});
 			this.setState({triggerUploadImg:false});
 			this.setState({triggerUploadVidAudPdf:false});
-			this.setState({showTextBox:false});
+			this.setState({showTextBox:true});
 			this.setState({triggerSelectedUrl:false});
 			
 		}
 		else if(this.state.tag=='My Latest Articles') {
 		//this.setState({triggerUploadVideo:true});
-			this.setState({triggerUploadImg:true});
+			this.setState({triggerUploadImg:false});
 			this.setState({triggerUploadBanner:false});
 			this.setState({triggerUploadVideo:false});
 			this.setState({showTextBox:true});
 			this.setState({triggerUploadVidAudPdf:false});
 			this.setState({triggerSelectedUrl:false});
 		}else {
-			this.setState({triggerUploadImg:true});
+			this.setState({triggerUploadImg:false});
 			this.setState({triggerUploadBanner:false});
 			this.setState({triggerUploadVideo:true});
 			this.setState({showTextBox:false});
@@ -404,18 +405,8 @@ class MessageFormContainer extends Component {
 	                  <button ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload</button>
 	                </div>
 				</div>}
-				{showTextBox && <div>
-				    <div className="col-md-6">
-				<textarea 
-					cols="38"
-						rows="6"
-							onChange={this.onChange}
-				name="message"
-					placeholder = "Type something.."
-						value={message}
-				className="wordText messageColor"
-					/>
-				  </div></div>}
+				
+				
 				 {triggerUploadBanner && <div className="col-xs-6 mt20">
 	              <label>Upload Banner</label>
 		                {imageUploadSuccess && <img src = {messageImage} width="100%"/>}
@@ -424,6 +415,20 @@ class MessageFormContainer extends Component {
 		                  <button ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload</button>
 		                </div>
 					</div>}
+		                  {showTextBox && <div>
+		  				<div className="col-md-6">
+		  			    <label>Description</label>
+		  			<textarea 
+		  				cols="38"
+		  					rows="6"
+		  						onChange={this.onChange}
+		  			name="message"
+		  				placeholder = "Description"
+		  					value={message}
+		  			className="wordText messageColor"
+		  				/>
+		  			  </div>
+		  			</div>}
 				</div>
 				<div className="row mt30">
 				<div className="col-md-4 col-md-offset-4">

@@ -85,13 +85,16 @@ class EditSevaContainer extends Component {
 		this.selectAudVid = this.selectAudVid.bind(this);
 		this.SelectTag = this.SelectTag.bind(this);
 		this.onSubmitAudVidUrl = this.onSubmitAudVidUrl.bind(this);
+		this.editHostedContent=this.editHostedContent.bind(this);
 	}
 
 	imageStreamRequest(imageId){
 		this.props.imageStreamRequest(imageId);
 	}
 
-	
+	editHostedContent(){
+	console.log("edit",this.state.tag);
+	}
 	scrollPage(error){
         for(var scroll in error.errors)
         {
@@ -121,6 +124,7 @@ class EditSevaContainer extends Component {
 
 	
 	componentDidMount() {
+		console.log("this",this.props.editSeva);
 		const {name} = this.props.editSeva;
 		const {description} = this.props.editSeva;
 		const {amount} = this.props.editSeva;
@@ -129,6 +133,8 @@ class EditSevaContainer extends Component {
 		const {formFields}=this.props.editSeva;
 		const {id}=this.props.editSeva;
 		const {available}=this.props.editSeva;
+		const {tags}=this.props.editSeva;
+		this.state.tag=this.props.editSeva.tags;
 		let timeArr= time.split(":");
 		for(var i=0;i<timeArr.length;i++){
 			this.state.hours=timeArr[0];
@@ -366,15 +372,13 @@ class EditSevaContainer extends Component {
 	}
 	
 	sevaTagRenderOptions() {
-    	console.log("this.props",this.props);
     	if(this.props.tagConfigData!=undefined){
     	if(this.props.tagConfigData.length!=0){
     		let tagArr=[];
     	tagArr=(this.props.tagConfigData.tagByKeyConfig.value.tags).split(",");
-    	console.log("tags",tagArr);
-    		const tagList = tagArr.map((d) => 
+    		const tagList = tagArr.map((tag) => 
     		{
-    			return (<option key={d}>{d}</option>
+    			return (<option key={tag} selected = {tag === this.state.tag}>{tag}</option>
     			)
     			});
     		return tagList;
@@ -557,7 +561,7 @@ class EditSevaContainer extends Component {
 					this.setState({isUploadLoading:false});
 				}
 		};
-		const {errors ,imageId,success,metadata,videoUrl,showTextBox,triggerUploadImg,image,sevaUserName,triggerUploadVidAudPdf,message,showMessage, name,date,selectedTime,imageUploadSuccess,sevaImage,preRequisite,gotra,rashi,nakshatra, description,amount,active,inActive,isLoading,checked} = this.state;
+		const {errors ,imageId,success,metadata,videoUrl,showTextBox,tag,triggerUploadImg,image,sevaUserName,triggerUploadVidAudPdf,message,showMessage, name,date,selectedTime,imageUploadSuccess,sevaImage,preRequisite,gotra,rashi,nakshatra, description,amount,active,inActive,isLoading,checked} = this.state;
 		let imgSrc = `http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/image/stream/${imageId}`;
 		return (
 				<div>
@@ -593,7 +597,7 @@ class EditSevaContainer extends Component {
 				<div className="col-xs-6">
 				  <label>Tags</label>
 				<select name="type" className=" form-control  font-color" onChange={this.SelectTag}>
-				<option value=""> Select Tags</option>
+				<option value={tag}> Select Tags</option>
 				{this.sevaTagRenderOptions()}
 				</select>
 				{/*<TextFieldGroup
@@ -604,6 +608,7 @@ class EditSevaContainer extends Component {
 									label="Tags"
 										/>*/}
 				</div>
+				
 				{triggerUploadVidAudPdf && <div className="col-xs-6">
 				<label>Type</label>
 				<select name="type" className=" form-control  font-color " onChange={this.selectAudVid}>

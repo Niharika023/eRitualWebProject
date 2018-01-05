@@ -12,12 +12,13 @@ const Message = ({messageRenderList,deleteMessage}) => {
 		let createdDate=new Date(item.createdTS);
 		let message="";
 		let formattedDate=createdDate.getFullYear() + '/' + (createdDate.getMonth()+1) + '/' + createdDate.getDate();
+		if(item.message!=null){
 		if(item.message.length>5){
 			message=item.message.slice(0, 5)+"...";
 		}
 		else{
 			message=item.message;
-		}
+		}}
       return ( 
     		  
     		  <tr className="font-color p-ver-70" key={index}>
