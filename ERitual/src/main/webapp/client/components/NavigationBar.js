@@ -63,14 +63,14 @@ class NavigationBar extends Component {
 				{this.state.renderFirstTime}
 				{ !this.state.renderFirstTime &&<li>  <a   className=" link-secondary mr15 active coursor-pointer " selected = "Dashboard" data-toggle = "tab" onClick = {this.onClick}>Dashboard</a> </li>}
 				{this.state.renderFirstTime && <li>  <a   className=" link-secondary mr15 active coursor-pointer dashboard-tab " selected = "Dashboard" data-toggle = "tab" onClick = {this.onClick}>Dashboard</a> </li>}
-
-				<li><a  className=" link-secondary mr15 active coursor-pointer"  selected = "Seva" data-toggle = "tab" onClick = {this.onClick}>Seva</a> </li>
-				<li><a   selected = "Event" className=" link-secondary mr15 coursor-pointer" data-toggle = "tab" onClick = {this.onClick}>Event</a> </li>
-				<li><a    selected = "Donation" className=" link-secondary mr15 coursor-pointer" data-toggle = "tab" onClick = {this.onClick}>Donation</a></li>
-				<li><a    selected = "Orders" className=" link-secondary mr15 coursor-pointer" data-toggle = "tab" onClick = {this.onClick}>Orders</a></li>
 				<li><a    selected = "Message" className=" link-secondary mr15 coursor-pointer" data-toggle = "tab" onClick = {this.onClick}>Sri Samasthanam</a></li>
-				<li><a    selected = "TagConfig" className=" link-secondary mr15 coursor-pointer" data-toggle = "tab" onClick = {this.onClick}>Tag</a></li>
+				<li><a  className=" link-secondary mr15 active coursor-pointer"  selected = "Seva" data-toggle = "tab" onClick = {this.onClick}>e-Seva</a> </li>
+				<li><a   selected = "Event" className=" link-secondary mr15 coursor-pointer" data-toggle = "tab" onClick = {this.onClick}>Events</a> </li>
+				<li><a    selected = "Donation" className=" link-secondary mr15 coursor-pointer" data-toggle = "tab" onClick = {this.onClick}>Donations</a></li>
+				<li><a    selected = "Orders" className=" link-secondary mr15 coursor-pointer" data-toggle = "tab" onClick = {this.onClick}>Orders</a></li>
 				<li><a    selected = "aboutUs" className=" link-secondary mr15 coursor-pointer" data-toggle = "tab" onClick = {this.onClick}>About Us</a></li>
+				<li><a    selected = "TagConfig" className=" link-secondary mr15 coursor-pointer" data-toggle = "tab" onClick = {this.onClick}>Tag</a></li>
+				
 				<li className="pull-right dropdown">
 				<a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span className="caret"></span></a>
 				<ul className="dropdown-menu">
