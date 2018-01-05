@@ -41,12 +41,13 @@ class MessageFormContainer extends Component {
 				triggerUploadImg:true,
 				triggerUploadBanner:false,
 				videoDescription:'',
-				selectedUrl :''
+				selectedUrl :'',
+				triggerSelectedUrl: false,
 				
 		}
 
 		this.onChange = this.onChange.bind(this);// bind(this) is needed here,
-		this.onSubmit = this.onSubmit.bind(this);
+		this.onSubmitSamastahnamForm = this.onSubmitSamastahnamForm.bind(this);
 		this.selectLogoClick = this.selectLogoClick.bind(this);
 		this.closeModal = this.closeModal.bind(this);
 		this.handleFile=this.handleFile.bind(this);
@@ -81,14 +82,23 @@ class MessageFormContainer extends Component {
 			this.setState({triggerUploadImg:false});
 			this.setState({triggerUploadVidAudPdf:false});
 			this.setState({showTextBox:false});
+			this.setState({triggerSelectedUrl:false});
 			
 		}
-		else{
+		else if(this.state.tag=='My Latest Articles') {
 		//this.setState({triggerUploadVideo:true});
 			this.setState({triggerUploadImg:true});
 			this.setState({triggerUploadBanner:false});
-			this.setState({triggerUploadVidAudPdf:true});
+			this.setState({triggerUploadVideo:false});
+			this.setState({showTextBox:true});
+			this.setState({triggerUploadVidAudPdf:false});
+			this.setState({triggerSelectedUrl:false});
+		}else {
+			this.setState({triggerUploadImg:true});
+			this.setState({triggerUploadBanner:false});
+			this.setState({triggerUploadVideo:true});
 			this.setState({showTextBox:false});
+			this.setState({triggerSelectedUrl:true});
 		}
 	}
 	onChange(event) {
@@ -150,7 +160,7 @@ class MessageFormContainer extends Component {
 	}
 
 
-	onSubmit(event) {
+	onSubmitSamastahnamForm(event) {
 		event.preventDefault();
 		this.setState({ firstTimeFormSubmit : true })
 		if(this.isValid()) {
@@ -346,10 +356,10 @@ class MessageFormContainer extends Component {
 				}
 		};
 
-		const {errors ,success,showTextBox,videoDescription,image,bannerTags,triggerUploadBanner,message,videoUrl,triggerUploadImg,triggerUploadVidAudPdf,typename,url,metadata,tags,description,imageUploadSuccess,showMessage,messageImage,isLoading,title} = this.state;
+		const {errors ,success,showTextBox,videoDescription,image,bannerTags,triggerUploadBanner,triggerSelectedUrl,message,videoUrl,triggerUploadImg,triggerUploadVidAudPdf,typename,url,metadata,tags,description,imageUploadSuccess,showMessage,messageImage,isLoading,title} = this.state;
 		return (
 				<div>
-        		<form className="p20 user-entry-forms details-form" onSubmit={this.onSubmit}>
+        		<form className="p20 user-entry-forms details-form" onSubmit={this.onSubmitSamastahnamForm}>
                 <h1 className="mt0 mb20 text-center page-header page-hdrCstm">Sri Samasthanam Form</h1>
                 { errors.form && <div className="alert alert-danger">{errors.form}</div> }
                 <div className="row mb10">
@@ -368,7 +378,7 @@ class MessageFormContainer extends Component {
 				<option value=""> Select Tags</option>
 				{this.sriTagRenderOptions()}
 				</select>
-				
+				{triggerSelectedUrl && <span>Url is : {this.state.selectedUrl}</span>}
 				</div>
                
               </div>
@@ -384,7 +394,7 @@ class MessageFormContainer extends Component {
 				<option value="pdf">Pdf</option>
 				<option value="text">Text</option>
 				</select>
-				<span>Url is : {this.state.selectedUrl}</span>
+			
 				</div>}
               {triggerUploadImg && <div className="col-xs-6 mt20">
               <label>Upload Image</label>
@@ -485,7 +495,7 @@ class MessageFormContainer extends Component {
               {this.state.triggerUploadVideo && <div className="modal-bg"><div className="video-upload-container">
 				<button className = 'close-modal' onClick = {this.closeModal}>x</button>
 				{videoUrl}
-				<form onSubmit={this.onSubmitAudVidUrl} id="vid-aud-url-form">
+				<form onSubmit={this.onSubmitAudVidUrl} id=" vid-aud-url-form">
 				<div className="row">
 				 <div className="col-md-12">
 			      <TextFieldGroup
