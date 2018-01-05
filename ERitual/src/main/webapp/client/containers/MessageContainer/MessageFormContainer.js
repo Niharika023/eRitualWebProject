@@ -202,6 +202,7 @@ class MessageFormContainer extends Component {
 	}
 
 	selectLogoClick(event) {
+		event.preventDefault();
 		this.setState({triggerUpload:true});
 	}
 	
