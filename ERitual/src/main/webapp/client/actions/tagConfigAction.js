@@ -13,20 +13,14 @@ export function setTagConfigData(tagConfigData) {
 
 export function tagConfigRenderList(search,searchData,pageSize,pageNumber) {
 	let concatStr="?";
-	if(search && search.keyLike !="" ){
-		concatStr=concatStr+"keyLike="+ search.keyLike+"&";
+	if(search && search !=""){
+		concatStr=concatStr+"keyLike="+ search+"&";
 	}
 	else
 		{
 		concatStr = concatStr + "keyLike=&";
 		}
-	/*if(search && search.valueLike !=""){
-		concatStr=concatStr+"valueLike="+ search.valueLike+"&";
-	}
-	else
-		{
-		concatStr = concatStr + "valueLike=&";
-		}*/
+	
 	if(searchData && searchData.orderByName !=""){
 		concatStr=concatStr+"orderByKey="+ searchData.orderByName+"&";
 	}

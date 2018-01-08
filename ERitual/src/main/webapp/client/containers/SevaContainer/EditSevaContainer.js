@@ -135,6 +135,14 @@ class EditSevaContainer extends Component {
 		const {available}=this.props.editSeva;
 		const {tags}=this.props.editSeva;
 		this.state.tag=this.props.editSeva.tags;
+		if(this.state.tag=='Special Packages'){
+			this.setState({triggerUploadImg:true});
+		}
+		else{
+		//this.setState({triggerUploadVideo:true});
+			this.setState({triggerUploadImg:false});
+			this.setState({triggerUploadVidAudPdf:true});
+		}
 		let timeArr= time.split(":");
 		for(var i=0;i<timeArr.length;i++){
 			this.state.hours=timeArr[0];
@@ -281,14 +289,14 @@ class EditSevaContainer extends Component {
 	//on select tag
 	SelectTag(event){
 		this.state.tag=event.target.value;
+		this.state.description='';
+		this.state.imageId=null;
 		if(this.state.tag=='Special Packages'){
 			this.setState({triggerUploadImg:true});
-			this.setState({triggerUploadVidAudPdf:false});
-			
 		}
 		else{
 		//this.setState({triggerUploadVideo:true});
-			this.setState({triggerUploadImg:true});
+			this.setState({triggerUploadImg:false});
 			this.setState({triggerUploadVidAudPdf:true});
 		}
 	}
@@ -361,6 +369,7 @@ class EditSevaContainer extends Component {
 	}
 	selectAudVid(event) {
 		this.state.type=event.target.value;
+		this.state.description='';
 		if(this.state.type=='text'){
 			this.state.showTextBox=true;	
 			this.setState({triggerUploadVideo:false});
@@ -436,6 +445,8 @@ class EditSevaContainer extends Component {
 					"amount":this.state.amount,
 					"imageId":this.state.imageId,
 					"time":this.state.time,
+					"hostedContentId":this.state.contentId,
+					"tags":this.state.tag,
 					"id":this.state.id
 			}
 			if(this.state.selectedTime==null){
@@ -565,7 +576,7 @@ class EditSevaContainer extends Component {
 		let imgSrc = `http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/image/stream/${imageId}`;
 		return (
 				<div>
-				<form className="p20 user-entry-forms details-form" onSubmit={this.onSubmit} id="seva-form">
+				<form className="p20 user-entry-forms details-form" onSubmit={this.onSubmit} id="edit-seva-form">
 				<h2 className="mt0 mb20 text-center page-header page-hdrCstm">Seva Form</h2>
 				{ errors.form && <div className="alert alert-danger ">{errors.form}</div> }
 				
@@ -609,16 +620,6 @@ class EditSevaContainer extends Component {
 										/>*/}
 				</div>
 				
-				{triggerUploadVidAudPdf && <div className="col-xs-6">
-				<label>Type</label>
-				<select name="type" className=" form-control  font-color " onChange={this.selectAudVid}>
-				<option value="">Select Type</option>
-				<option value="audio" >Audio</option>
-				<option value="video"  >Video</option>
-				<option value="pdf">Pdf</option>
-				<option value="text">Text</option>
-				</select>
-				</div>}
 				{triggerUploadImg && <div className="col-xs-6 mt20">
 				<label>Upload Image</label>
 				{imageUploadSuccess && <img src = {sevaImage} width="100%"/>}
@@ -628,66 +629,19 @@ class EditSevaContainer extends Component {
 				 <button ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload</button>
 				</div>
 				</div>}
-				{showTextBox && <div>
-				    <div className="col-md-6">
-				<textarea 
-					cols="43"
-						rows="6"
-							onChange={this.onChange}
-				name="description"
-					placeholder = "Type something.."
-						value={description}
-				className="wordText messageColor"
-					/>
-				  </div></div>}
-				</div>
-				{/*<div className="row mb10">
-				<div className="col-xs-12">
-				<label className="mr10">Pre-Requisite</label>
-				 <div className="row mb10">
-				<div className="col-md-12">
-				<div className="row mb10">
-				<div className="col-md-3">
-				<label>Name</label>
-				<input
-				name="sevaUserName"
-					type="checkbox"
-						checked={this.state.sevaUserName}
-				onChange={this.handleInputChange} 
+				<div className="col-md-6">
+			    <label>Description</label>
+			<textarea 
+				cols="40"
+					rows="6"
+						onChange={this.onChange}
+			name="description"
+				placeholder = "Description"
+					value={description}
+			className="wordText messageColor"
 				/>
-				</div>
-				<div className="col-md-3">
-				<label>Gotra</label>
-				<input
-				name="gotra"
-					type="checkbox"
-						checked={this.state.gotra}
-				onChange={this.handleInputChange} 
-				/>
-				</div>
-				<div className="col-md-3">
-				<label>Rashi</label>
-				<input
-				name="rashi"
-					type="checkbox"
-						checked={this.state.rashi}
-				onChange={this.handleInputChange} 
-				/>
-				</div>
-				<div className="col-md-3">
-				<label>Nakshatra</label>
-				<input
-				name="nakshatra"
-					type="checkbox"
-						checked={this.state.nakshatra}
-				onChange={this.handleInputChange} 
-				/>
-				</div>
-				</div>
-				</div>
-				</div>
-				</div>
-				</div>*/}
+			  </div>
+			</div>
 				<div className="row mb10">
 			     <div className="col-xs-6">
 				<TextFieldGroup
@@ -698,33 +652,7 @@ class EditSevaContainer extends Component {
 				field="amount"
 					/>
 					</div>
-				{/*<div className="col-xs-6">
-								<label>Description</label>
-								<textarea 
-								label="Description"
-									cols="43"
-										rows="6"
-											onChange={this.onChange}
-								name="description"
-									placeholder = "Description"
-										value={description}
-								className="wordText messageColor"
-									/>
-								</div>*/}
 				</div>
-				{/*<div className="row ">
-								<div className="col-xs-6">
-								<label>Module</label>
-								<select name="module" className=" form-control  font-color " onChange={this.onModule}>
-								<option value="">Select Module</option>
-								<option value="spc" >Special Package Categories</option>
-								<option value="rmt"  >Ramachandra Math Temple</option>
-								<option value="rmt"  >Gowardhan Temple</option>
-								<option value="camp">Camp</option>
-								</select>
-								</div>
-								
-								</div>*/}
 				<div className="row mb10">
 				<div className="col-xs-12">
 				<label>Available</label>
@@ -757,81 +685,6 @@ class EditSevaContainer extends Component {
 				<button ref="uploadBtn" className="btn btn-primary pull-right">Upload</button>
 				</FileUpload>
 				</div></div>}
-				{this.state.triggerUploadVideo && <div className="modal-bg"><div className="video-upload-container">
-				<button className = 'close-modal' onClick = {this.closeModal}>x</button>
-				{videoUrl}
-			<form onSubmit={this.onSubmitAudVidUrl} id="vid-aud-url-form">
-			<div className="row">
-			 <div className="col-md-12">
-		      <TextFieldGroup
-		       error={errors.name}
-	       	   onChange={this.onChange}
-		       value={typename}
-		       field="typename"
-			    label="Type Name"
-				/>
-		    </div>
-		    </div>
-				<div className="row">
-				 <div className="col-md-12">
-				  <TextFieldGroup
-				  error={errors.name}
-				  onChange={this.onChange}
-				  value={url}
-				  field="url"
-				  label="url"
-						/>
-				    </div>
-				    </div>
-				    <div className="row">
-					
-					 <div className="col-md-12">
-				   <TextFieldGroup
-				error={errors.name}
-				onChange={this.onChange}
-				value={metadata}
-				field="metadata"
-					label="Metadata"
-						/>
-				    </div>
-				    </div>
-				    <div className="row">
-				    		 <div className="col-md-12">
-				   	  <TextFieldGroup
-				       error={errors.name} 
-				     onChange={this.onChange}
-				   value={tags}
-				field="tags"
-					label="Tags"
-						/>
-				    </div> 
-				    </div>
-                  <div className="row">
-				    <div className="col-md-12">
-				   	  <label>Description</label>
-				<textarea 
-				label="Description"
-					cols="35"
-						rows="6"
-							onChange={this.onChange}
-				name="description"
-					placeholder = "Description"
-						value={description}
-				className="wordText messageColor"
-					/>
-				  </div>
-				</div>
-                <div className="row mr15">
-                  <div className="text-center">
-                   <button className="btn btn-lg btn-primary">
-					Submit
-				   </button>
-                  </div>                	
-                </div>
-
-					</form>
-				</div>
-				</div>}
 				</div>
 		);
 	}

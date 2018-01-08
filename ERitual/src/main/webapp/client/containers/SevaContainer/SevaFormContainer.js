@@ -538,53 +538,6 @@ class SevaFormContainer extends Component {
 				/>
 			  </div>
 			</div>
-				{/*<div className="row mb10">
-				<div className="col-xs-12">
-				<label className="mr10">Pre-Requisite</label>
-				 <div className="row mb10">
-				<div className="col-md-12">
-				<div className="row mb10">
-				<div className="col-md-3">
-				<label>Name</label>
-				<input
-				name="sevaUserName"
-					type="checkbox"
-						checked={this.state.sevaUserName}
-				onChange={this.handleInputChange} 
-				/>
-				</div>
-				<div className="col-md-3">
-				<label>Gotra</label>
-				<input
-				name="gotra"
-					type="checkbox"
-						checked={this.state.gotra}
-				onChange={this.handleInputChange} 
-				/>
-				</div>
-				<div className="col-md-3">
-				<label>Rashi</label>
-				<input
-				name="rashi"
-					type="checkbox"
-						checked={this.state.rashi}
-				onChange={this.handleInputChange} 
-				/>
-				</div>
-				<div className="col-md-3">
-				<label>Nakshatra</label>
-				<input
-				name="nakshatra"
-					type="checkbox"
-						checked={this.state.nakshatra}
-				onChange={this.handleInputChange} 
-				/>
-				</div>
-				</div>
-				</div>
-				</div>
-				</div>
-				</div>*/}
 				<div className="row mb10">
 			     <div className="col-xs-6">
 				<TextFieldGroup
@@ -595,33 +548,7 @@ class SevaFormContainer extends Component {
 				field="amount"
 					/>
 					</div>
-				{/*<div className="col-xs-6">
-								<label>Description</label>
-								<textarea 
-								label="Description"
-									cols="43"
-										rows="6"
-											onChange={this.onChange}
-								name="description"
-									placeholder = "Description"
-										value={description}
-								className="wordText messageColor"
-									/>
-								</div>*/}
 				</div>
-				{/*<div className="row ">
-								<div className="col-xs-6">
-								<label>Module</label>
-								<select name="module" className=" form-control  font-color " onChange={this.onModule}>
-								<option value="">Select Module</option>
-								<option value="spc" >Special Package Categories</option>
-								<option value="rmt"  >Ramachandra Math Temple</option>
-								<option value="rmt"  >Gowardhan Temple</option>
-								<option value="camp">Camp</option>
-								</select>
-								</div>
-								
-								</div>*/}
 				<div className="row mb10">
 				<div className="col-xs-12">
 				<label>Available</label>
