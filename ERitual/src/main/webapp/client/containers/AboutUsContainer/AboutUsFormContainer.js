@@ -8,6 +8,7 @@ import AboutUsForm from '../../components/AboutUs/aboutUsForm';
 import TextFieldGroup from '../../components/common/TextFieldGroup';
 import validateInput from '../../validations/aboutUsValidation';
 import setAuthToken from '../../utils/setAuthToken';
+import FileUpload from 'react-fileupload';
 
 
 class AboutUsFormContainer extends Component {
@@ -17,6 +18,7 @@ class AboutUsFormContainer extends Component {
 		// that the state will always hold the lastest
       this.state = {
         title: '',
+        image:'',
         firstTimeFormSubmit:false,
         overview :'',
         panchanga:'',
@@ -25,21 +27,26 @@ class AboutUsFormContainer extends Component {
 		isLoading:false,
 		firstTimeFormSubmit:false,
         submitApplied:false,
+    	triggerUpload:false,
         scroll:'',
         tagValue:'',
-        tags:''
+        tags:'',
+        imageUploadSuccess:false,
         
       }
 
-      this.onChange = this.onChange.bind(this);// bind(this) is needed here,
+        this.onChange = this.onChange.bind(this);// bind(this) is needed here,
 		this.onSubmit = this.onSubmit.bind(this);
 		this.scrollPage=this.scrollPage.bind(this);
-		this.onClick=this.onClick.bind(this);    
+		this.onClick=this.onClick.bind(this);
+		this.selectLogoClick = this.selectLogoClick.bind(this);
+		this.closeModal = this.closeModal.bind(this);
     }
     onClick(event){
 		this.context.router.push('/ERitual/aboutUs');
 	}
     
+   
     
     onChange(event) {
 	      this.state.submitApplied=false;
@@ -50,7 +57,27 @@ class AboutUsFormContainer extends Component {
 		});
 	}
 
-    
+    closeModal() {
+		this.setState({
+			'triggerUpload':false,
+			'logoImage':'',
+			'triggerUploadVideo':false,
+		});
+	}
+	
+	onClick(event){
+		this.context.router.push('/ERitual/aboutUs');
+	this.setState({
+			'triggerUpload':false,
+			'logoImage':'',
+			'triggerUploadVideo':false,
+		});
+	}
+	 selectLogoClick(event) {
+			event.preventDefault();
+			this.setState({triggerUpload:true});
+		}
+
  // method to check the validity of the form
 	isValid() {
 		// deconstruct the props
@@ -133,8 +160,82 @@ class AboutUsFormContainer extends Component {
 	}
     
     render(){
-    	 const {errors ,success,overview,panchanga,isLoading} = this.state;
+    	var uploadedImageSrc;
+    	let options={
+				baseUrl:'http://localhost:8080/ERitual/#',
+				requestHeaders: {
+					'Authorization':`Basic ${JSON.parse(localStorage.getItem('user')).token}`,
+					'Content-Type':'multipart/form-data'
+				},
+
+				chooseFile : (files) => {
+					const reader = new FileReader();
+					reader.onload = (e2) => {
+						if(files[0].size > 2*1024*1024) {
+							alert("The maximum supported file size is 2MB");
+							return false;
+						}
+						else {
+							let _URL = window.URL || window.webkitURL;
+							let img = new Image();
+							img.onload = () => {
+								if(img.width < 300 || img.height < 300) {
+									alert("Minimum dimensions of file should be 300x300");
+									return false;
+								}
+								else {
+									this.setState({logoImage:e2.target.result,messageImage:e2.target.result,isUploadLoading:false});
+									if(img.width < img.height) {
+										uploadedImageStyles.content.width = "auto";
+										uploadedImageStyles.content.height = "100%";
+									}
+
+								}
+							};
+							img.src = _URL.createObjectURL(files[0]);
+						}
+						return;
+					};
+					reader.readAsDataURL(files[0]);
+				},
+				doUpload:(files) => {
+					event.preventDefault();
+					this.closeModal();
+					let form = new FormData();
+					form.append("description", "asdasd");
+					form.append("tags", "message");
+					form.append("image",files[0]);
+					axios({
+						url:'http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/image/upload',
+						method: 'POST',
+						data: form
+					}).then((response) => {
+						this.setState({
+							imageId:response.data.id
+						})
+
+						this.setState({
+							imageUploadSuccess:true
+						},()=>{
+						})
+					})
+					.catch((error) => {
+						this.setState({
+							imageUploadSuccess:false
+						})
+					});
+				},
+				uploading : (progress) => {
+					this.setState({isUploadLoading:true});
+				},
+				uploadSuccess : (response) => {
+					this.setState({logoImageOnCard:this.state.logoImage});
+					this.setState({isUploadLoading:false});
+				}
+		};
+    	 const {errors ,success,overview,panchanga,isLoading,imageUploadSuccess,uploadedImageStyles} = this.state;
     return (
+    		<div>
     		<form className="p20 user-entry-forms details-form" onSubmit={this.onSubmit} id="aboutUs-form">
 			<h2 className="mt0 mb20 text-center">About Us Form</h2>
 			<div className="row mb30">
@@ -159,7 +260,7 @@ class AboutUsFormContainer extends Component {
 					/>
   		  </div>
   		 </div>
-  		<div className="row">
+  		{/*<div className="row">
 		  <div className="col-md-12">
 		  <label>Panchanga</label>
 			<textarea 
@@ -173,8 +274,19 @@ class AboutUsFormContainer extends Component {
 			className="wordText messageColor"
 				/>
 		  </div>
-		 </div>
-			<div className="row mt30">
+		 </div>*/}
+			<div className="row mt10">
+			
+			<div className="col-xs-12 mt20">
+            <label>Upload Pdf</label>
+	                {imageUploadSuccess && <img src = {messageImage} width="100%"/>}
+	                <div className="pull-right logo-container" onClick={this.selectLogoClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
+	                  {this.state.logoImageOnCard != '' && <img ref="logoOnCard" src={this.state.logoImageOnCard} style={uploadedImageStyles}/> }
+	                  <button ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload</button>
+	                </div>
+			</div>
+			</div>
+			<div className="row">
 			<div className="col-md-4 col-md-offset-4">
 			  <div className="btn-toolbar">
 			  <button type="button" disabled={this.state.isLoading} onClick={this.onClick} className="btn btn-lg btn-primary">
@@ -187,6 +299,15 @@ class AboutUsFormContainer extends Component {
 			</div>
 			</div>
 			</form>
+			 {this.state.triggerUpload && <div className="modal-bg"><div className="file-upload-container">
+				{this.state.logoImage != '' && <img  className="full-width logo-upload-preview mb20" src={this.state.logoImage}/> }
+				<button className = 'close-modal' onClick = {this.closeModal}>x</button>
+				<FileUpload options={options} clascloseModalsName="upload-btn-container">
+				<button ref="chooseBtn" className="btn btn-primary mr20">Choose File</button>
+				<button ref="uploadBtn" className="btn btn-primary pull-right">Upload</button>
+				</FileUpload>
+				</div></div>}
+				</div>
     		)
     	
     }
