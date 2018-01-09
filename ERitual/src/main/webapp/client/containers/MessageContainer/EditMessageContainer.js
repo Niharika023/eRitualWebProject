@@ -88,12 +88,6 @@ class MessageFormContainer extends Component {
 					mime,
 				});
 			})
-			/*for(var i=0;i<this.props.editMessage.hostedContent.length;i++){
-				this.state.metadata=this.props.editMessage.hostedContent.metadata;
-				this.state.mime=this.props.editMessage.hostedContent.mime;
-				this.state.type=this.props.editMessage.hostedContent[2].type;
-				this.state.url=this.props.editMessage.hostedContent[3].url;
-			}*/
 		}
 		
 		this.setState({
@@ -115,10 +109,11 @@ class MessageFormContainer extends Component {
 					(res) => {
 							res.payload.data=JSON.parse(decodeURIComponent(res.payload.data.replace(/\+/g,'%20')));
 							let hostedContentData= res.payload.data;
-							this.state.typename=hostedContentData.name;
-							this.state.tags=hostedContentData.tags;
-							this.state.videoDescription=hostedContentData.description;
-							console.log("hostedContentData",this.state.videoDescription);
+							this.setState({
+								typename:hostedContentData.name,
+								tags:hostedContentData.tags,
+								videoDescription:hostedContentData.description,
+							});
 					},
 				);
 			}

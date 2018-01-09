@@ -58,6 +58,27 @@ class AboutUsFormContainer extends Component {
 		});
 	}
 
+  /*  componentDidMount() {
+		const {overview} = this.props.editAboutUs;
+		const {panchanga} = this.props.editAboutUs;
+		const {amount} = this.props.editDonation;
+		const {id} = this.props.editDonation;
+		const {tags} = this.props.editDonation;
+		this.setState({
+			name,
+			description,
+			amount,
+			id,
+			tag:this.props.editDonation.tags
+		});
+
+	}
+
+
+	componentWillUnmount() {
+		this.props.clearDonationData();
+	}*/
+	
     closeModal() {
 		this.setState({
 			'triggerUpload':false,
@@ -133,7 +154,7 @@ class AboutUsFormContainer extends Component {
 			let tagConfig= {
 					"ui.tab.about-us":{
 						"overview":this.state.overview,
-						"panchanga":this.state.panchangaId,
+						"panchangaId":this.state.panchangaId,
 						"imageId":this.state.imageId
 					}
 			}
@@ -223,13 +244,13 @@ class AboutUsFormContainer extends Component {
 					}).then((response) => {
 						if( this.state.panchangaPdf=='aboutUsPdf'){
 							this.setState({
-								panchangaId:response.data.id
-								
+								panchangaId:response.data.id,
+								panchangaPdf:''
 							})
-						}else if(this.state.panchangaImg=='aboutUsImg'){
+						}if(this.state.panchangaImg=='aboutUsImg'){
 							this.setState({
-								imageId:response.data.id
-								
+								imageId:response.data.id,
+								panchangaImg:''
 							})
 						}	
 						this.setState({
