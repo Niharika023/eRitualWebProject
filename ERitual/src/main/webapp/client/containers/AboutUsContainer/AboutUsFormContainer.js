@@ -81,7 +81,7 @@ class AboutUsFormContainer extends Component {
 			
 				this.setState({ panchangaPdf:event.target.name })
 				
-			}else if( event.target.name=="aboutUsImg"){
+			}if( event.target.name=="aboutUsImg"){
 				this.setState({ panchangaImg:event.target.name})	
 			}
 			
@@ -135,7 +135,6 @@ class AboutUsFormContainer extends Component {
 						"overview":this.state.overview,
 						"panchanga":this.state.panchangaId,
 						"imageId":this.state.imageId
-						
 					}
 			}
 			
@@ -222,23 +221,17 @@ class AboutUsFormContainer extends Component {
 						method: 'POST',
 						data: form
 					}).then((response) => {
-						if( this.state.panchangaPdf){
+						if( this.state.panchangaPdf=='aboutUsPdf'){
 							this.setState({
 								panchangaId:response.data.id
 								
 							})
-							alert(this.state.pdfId);
-						}else{
+						}else if(this.state.panchangaImg=='aboutUsImg'){
 							this.setState({
 								imageId:response.data.id
 								
 							})
 						}	
-					
-						
-					console.log("Ab");
-                     console.log(JSON.stringify(this.state.imageId));
-						
 						this.setState({
 							imageUploadSuccess:true
 						},()=>{
