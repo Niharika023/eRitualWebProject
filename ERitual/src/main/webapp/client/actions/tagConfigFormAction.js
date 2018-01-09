@@ -6,6 +6,8 @@ export const CLEAR_TAGCONFIG = 'CLEAR_TAGCONFIG';
 export const CREATE_TAGCONFIG = 'CREATE_TAGCONFIG';
 export const FETCH_TAG ='FETCH_TAG';
 export const FETCH_VALUE ='FETCH_VALUE';
+export const GET_ABOUTUS_BY_ID='GET_ABOUTUS_BY_ID';
+
 export function setTagConfigData(tagConfigData) {
 	  return {
 	    type: CREATE_TAGCONFIG,
@@ -35,10 +37,10 @@ export function clearTagConfigData() {
 	 } 
 }
 
-export function tagRequest() {
-	const request = axios.get('http://localhost:8080/ERitual/er/tagConfig/list');
+export function getAboutUsByKeyRequest(key) {
+	const request = axios.get('http://localhost:8080/ERitual/er/tagConfig/get/byKey'+"?key="+ key);
 	  return {
-	    type    : FETCH_TAG,
+	    type    :  GET_ABOUTUS_BY_ID,
 	    payload : request
 	  }
 }

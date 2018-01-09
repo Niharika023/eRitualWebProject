@@ -58,24 +58,23 @@ class AboutUsFormContainer extends Component {
 		});
 	}
 
-  /*  componentDidMount() {
-		const {overview} = this.props.editAboutUs;
-		const {panchanga} = this.props.editAboutUs;
-		const {amount} = this.props.editDonation;
-		const {id} = this.props.editDonation;
-		const {tags} = this.props.editDonation;
+    componentDidMount() {
+    	console.log("about us",this.props.editAboutUs);
+		const {overview} = this.props.editAboutUs.editAboutUs.value;
+		const {panchangaId} = this.props.editAboutUs.editAboutUs.value;
+		const {imageId} = this.props.editAboutUs.editAboutUs.value;
+		const {id} = this.props.editAboutUs.editAboutUs;
 		this.setState({
-			name,
-			description,
-			amount,
+			overview,
+			panchangaId,
+			imageId,
 			id,
-			tag:this.props.editDonation.tags
 		});
 
 	}
 
 
-	componentWillUnmount() {
+/*	componentWillUnmount() {
 		this.props.clearDonationData();
 	}*/
 	
@@ -272,8 +271,9 @@ class AboutUsFormContainer extends Component {
 					this.setState({isUploadLoading:false});
 				}
 		};
-    	 const {errors ,success,overview,panchanga,isLoading,messageImage,imageUploadSuccess,uploadedImageStyles} = this.state;
-    return (
+    	 const {errors ,success,imageId,overview,panchanga,isLoading,messageImage,imageUploadSuccess,uploadedImageStyles} = this.state;
+    	 let imgSrc = `http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/image/stream/${imageId}`;
+    	 return (
     		<div>
     		<form className="p20 user-entry-forms details-form" onSubmit={this.onSubmit} id="aboutUs-form">
 			<h2 className="mt0 mb20 text-center">About Us Form</h2>
@@ -320,6 +320,7 @@ class AboutUsFormContainer extends Component {
 			<div className="col-xs-12 mt20">
             <label>Panchanga</label>
 	                {imageUploadSuccess && <img src = {messageImage} width="100%"/>}
+	                
 	                <div className="pull-right logo-container" onClick={this.selectLogoClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
 	                  {this.state.logoImageOnCard != '' && <img ref="logoOnCard" src={this.state.logoImageOnCard} style={uploadedImageStyles}/> }
 	                  <button name="aboutUsPdf" ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload Pdf </button>
@@ -327,10 +328,10 @@ class AboutUsFormContainer extends Component {
 			</div>
 			</div>
             <div className="row mt10">
-			
 			<div className="col-xs-12 mt20">
             <label>Upload Image</label>
-	                {imageUploadSuccess && <img src = {messageImage} width="100%"/>}
+	                {imageUploadSuccess && <img src = {imgSrc} width="100%"/>}
+	                {!imageUploadSuccess && <img src = {imgSrc} width="100%"/>}
 	                <div className="pull-right logo-container" onClick={this.selectLogoClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
 	                  {this.state.logoImageOnCard != '' && <img ref="logoOnCard" src={this.state.logoImageOnCard} style={uploadedImageStyles}/> }
 	                  <button name="aboutUsImg" ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload</button>
