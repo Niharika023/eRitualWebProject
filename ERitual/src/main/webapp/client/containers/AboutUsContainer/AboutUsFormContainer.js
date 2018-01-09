@@ -272,7 +272,7 @@ class AboutUsFormContainer extends Component {
 					this.setState({isUploadLoading:false});
 				}
 		};
-    	 const {errors ,success,overview,panchanga,isLoading,imageUploadSuccess,uploadedImageStyles} = this.state;
+    	 const {errors ,success,overview,panchanga,isLoading,messageImage,imageUploadSuccess,uploadedImageStyles} = this.state;
     return (
     		<div>
     		<form className="p20 user-entry-forms details-form" onSubmit={this.onSubmit} id="aboutUs-form">
