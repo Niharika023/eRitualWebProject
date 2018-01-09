@@ -9,6 +9,7 @@ import TextFieldGroup from '../../components/common/TextFieldGroup';
 import validateInput from '../../validations/aboutUsValidation';
 import setAuthToken from '../../utils/setAuthToken';
 import FileUpload from 'react-fileupload';
+import axios from 'axios';
 
 
 class AboutUsFormContainer extends Component {
@@ -76,6 +77,14 @@ class AboutUsFormContainer extends Component {
 	 selectLogoClick(event) {
 			event.preventDefault();
 			this.setState({triggerUpload:true});
+			if( event.target.name=="aboutUsPdf"){
+			
+				this.setState({ panchangaPdf:event.target.name })
+				
+			}else if( event.target.name=="aboutUsImg"){
+				this.setState({ panchangaImg:event.target.name})	
+			}
+			
 		}
 
  // method to check the validity of the form
@@ -124,23 +133,26 @@ class AboutUsFormContainer extends Component {
 			let tagConfig= {
 					"ui.tab.about-us":{
 						"overview":this.state.overview,
-						"panchanga":this.state.panchanga
+						"panchanga":this.state.panchangaId,
+						"imageId":this.state.imageId
+						
 					}
 			}
+			
 			this.props.userTagConfigFormsRequest(tagConfig).then(
 					(res) => {
-						//condition for unauthorized admin
+						//condition for unauthorized Admin
 						if(!res.payload.response && res.payload.status==600) {
 							this.props.addToast({  type:'error', 
 								text:`Sorry,you are not authorized to create or update aboutUs, please contact to your  admin`, 
 								toastType:'auto'  });
 							this.context.router.push('/ERitual/aboutUs');
 						}
-						//conditon for duplicate aboutUs name
+						//condition for duplicate aboutUs name
 						 else if(res.payload.status==204){
 		  	        			this.setState({ errors : { "form" : "AboutUs Name already exist" }, isLoading : false })
 		  	        		}
-						//conditon when response is not null
+						//condition when response is not null
 						else{
 							res.payload.data=JSON.parse(decodeURIComponent(res.payload.data.replace(/\+/g,'%20')));
 							let aboutUsFormData= res.payload.data;
@@ -210,10 +222,23 @@ class AboutUsFormContainer extends Component {
 						method: 'POST',
 						data: form
 					}).then((response) => {
-						this.setState({
-							imageId:response.data.id
-						})
-
+						if( this.state.panchangaPdf){
+							this.setState({
+								panchangaId:response.data.id
+								
+							})
+							alert(this.state.pdfId);
+						}else{
+							this.setState({
+								imageId:response.data.id
+								
+							})
+						}	
+					
+						
+					console.log("Ab");
+                     console.log(JSON.stringify(this.state.imageId));
+						
 						this.setState({
 							imageUploadSuccess:true
 						},()=>{
@@ -275,14 +300,26 @@ class AboutUsFormContainer extends Component {
 				/>
 		  </div>
 		 </div>*/}
+  		
 			<div className="row mt10">
 			
 			<div className="col-xs-12 mt20">
-            <label>Upload Pdf</label>
+            <label>Panchanga</label>
 	                {imageUploadSuccess && <img src = {messageImage} width="100%"/>}
 	                <div className="pull-right logo-container" onClick={this.selectLogoClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
 	                  {this.state.logoImageOnCard != '' && <img ref="logoOnCard" src={this.state.logoImageOnCard} style={uploadedImageStyles}/> }
-	                  <button ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload</button>
+	                  <button name="aboutUsPdf" ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload Pdf </button>
+	                </div>
+			</div>
+			</div>
+            <div className="row mt10">
+			
+			<div className="col-xs-12 mt20">
+            <label>Upload Image</label>
+	                {imageUploadSuccess && <img src = {messageImage} width="100%"/>}
+	                <div className="pull-right logo-container" onClick={this.selectLogoClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
+	                  {this.state.logoImageOnCard != '' && <img ref="logoOnCard" src={this.state.logoImageOnCard} style={uploadedImageStyles}/> }
+	                  <button name="aboutUsImg" ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload</button>
 	                </div>
 			</div>
 			</div>
