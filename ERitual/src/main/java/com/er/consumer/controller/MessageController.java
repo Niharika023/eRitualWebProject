@@ -30,6 +30,7 @@ public class MessageController {
 	private static final String CREATE_MESSAGE = "/create";
 	private static final String DELETE_MESSAGE_ID="/delete";
 	private static final String MESSAGE_LIST_BY_ID="/get/byId";
+	private static final String HOSTED_CONTENT_LIST_BY_ID="/get/hosted_content/byId";
 	private static final String UPDATE_MESSAGE="/update";
 	
 	@RequestMapping(value = MESSAGE_LIST, method = RequestMethod.GET)
@@ -99,6 +100,18 @@ public class MessageController {
 		CommonUtility.isSessionActive(response, (String) session.getAttribute("access_token"));
 			 url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/message/delete/"+messageId;
 		ServiceResponse responseObj = HttpUtil.sendDelete(url, roleLess,(String) session.getAttribute("access_token"));
+		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
+		
+	}
+	
+	@RequestMapping(value = HOSTED_CONTENT_LIST_BY_ID, method = RequestMethod.GET)
+	public void getHostedContentById(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+		String hostedContentId=null;
+		if( request.getParameter("hostedContentId") != null)
+			hostedContentId= request.getParameter("hostedContentId"); 
+		CommonUtility.isSessionActive(response, (String) session.getAttribute("access_token"));
+		String url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/hosted-content/get/"+hostedContentId;
+		ServiceResponse responseObj = HttpUtil.sendGet(url, (String) session.getAttribute("access_token"));
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 		
 	}

@@ -26,20 +26,6 @@ class DonationFormContainer extends Component {
 				firstTimeFormSubmit:false,
 		        submitApplied:false,
 		        scroll:'',
-		        videoUrl:'',
-				triggerUploadVidAudPdf: false,
-				bannerTags:'',
-				triggerUploadImg:true,
-				triggerUploadBanner:false,
-				imageId:"",
-				logoImage:"",
-				logoImageOnCard:"",
-				triggerUpload:false,
-				isUploadLoading:true,
-				isLoading:false,
-				imageUploadSuccess:false,
-				messageImage:"",
-				videoDescription:''
 
 		}
 
@@ -48,10 +34,6 @@ class DonationFormContainer extends Component {
 		this.scrollPage=this.scrollPage.bind(this);
 		this.onClick=this.onClick.bind(this);
 		this.SelectTag=this.SelectTag.bind(this);
-		this.selectAudVid=this.selectAudVid.bind(this);
-		this.onSubmitAudVidUrl = this.onSubmitAudVidUrl.bind(this);
-		this.selectLogoClick = this.selectLogoClick.bind(this);
-		this.closeModal = this.closeModal.bind(this);
 		this.handleFile=this.handleFile.bind(this);
 		this.onSelect=this.onSelect.bind(this);
 
@@ -97,20 +79,8 @@ class DonationFormContainer extends Component {
 	//on select tag
 	SelectTag(event){
 		this.state.tag=event.target.value;
-		if(this.state.tag=='Banner'){
-			this.setState({triggerUploadBanner:true});
-			this.setState({triggerUploadImg:false});
-			this.setState({triggerUploadVidAudPdf:false});
-			this.setState({showTextBox:false});
-			
-		}
-		else{
 		//this.setState({triggerUploadVideo:true});
-			this.setState({triggerUploadImg:true});
-			this.setState({triggerUploadBanner:false});
-			this.setState({triggerUploadVidAudPdf:true});
-			this.setState({showTextBox:false});
-		}
+			this.setState({showTextBox:true});
 	}
 
 	// method to check the validity of the form
@@ -132,7 +102,6 @@ class DonationFormContainer extends Component {
     	if(this.props.tagConfigData.length!=0){
     		let tagArr=[];
     	tagArr=(this.props.tagConfigData.tagByKeyConfig.value.tags).split(",");
-    	console.log("tags",tagArr);
     		const tagList = tagArr.map((d) => 
     		{
     			return (<option key={d}>{d}</option>
@@ -181,66 +150,6 @@ class DonationFormContainer extends Component {
 		this.setState({triggerUpload:true});
 	}
 	
-	//For uploading video/audio/pdf
-	onSubmitAudVidUrl(event){
-		event.preventDefault();
-		
-		let audVidDetails= {
-				"name":this.state.typename,
-				"description":this.state.videoDescription,
-				"tags":this.state.tags,
-				"items":[{
-					"url":this.state.url,
-					"type":this.state.type,
-					"metadata":{
-						"onclick":this.state.metadata
-						} 
-					
-							}]
-		}
-		this.props.audVidDetailsFormrequest(audVidDetails).then(
-				(res) => {
-					console.log("res.payload.data",res.payload.data)
-					if(!res.payload.data && res.payload.status==600) {
-						this.props.addToast({  type:'error', 
-							text:`Sorry,you are not authorized to create or update seva, please contact to your  admin`, 
-							toastType:'auto'  });
-						this.context.router.push('/ERitual/donation');	
-					}
-					else if(res.payload.status==204){
-						this.setState({ errors : { "form" : "NameselectAudVid already exist" }, isLoading : false })
-					}
-					else{
-						res.payload.data=JSON.parse(decodeURIComponent(res.payload.data.replace(/\+/g,'%20')));
-						let contentFormData= res.payload.data;
-						this.state.contentId=contentFormData.id;
-						this.closeModal();
-						this.setState({selectedUrl:this.state.url});
-						if(contentFormData.message!= null) {
-							this.setState({ errors : { "form" : sevaFormData.message }, isLoading : false })
-						}
-						else {
-							this.props.addToast({  type:'success', 
-								text:`Data uploaded successfully`, 
-								toastType:'auto'  });
-							this.context.router.push('/ERitual/donationForm');
-						}
-					}
-				},
-			);
-	}
-	
-	selectAudVid(event) {
-		this.state.type=event.target.value;
-		if(this.state.type=='text'){
-			this.state.showTextBox=true;	
-			this.setState({triggerUploadVideo:false});
-			}
-		else{
-		this.setState({triggerUploadVideo:true});
-		this.state.showTextBox=false;	
-		}
-	}
 
 	onSubmit(event) {
 		event.preventDefault();
@@ -400,46 +309,17 @@ class DonationFormContainer extends Component {
 			</select>
 			
 			</div>
-              {triggerUploadVidAudPdf && 
-              <div className="col-xs-6">
-				<label>Type</label>
-				<select name="type" className=" form-control  font-color "  onChange={this.selectAudVid}>
-				<option value="">Select Type</option>
-				<option value="audio" >Audio</option>
-				<option value="video"  >Video</option>
-				<option value="pdf">Pdf</option>
-				<option value="text">Text</option>
-				</select>
-				<span>Url is : {this.state.selectedUrl}</span>
-				</div>}
-              {triggerUploadImg && <div className="col-xs-6 mt20">
-              <label>Upload Image</label>
-	                {imageUploadSuccess && <img src = {messageImage} width="100%"/>}
-	                <div className="pull-right logo-container" onClick={this.selectLogoClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
-	                  {this.state.logoImageOnCard != '' && <img ref="logoOnCard" src={this.state.logoImageOnCard} style={uploadedImageStyles}/> }
-	                  <button ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload</button>
-	                </div>
-				</div>}
-				{showTextBox && <div>
 				    <div className="col-md-6">
 				<textarea 
 					cols="38"
 						rows="6"
 							onChange={this.onChange}
-				name="message"
-					placeholder = "Type something.."
-						value={message}
+				name="description"
+					placeholder = "Description"
+						value={description}
 				className="wordText messageColor"
 					/>
-				  </div></div>}
-				 {triggerUploadBanner && <div className="col-xs-6 mt20">
-	              <label>Upload Banner</label>
-		                {imageUploadSuccess && <img src = {messageImage} width="100%"/>}
-		                <div className="pull-right logo-container" onClick={this.selectLogoClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
-		                  {this.state.logoImageOnCard != '' && <img ref="logoOnCard" src={this.state.logoImageOnCard} style={uploadedImageStyles}/> }
-		                  <button ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload</button>
-		                </div>
-					</div>}
+				  </div>
 				</div>
 				<div className="row mt30">
 				<div className="col-md-4 col-md-offset-4">
@@ -454,136 +334,8 @@ class DonationFormContainer extends Component {
 				</div>
 				</div>
 				</form>
-				 {/*{this.state.triggerUpload && <div className="modal-bg"><div className="file-upload-container">
-	              {this.state.logoImage != '' && <img  className="full-width logo-upload-preview mb20" src={this.state.logoImage}/> }
-	              <button className = 'close-modal' onClick = {this.closeModal}>x</button>
-	              <form>
-	              <FileUpload options={options} >
-	              <div className = "row">
-	               <div className="col-xs-12">
-	               <button ref="chooseBtn" className="btn btn-primary mr20">Choose Image</button>
-	               </div>
-	              
-	              </div>
-	              <div className= "row">
-	              <div className="col-xs-12">
-	              <label>Image Description</label>
-					<textarea 
-					label="Message"
-						cols="38"
-							rows="6"
-								onChange={this.onChange}
-					name="message"
-						placeholder = "Type something.."
-							value={message}
-					className="wordText messageColor"
-						/>
-	              </div>
-	              </div>
-	              <div className="row">
-		    		 <div className="col-md-12">
-		   	  <TextFieldGroup
-		       error={errors.name}
-		     onChange={this.onChange}
-		   value={bannerTags}
-		field="tags"
-			label="Tags"
-				/>
-		    </div> 
-		    </div>
-	              <div className = "row">
-	                <div className="col-md-12 text-center">
-	                <button ref="uploadBtn" className="btn btn-primary">Upload</button>
-	                </div>
-	              </div>
-	              </FileUpload>
-	              </form>
-	            </div></div>}*/}
+				 </div>
 				 
-				 {this.state.triggerUpload && <div className="modal-bg"><div className="file-upload-container">
-					{this.state.logoImage != '' && <img  className="full-width logo-upload-preview mb20" src={this.state.logoImage}/> }
-					<button className = 'close-modal' onClick = {this.closeModal}>x</button>
-					<FileUpload options={options} clascloseModalsName="upload-btn-container">
-					<button ref="chooseBtn" className="btn btn-primary mr20">Choose File</button>
-					<button ref="uploadBtn" className="btn btn-primary pull-right">Upload</button>
-					</FileUpload>
-					</div></div>}
-              {this.state.triggerUploadVideo && <div className="modal-bg"><div className="video-upload-container">
-				<button className = 'close-modal' onClick = {this.closeModal}>x</button>
-				{videoUrl}
-				<form onSubmit={this.onSubmitAudVidUrl} id="vid-aud-url-form">
-				<div className="row">
-				 <div className="col-md-12">
-			      <TextFieldGroup
-			       error={errors.name}
-		       	   onChange={this.onChange}
-			       value={typename}
-			       field="typename"
-				    label="Type Name"
-					/>
-			    </div>
-			    </div>
-					<div className="row">
-					 <div className="col-md-12">
-					  <TextFieldGroup
-					  error={errors.name}
-					  onChange={this.onChange}
-					  value={url}
-					  field="url"
-					  label="url"
-							/>
-					    </div>
-					    </div>
-					    <div className="row">
-						
-						 <div className="col-md-12">
-					   <TextFieldGroup
-					error={errors.name}
-					onChange={this.onChange}
-					value={metadata}
-					field="metadata"
-						label="Metadata"
-							/>
-					    </div>
-					    </div>
-					    <div className="row">
-					    		 <div className="col-md-12">
-					   	  <TextFieldGroup
-					       error={errors.name}
-					     onChange={this.onChange}
-					   value={tags}
-					field="tags"
-						label="Tags"
-							/>
-					    </div> 
-					    </div>
-	                  <div className="row">
-					    <div className="col-md-12">
-					   	  <label>Description</label>
-					<textarea 
-					label="Description"
-						cols="35"
-							rows="6"
-								onChange={this.onChange}
-					name="videoDescription"
-						placeholder = "Description"
-							value={videoDescription}
-					className="wordText messageColor"
-						/>
-					  </div>
-					</div>
-	                <div className="row mr15">
-	                  <div className="text-center">
-	                   <button className="btn btn-lg btn-primary">
-						Submit
-					   </button>
-	                  </div>                	
-	                </div>
-
-						</form>
-				</div>
-				</div>}
-        </div>
 		);
 				}
 	}

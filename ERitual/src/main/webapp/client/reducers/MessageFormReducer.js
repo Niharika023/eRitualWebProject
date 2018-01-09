@@ -1,5 +1,6 @@
 import { CREATE_MESSAGE } from '../actions/messageFormAction';
 import { GET_MESSAGE_BY_ID } from '../actions/messageFormAction';
+import { GET_HOSTED_CONTENT_BY_ID } from '../actions/messageFormAction';
 import { UPDATE_MESSAGE } from '../actions/messageFormAction';
 import { CLEAR_MESSAGE } from '../actions/messageFormAction';
 
@@ -15,6 +16,12 @@ export default function(state = [], action) {
 		 	editMessage: JSON.parse(decodeURIComponent(action.payload.data.replace(/\+/g,'%20')))
 	      }
 	      break;
+	 case GET_HOSTED_CONTENT_BY_ID:
+		 return {
+		 	hostedContentList: JSON.parse(decodeURIComponent(action.payload.data.replace(/\+/g,'%20')))
+	      }
+	      break;
+	      
 	 case UPDATE_MESSAGE:
 	      return {
 		 messageData: action.payload.messageData

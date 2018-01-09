@@ -24,17 +24,39 @@ class EditDonationContainer extends Component {
 				firstTimeFormSubmit:false,
 				id:"",
 				submitApplied:false,
-		        scroll:''
+				tag:''
 		}
 
 		this.onChange = this.onChange.bind(this);// bind(this) is needed here,
 		this.onSubmit = this.onSubmit.bind(this);
 		this.scrollPage=this.scrollPage.bind(this);
 		this.onClick=this.onClick.bind(this);
+		this.SelectTag=this.SelectTag.bind(this);
 	}
 
-	
+	//For dropdown
+	SelectTag(event){
+		this.state.tag=event.target.value;
+		//this.setState({triggerUploadVideo:true});
+			this.setState({showTextBox:true});
+	}
 
+	donationTagRenderOptions() {
+    	if(this.props.tagConfigData!=undefined){
+    	if(this.props.tagConfigData.length!=0){
+    		let tagArr=[];
+    	tagArr=(this.props.tagConfigData.tagByKeyConfig.value.tags).split(",");
+    		const tagList = tagArr.map((tag) => 
+    		{
+    			return (<option key={tag} selected = {tag === this.state.tag}>{tag}</option>
+    			)
+    			});
+    		return tagList;
+    	}
+    	}
+    }
+
+	
 	scrollPage(error){
 
         for(var scroll in error.errors)
@@ -67,11 +89,13 @@ class EditDonationContainer extends Component {
 		const {description} = this.props.editDonation;
 		const {amount} = this.props.editDonation;
 		const {id} = this.props.editDonation;
+		const {tags} = this.props.editDonation;
 		this.setState({
 			name,
 			description,
 			amount,
-			id
+			id,
+			tag:this.props.editDonation.tags
 		});
 
 	}
@@ -117,7 +141,8 @@ class EditDonationContainer extends Component {
 					"amount":this.state.amount,
 					"imageId":this.state.imageId,
 					"time":this.state.time,
-					"id":this.state.id
+					"id":this.state.id,
+					"tags":this.state.tag
 			}
 			this.props.userDonationUpdateFormsRequest(donation).then(
 					(res) => {
@@ -149,7 +174,7 @@ class EditDonationContainer extends Component {
 
 
 	render() {
-		const {errors ,success, name,description,amount,isLoading,checked} = this.state;
+		const {errors ,success, name,description,amount,tag,isLoading,checked} = this.state;
 		return (
 				<form className="p20 user-entry-forms details-form" onSubmit={this.onSubmit} id="edit-donation-form">
 				<h2 className="mt0 mb20 text-center">Donation Form</h2>
@@ -171,22 +196,29 @@ class EditDonationContainer extends Component {
 					</div>
 				<div className="col-xs-6 col-md-6">
 				<TextFieldGroup
-				error={errors.description}
-				label="Description"
-					onChange={this.onChange}
-				value={description}
-				field="description"
-					/>
-					</div>
-				</div>
-				<div className="row mb10">
-				<div className="col-xs-6 col-md-6">
-				<TextFieldGroup
 				error={errors.amount}
 				label="Donation Amount"
 					onChange={this.onChange}
 				value={amount}
 				field="amount"
+					/>
+					</div>
+				</div>
+				<div className="row">
+	              <div className="col-xs-6">
+				  <label>Tags</label>
+				<select name="type" className=" form-control  font-color" onChange={this.SelectTag}>
+				<option value={tag}> Select Tags</option>
+				{this.donationTagRenderOptions()}
+				</select>
+				</div>
+				<div className="col-xs-6 col-md-6">
+				<TextFieldGroup
+				error={errors.description}
+				label="Description"
+					onChange={this.onChange}
+				value={description}
+				field="description"
 					/>
 					</div>
 				</div>

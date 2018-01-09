@@ -4,6 +4,7 @@ export const CREATE_MESSAGE = 'CREATE_MESSAGE';
 export const GET_MESSAGE_BY_ID = 'GET_MESSAGE_BY_ID';
 export const UPDATE_MESSAGE='UPDATE_MESSAGE';
 export const CLEAR_MESSAGE = 'CLEAR_MESSAGE';
+export const GET_HOSTED_CONTENT_BY_ID='GET_HOSTED_CONTENT_BY_ID';
 export function setMessageData(messageData) {
 	  return {
 	    type: CREATE_MESSAGE,
@@ -23,6 +24,14 @@ export function userEditMessagesRequest(messageIdForEdit) {
 	const request = axios.get('http://localhost:8080/ERitual/er/message/get/byId'+"?messageId="+ messageIdForEdit);
 	  return {
 	    type    : GET_MESSAGE_BY_ID,
+	    payload : request
+	  }
+}
+
+export function getHostedContentDataById(hostedContentId) {
+	const request = axios.get('http://localhost:8080/ERitual/er/message/get/hosted_content/byId'+"?hostedContentId="+ hostedContentId);
+	  return {
+	    type    : GET_HOSTED_CONTENT_BY_ID,
 	    payload : request
 	  }
 }

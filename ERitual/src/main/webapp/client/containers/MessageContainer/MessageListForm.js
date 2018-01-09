@@ -252,7 +252,7 @@ class MessageListForm extends Component {
 								asterisk=""    
 									/>
 									</div>
-							<div className="col-md-2">
+							{/*<div className="col-md-2">
 							<TextFieldGroup
 							label="Message "
 								onChange={this.onChange}
@@ -261,7 +261,7 @@ class MessageListForm extends Component {
 							name="searchByMessage"
 								asterisk=""    
 									/>
-									</div>
+									</div>*/}
 							<div className="col-md-2">
 							<label> From</label>
 							<Datetime 
@@ -324,7 +324,7 @@ class MessageListForm extends Component {
 								asterisk=""    
 									/>
 									</div>
-							<div className="col-md-2">
+							{/*<div className="col-md-2">
 							<TextFieldGroup
 							label="Message "
 								onChange={this.onChange}
@@ -333,7 +333,7 @@ class MessageListForm extends Component {
 							name="searchByMessage"
 								asterisk=""    
 									/>
-									</div>
+									</div>*/}
 
 							<div className="col-md-2">
 							<label> From</label>

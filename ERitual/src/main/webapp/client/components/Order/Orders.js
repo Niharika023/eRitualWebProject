@@ -14,13 +14,14 @@ const Order = ({orderRenderList,orderDetails}) => {
       return ( 
     		  
     		  <tr className="font-color p-ver-70" key={index}>
-    		  <td className="col-sm-2"><Link to={{ pathname: '/ERitual/orderdetails/'+JSON.stringify(item)}}  className=" link-secondary  active ">{item.targetType}
+    		  <td className=""><Link to={{ pathname: '/ERitual/orderdetails/'+JSON.stringify(item)}}  className=" link-secondary  active ">{item.targetType}
     		  </Link>
     		  </td>
-    		  <td className="col-sm-2" > {item.creatorEmail}</td>
-    		  <td className="col-sm-2" > {formattedDate}</td>
-    		  <td className="col-sm-2" > {item.executionDate}</td>
-              <td className="col-sm-2" > Rs.{item.amount}</td>
+    		  <td className="" > {item.creatorEmail}</td>
+    		  <td className="" > {formattedDate}</td>
+    		  <td className="" > {item.executionDate}</td>
+    		  <td className="" > {item.tags}</td>
+              <td className="" > Rs.{item.amount}</td>
             </tr>
       
         );

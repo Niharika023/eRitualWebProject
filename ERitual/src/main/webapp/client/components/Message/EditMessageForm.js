@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import EditMessageContainer from '../../containers/MessageContainer/EditMessageContainer';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import {userEditMessagesRequest, userMessageUpdateFormsRequest, clearMessageData} from '../../actions/messageFormAction';
+import {userEditMessagesRequest, userMessageUpdateFormsRequest, clearMessageData,getHostedContentDataById} from '../../actions/messageFormAction';
 import {LargeLogo} from '../common/Logos';
 import { bindActionCreators } from 'redux';
 import {addToast, deleteToast} from '../../actions/Toasts';
@@ -13,12 +13,12 @@ class EditMessageForm extends Component {
 		this.props.userEditMessagesRequest(this.props.params.id);
 	}
     render() {
-    	const {userMessageUpdateFormsRequest,userEditMessagesRequest, message,editMessage,addToast,clearMessageData} = this.props;
+    	const {userMessageUpdateFormsRequest,getHostedContentDataById,userEditMessagesRequest, message,hostedContentList,editMessage,addToast,clearMessageData} = this.props;
         return (
             <div className="row full-height">
               <div className="col-md-8 col-md-offset-2 full-height">
                 <LargeLogo id="large_logo" className="large-logo"/>
-                {this.props.editMessage &&  this.props.editMessage.length != 0 && <EditMessageContainer clearMessageData = {clearMessageData} userMessageUpdateFormsRequest={userMessageUpdateFormsRequest} userEditMessagesRequest={userEditMessagesRequest}  message = {message} editMessage = {editMessage} id = {this.props.params.id}  addToast={addToast} deleteToast = {deleteToast}  />} 
+                {this.props.editMessage &&  this.props.editMessage.length != 0 && <EditMessageContainer hostedContentList={hostedContentList} getHostedContentDataById={getHostedContentDataById} clearMessageData = {clearMessageData} userMessageUpdateFormsRequest={userMessageUpdateFormsRequest} userEditMessagesRequest={userEditMessagesRequest}  message = {message} editMessage = {editMessage} id = {this.props.params.id}  addToast={addToast} deleteToast = {deleteToast}  />} 
               </div>
             </div>
         );
@@ -32,10 +32,10 @@ EditMessageForm.propTypes = {
 }
 
 function mapStateToProps(state) {
-	console.log("statte",state.messageFormReducer);
 	  return {
 		  message:state.messageFormReducer,
 		  editMessage:state.messageFormReducer.editMessage,
+		  hostedContentList:state.messageFormReducer.hostedContentList
 	  };
 	}
 function mapDispatchToProps(dispatch) {
@@ -43,7 +43,8 @@ function mapDispatchToProps(dispatch) {
 		userMessageUpdateFormsRequest: bindActionCreators({userMessageUpdateFormsRequest }, dispatch),
 		userEditMessagesRequest: bindActionCreators({userEditMessagesRequest }, dispatch),
 		clearMessageData: bindActionCreators({ clearMessageData }, dispatch),
+		getHostedContentDataById:bindActionCreators({ getHostedContentDataById }, dispatch)
 	  };
 	}
 
-export default connect(mapStateToProps, {userEditMessagesRequest,userMessageUpdateFormsRequest,addToast,clearMessageData} )(EditMessageForm)
+export default connect(mapStateToProps, {userEditMessagesRequest,getHostedContentDataById,userMessageUpdateFormsRequest,addToast,clearMessageData} )(EditMessageForm)

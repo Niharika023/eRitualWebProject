@@ -231,6 +231,7 @@ this.onSubmit(event,this.state.itemsPerPage,this.state.activePage);
                                  <th className="tabel-header">Email Id</th>
                                  <th className="tabel-header">Booked Date</th>
                                  <th className="tabel-header">Scheduled Date</th>
+                                 <th className="tabel-header">Tags</th>
                                  <th className="tabel-header">Amount</th>
                                 </tr>
                             </thead>
