@@ -33,6 +33,7 @@ class AboutUsFormContainer extends Component {
         tagValue:'',
         tags:'',
         imageUploadSuccess:false,
+        pdfUploadSuccess:false
         
       }
 
@@ -244,16 +245,18 @@ class AboutUsFormContainer extends Component {
 						if( this.state.panchangaPdf=='aboutUsPdf'){
 							this.setState({
 								panchangaId:response.data.id,
-								panchangaPdf:''
+								panchangaPdf:'',
+								pdfUploadSuccess:true
 							})
 						}if(this.state.panchangaImg=='aboutUsImg'){
 							this.setState({
 								imageId:response.data.id,
-								panchangaImg:''
+								panchangaImg:'',
+								imageUploadSuccess:true
 							})
 						}	
 						this.setState({
-							imageUploadSuccess:true
+							//imageUploadSuccess:true
 						},()=>{
 						})
 					})
@@ -271,7 +274,8 @@ class AboutUsFormContainer extends Component {
 					this.setState({isUploadLoading:false});
 				}
 		};
-    	 const {errors ,success,imageId,overview,panchanga,isLoading,messageImage,imageUploadSuccess,uploadedImageStyles} = this.state;
+    	 const {errors ,success,imageId,panchangaId,pdfUploadSuccess,overview,panchanga,isLoading,messageImage,imageUploadSuccess,uploadedImageStyles} = this.state;
+    	 let pdfSrc = `http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/image/stream/${panchangaId}`;
     	 let imgSrc = `http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/image/stream/${imageId}`;
     	 return (
     		<div>
@@ -321,6 +325,7 @@ class AboutUsFormContainer extends Component {
             <label>Panchanga</label>
 	                {imageUploadSuccess && <img src = {messageImage} width="100%"/>}
 	                
+	                {!pdfUploadSuccess && <a href={pdfSrc} target="_blank">Download</a>}
 	                <div className="pull-right logo-container" onClick={this.selectLogoClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
 	                  {this.state.logoImageOnCard != '' && <img ref="logoOnCard" src={this.state.logoImageOnCard} style={uploadedImageStyles}/> }
 	                  <button name="aboutUsPdf" ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload Pdf </button>
