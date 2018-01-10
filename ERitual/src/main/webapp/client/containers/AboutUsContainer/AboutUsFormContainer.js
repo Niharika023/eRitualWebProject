@@ -23,6 +23,7 @@ class AboutUsFormContainer extends Component {
         firstTimeFormSubmit:false,
         overview :'',
         panchanga:'',
+        imageOrPdf:'',
         errors:{},
 		success:{},
 		isLoading:false,
@@ -96,15 +97,18 @@ class AboutUsFormContainer extends Component {
 		});
 	}
 	 selectLogoClick(event) {
-			event.preventDefault();
-			this.setState({triggerUpload:true});
-			if( event.target.name=="aboutUsPdf"){
-			
-				this.setState({ panchangaPdf:event.target.name })
-				
-			}if( event.target.name=="aboutUsImg"){
-				this.setState({ panchangaImg:event.target.name})	
-			}
+	
+		 event.preventDefault();
+		 this.state.imageOrPdf='';
+		 this.setState({triggerUpload:true});
+		 this.state.imageOrPdf=event.target.name;
+		 if( this.state.imageOrPdf=="aboutUsPdf"){
+
+		 this.setState({ panchangaPdf:event.target.name })
+
+		 }if( this.state.imageOrPdf=="aboutUsImg"){
+		 this.setState({ panchangaImg:event.target.name})	
+		 }
 			
 		}
 
@@ -203,29 +207,58 @@ class AboutUsFormContainer extends Component {
 				chooseFile : (files) => {
 					const reader = new FileReader();
 					reader.onload = (e2) => {
-						if(files[0].size > 2*1024*1024) {
-							alert("The maximum supported file size is 2MB");
-							return false;
-						}
-						else {
-							let _URL = window.URL || window.webkitURL;
-							let img = new Image();
-							img.onload = () => {
-								if(img.width < 300 || img.height < 300) {
-									alert("Minimum dimensions of file should be 300x300");
-									return false;
-								}
-								else {
-									this.setState({logoImage:e2.target.result,messageImage:e2.target.result,isUploadLoading:false});
-									if(img.width < img.height) {
-										uploadedImageStyles.content.width = "auto";
-										uploadedImageStyles.content.height = "100%";
+						if( this.state.imageOrPdf=='aboutUsPdf'){
+							if(!(files[0].type == "application/pdf")) {
+								alert("Select only Pdf file");
+								return false;
+							}
+							else {
+								let _URL = window.URL || window.webkitURL;
+								let img = new Image();
+								img.onload = () => {
+									if(img.width < 300 || img.height < 300) {
+										alert("Minimum dimensions of file should be 300x300");
+										return false;
 									}
+									else {
+										this.setState({logoImage:e2.target.result,aboutPdf:e2.target.result,isUploadLoading:false});
+										if(img.width < img.height) {
+											uploadedImageStyles.content.width = "auto";
+											uploadedImageStyles.content.height = "100%";
+										}
 
-								}
-							};
-							img.src = _URL.createObjectURL(files[0]);
+									}
+								};
+								img.src = _URL.createObjectURL(files[0]);
+							}
+						}else if ( this.state.imageOrPdf=="aboutUsImg"){
+							if(files[0].size > 2*1024*1024) {
+								alert("The maximum supported file size is 2MB");
+								return false;
+							}
+							else {
+								let _URL = window.URL || window.webkitURL;
+								let img = new Image();
+								img.onload = () => {
+									if(img.width < 300 || img.height < 300) {
+										alert("Minimum dimensions of file should be 300x300");
+										return false;
+									}
+									else {
+										this.setState({logoImage:e2.target.result,messageImage:e2.target.result,isUploadLoading:false});
+										if(img.width < img.height) {
+											uploadedImageStyles.content.width = "auto";
+											uploadedImageStyles.content.height = "100%";
+										}
+
+									}
+								};
+								img.src = _URL.createObjectURL(files[0]);
+							}
 						}
+						
+					
+					
 						return;
 					};
 					reader.readAsDataURL(files[0]);
@@ -248,6 +281,7 @@ class AboutUsFormContainer extends Component {
 								panchangaPdf:'',
 								pdfUploadSuccess:true
 							})
+							
 						}if(this.state.panchangaImg=='aboutUsImg'){
 							this.setState({
 								imageId:response.data.id,
@@ -274,7 +308,7 @@ class AboutUsFormContainer extends Component {
 					this.setState({isUploadLoading:false});
 				}
 		};
-    	 const {errors ,success,imageId,panchangaId,pdfUploadSuccess,overview,panchanga,isLoading,messageImage,imageUploadSuccess,uploadedImageStyles} = this.state;
+    	 const {errors ,success,imageId,panchangaId,pdfUploadSuccess,overview,panchanga,aboutPdf,isLoading,messageImage,imageUploadSuccess,uploadedImageStyles} = this.state;
     	 let pdfSrc = `http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/image/stream/${panchangaId}`;
     	 let imgSrc = `http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/image/stream/${imageId}`;
     	 return (
@@ -323,23 +357,24 @@ class AboutUsFormContainer extends Component {
 			
 			<div className="col-xs-12 mt20">
             <label>Panchanga</label>
-	                {imageUploadSuccess && <img src = {messageImage} width="100%"/>}
-	                
+	               
+	                {pdfUploadSuccess && <a href={aboutPdf} target="_blank">Download</a>}
 	                {!pdfUploadSuccess && <a href={pdfSrc} target="_blank">Download</a>}
 	                <div className="pull-right logo-container" onClick={this.selectLogoClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
 	                  {this.state.logoImageOnCard != '' && <img ref="logoOnCard" src={this.state.logoImageOnCard} style={uploadedImageStyles}/> }
-	                  <button name="aboutUsPdf" ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload Pdf </button>
+	                  <button name="aboutUsPdf" ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer "><i className="fa fa-file-pdf-o" aria-hidden="true"> Upload Pdf</i> </button>
 	                </div>
 			</div>
 			</div>
             <div className="row mt10">
 			<div className="col-xs-12 mt20">
             <label>Upload Image</label>
-	                {imageUploadSuccess && <img src = {imgSrc} width="100%"/>}
+	                {imageUploadSuccess && <img src = {messageImage} width="100%"/>}
 	                {!imageUploadSuccess && <img src = {imgSrc} width="100%"/>}
 	                <div className="pull-right logo-container" onClick={this.selectLogoClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
 	                  {this.state.logoImageOnCard != '' && <img ref="logoOnCard" src={this.state.logoImageOnCard} style={uploadedImageStyles}/> }
-	                  <button name="aboutUsImg" ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload</button>
+	                  <button name="aboutUsImg" ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer "><i className="fa fa-picture-o" aria-hidden="true"> Upload Image</i></button>
+
 	                </div>
 			</div>
 			</div>
