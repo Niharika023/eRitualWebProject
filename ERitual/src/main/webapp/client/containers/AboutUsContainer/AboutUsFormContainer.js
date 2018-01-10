@@ -75,9 +75,9 @@ class AboutUsFormContainer extends Component {
 	}
 
 
-/*	componentWillUnmount() {
+	componentWillUnmount() {
 		this.props.clearDonationData();
-	}*/
+	}
 	
     closeModal() {
 		this.setState({
