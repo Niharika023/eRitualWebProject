@@ -48,6 +48,7 @@ function mapDispatchToProps(dispatch) {
 		userDonationFormsRequest: bindActionCreators({userDonationFormsRequest }, dispatch),
 		tagByKeyRequest: bindActionCreators({ tagByKeyRequest }, dispatch),
 		audVidDetailsFormrequest : bindActionCreators({ audVidDetailsFormrequest }, dispatch),
+		addToast:bindActionCreators({ addToast }, dispatch),
 	  };
 	}
 

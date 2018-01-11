@@ -2,6 +2,7 @@ import { CREATE_SEVA } from '../actions/sevaFormAction';
 import { CLEAR_SEVA } from '../actions/sevaFormAction';
 import { GET_SEVA_BY_ID } from '../actions/sevaFormAction';
 import { ADDAUDVID_INSEVA } from '../actions/sevaFormAction';
+import { UPDATE_AUDVID_INSEVA } from '../actions/sevaFormAction';
 
 export default function(state = [], action) {
 	switch (action.type) {
@@ -13,6 +14,11 @@ export default function(state = [], action) {
 	 case ADDAUDVID_INSEVA:
 	      return {
 		 audVidData: action.payload.sevaData
+	      }
+	      break;
+	 case UPDATE_AUDVID_INSEVA:
+	      return {
+		 audVidDataforupdate: action.payload.sevaData
 	      }
 	      break;
 	 case GET_SEVA_BY_ID:

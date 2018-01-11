@@ -157,7 +157,6 @@ class TagConfigFormContainer extends Component {
 						"tags":this.state.value
 					}
 			}
-			console.log("tagConfig",tagConfig);
 			this.props.userTagConfigFormsRequest(tagConfig).then(
 					(res) => {
 						//condition for unauthorized admin

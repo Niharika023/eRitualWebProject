@@ -54,38 +54,28 @@ class SevaFormContainer extends Component {
 				sevaImage:"",
 				submitApplied:false,
 				scroll:'',
-				triggerUploadVideo:false,
-				videoUrl:'',
 				showMessage:false,
 				message:'',
 				tags:'',
 				url:'',
-				showUrl:false,
-				metadata:'',
-				triggerUploadVidAudPdf: false,
 				triggerUploadImg: false,
 				contentId:'',
 				tag:'',
-				type:'',
 				showTextBox:false,
-				videoDescription:'',
-				pickedUrl:''
 		}
 
 		this.onChange = this.onChange.bind(this);// bind(this) is needed here,
 		this.onSubmit = this.onSubmit.bind(this);
-		this.handleInputChange = this.handleInputChange.bind(this);
+		//this.handleInputChange = this.handleInputChange.bind(this);
 		this.valid=this.valid.bind(this);
 		this.handleDateTimeSelect=this.handleDateTimeSelect.bind(this);
 		this.selectLogoClick = this.selectLogoClick.bind(this);
 		this.closeModal = this.closeModal.bind(this);
 		this.scrollPage=this.scrollPage.bind(this);
-		this.onSelect=this.onSelect.bind(this);
 		this.handleFile=this.handleFile.bind(this);
 		this.onClick=this.onClick.bind(this);
 		this.selectAudVid = this.selectAudVid.bind(this);
 		this.SelectTag = this.SelectTag.bind(this);
-		this.onSubmitAudVidUrl = this.onSubmitAudVidUrl.bind(this);
 	}
 
 	//method used to close the dialogue box for image upload
@@ -93,11 +83,10 @@ class SevaFormContainer extends Component {
 		this.setState({
 			'triggerUpload':false,
 			'logoImage':'',
-			'triggerUploadVideo':false,
 		});
 	}
-	
-	
+
+
 	//on select tag
 	SelectTag(event){
 		this.state.tag=event.target.value;
@@ -105,28 +94,15 @@ class SevaFormContainer extends Component {
 			this.setState({triggerUploadImg:true});
 		}
 		else{
-		//this.setState({triggerUploadVideo:true});
 			this.setState({triggerUploadImg:false});
-			this.setState({triggerUploadVidAudPdf:true});
 		}
 	}
-	onSelect(event){
-		if(event.target.value=='pdf'){
-			this.setState({triggerUploadVideo:false});
-			this.setState({showMessage:true});
-		}
-		else{
-		//this.setState({triggerUploadVideo:true});
-		this.setState({showUrl:true});
-		}
-	}
-	
+
 	onClick(event){
 		this.context.router.push('/ERitual/seva');
-	this.setState({
+		this.setState({
 			'triggerUpload':false,
 			'logoImage':'',
-			'triggerUploadVideo':false,
 		});
 	}
 
@@ -149,8 +125,8 @@ class SevaFormContainer extends Component {
 			}
 		});
 	}
-// method for checkbox and radio buttons
-	handleInputChange(event) {
+//	method for checkbox and radio buttons
+	/*handleInputChange(event) {
 		const target = event.target;
 		const value = target.type === 'checkbox' ? target.checked : target.value;
 		const name = target.name;
@@ -175,7 +151,7 @@ class SevaFormContainer extends Component {
 		this.setState({
 			[name]: value
 		});
-	}
+	}*/
 
 	isValid() {
 		const {errors, isValid } = validateInput(this.state);
@@ -213,7 +189,7 @@ class SevaFormContainer extends Component {
 		this.setState({scroll:''});
 	}
 
-// method for select time
+//	method for select time
 	handleDateTimeSelect(selectedDate){
 		let hoursFormat=null;
 		let minutesFormat=null;
@@ -233,61 +209,11 @@ class SevaFormContainer extends Component {
 			this.isValid();
 		}
 	}
-     
-	onSubmitAudVidUrl(event){
-		event.preventDefault();
-		
-		let audVidDetails= {
-				"name":this.state.typename,
-				"description":this.state.videoDescription,
-				"tags":this.state.tags,
-				"items":[{
-					"url":this.state.url,
-					"type":this.state.type,
-					"metadata":{
-						"onclick":this.state.metadata
-						} 
-					
-							}]
-		}
-		this.props.audVidDetailsFormrequest(audVidDetails).then(
-				(res) => {
-					console.log("res.payload.data",res.payload.data)
-					if(!res.payload.data && res.payload.status==600) {
-						this.props.addToast({  type:'error', 
-							text:`Sorry,you are not authorized to create or update seva, please contact to your  admin`, 
-							toastType:'auto'  });
-						this.context.router.push('/ERitual/seva');	
-					}
-					else if(res.payload.status==204){
-						this.setState({ errors : { "form" : "NameselectAudVid already exist" }, isLoading : false })
-					}
-					else{
-						res.payload.data=JSON.parse(decodeURIComponent(res.payload.data.replace(/\+/g,'%20')));
-						let contentFormData= res.payload.data;
-						this.state.contentId=contentFormData.id;
-						this.closeModal();
-						this.setState({pickedUrl:this.state.url});
-						alert("Selected Url"+this.state.pickedUrl);
-						if(contentFormData.message!= null) {
-							this.setState({ errors : { "form" : sevaFormData.message }, isLoading : false })
-						}
-						else {
-							this.props.addToast({  type:'success', 
-								text:`Data uploaded successfully`, 
-								toastType:'auto'  });
-							this.context.router.push('/ERitual/sevaForm');
-						}
-					}
-				},
-			);
-	}
-	
+
+
 	onSubmit(event) {
-		console.log("hello");
 		event.preventDefault();
 		this.state.submitApplied=true;
-
 		this.setState({ firstTimeFormSubmit : true })
 		if(this.isValid()) {
 			this.setState({ errors: {}, isLoading:true });
@@ -325,7 +251,6 @@ class SevaFormContainer extends Component {
 					"hostedContentId":this.state.contentId,
 					"tags":this.state.tag,
 			}
-			console.log("sevaaa",seva);
 			this.props.userSevaFormsRequest(seva).then(
 					(res) => {
 						if(!res.payload.response && res.payload.status==600) {
@@ -351,9 +276,9 @@ class SevaFormContainer extends Component {
 							}
 						}
 					},
-				);
-			}
+			);
 		}
+	}
 
 	//method for calendar from current date
 	valid(current)
@@ -366,35 +291,32 @@ class SevaFormContainer extends Component {
 		event.preventDefault();
 		this.setState({triggerUpload:true});
 	}
+
 	selectAudVid(event) {
 		this.state.type=event.target.value;
 		if(this.state.type=='text'){
 			this.state.showTextBox=true;	
-			this.setState({triggerUploadVideo:false});
-			}
+		}
 		else{
-		this.setState({triggerUploadVideo:true});
-		this.state.showTextBox=false;	
+			this.state.showTextBox=false;	
 		}
 	}
-	
-	 sevaTagRenderOptions() {
-	    	console.log("this.props",this.props);
-	    	if(this.props.tagConfigData!=undefined){
-	    	if(this.props.tagConfigData.length!=0){
-	    		let tagArr=[];
-	    	tagArr=(this.props.tagConfigData.tagByKeyConfig.value.tags).split(",");
-	    	console.log("tags",tagArr);
-	    		const tagList = tagArr.map((d) => 
-	    		{
-	    			return (<option key={d}>{d}</option>
-	    			)
-	    			});
-	    		return tagList;
-	    	}
-	    	}
-	    }
-	 
+
+	sevaTagRenderOptions() {
+		if(this.props.tagConfigData!=undefined){
+			if(this.props.tagConfigData.length!=0){
+				let tagArr=[];
+				tagArr=(this.props.tagConfigData.tagByKeyConfig.value.tags).split(",");
+				const tagList = tagArr.map((d) => 
+				{
+					return (<option key={d}>{d}</option>
+					)
+				});
+				return tagList;
+			}
+		}
+	}
+
 	render() {
 		var uploadedImageSrc;
 		let options={
@@ -469,15 +391,15 @@ class SevaFormContainer extends Component {
 					this.setState({isUploadLoading:false});
 				}
 		};
-		
 
-		const {errors ,success,metadata,videoUrl,specialPackageShow,videoDescription,showTextBox,tags,image,url,showUrl,typename,sevaUserName,message,showMessage, name,selectedTime,preRequisite,imageUploadSuccess,gotra,rashi,sevaImage, nakshatra, description,amount,active,inActive,isLoading,checked,triggerUploadVidAudPdf,triggerUploadImg} = this.state;
+
+		const {errors ,success,specialPackageShow,showTextBox,tags,image,sevaUserName,message,showMessage, name,selectedTime,preRequisite,imageUploadSuccess,gotra,rashi,sevaImage, nakshatra, description,amount,active,inActive,isLoading,checked,triggerUploadImg} = this.state;
 		return (
 				<div>
 				<form className="p20 user-entry-forms details-form" onSubmit={this.onSubmit} id="seva-form">
 				<h2 className="mt0 mb20 text-center page-header page-hdrCstm">Seva Form</h2>
 				{ errors.form && <div className="alert alert-danger ">{errors.form}</div> }
-				
+
 				<div className="row mb10">
 				<div className="col-xs-6">
 				<TextFieldGroup
@@ -504,7 +426,7 @@ class SevaFormContainer extends Component {
 				</div>
 				<div className="row mb10">
 				<div className="col-xs-6">
-				  <label>Tags</label>
+				<label>Tags</label>
 				<select name="type" className=" form-control  font-color" onChange={this.SelectTag}>
 				<option value=""> Select Tags</option>
 				{this.sevaTagRenderOptions()}
@@ -522,24 +444,24 @@ class SevaFormContainer extends Component {
 				{imageUploadSuccess && <img src = {sevaImage} width="100%"/>}
 				<div className="pull-right logo-container" onClick={this.selectLogoClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
 				{this.state.logoImageOnCard != '' && <img ref="logoOnCard" src={this.state.logoImageOnCard} style={uploadedImageStyles}/> }
-				 <button ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload</button>
+					<button ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload</button>
 				</div>
 				</div>}
 				<div className="col-md-6">
-			    <label>Description</label>
-			<textarea 
+				<label>Description</label>
+				<textarea 
 				cols="43"
 					rows="6"
 						onChange={this.onChange}
-			name="description"
-				placeholder = "Description"
-					value={description}
-			className="wordText messageColor"
-				/>
-			  </div>
-			</div>
+				name="description"
+					placeholder = "Description"
+						value={description}
+				className="wordText messageColor"
+					/>
+					</div>
+				</div>
 				<div className="row mb10">
-			     <div className="col-xs-6">
+				<div className="col-xs-6">
 				<TextFieldGroup
 				error={errors.amount}
 				label="Seva Amount"
@@ -562,13 +484,13 @@ class SevaFormContainer extends Component {
 				</div>
 				<div className="row mt30">
 				<div className="col-md-4 col-md-offset-4">
-				  <div className="btn-toolbar">
-				  <button type="button" disabled={this.state.isLoading} onClick={this.onClick} className="btn btn-lg btn-primary">
-					Cancel
-					</button>
-				  <button  disabled={this.state.isLoading} className="btn btn-lg btn-primary">
-					Submit
-					</button>
+				<div className="btn-toolbar">
+				<button type="button" disabled={this.state.isLoading} onClick={this.onClick} className="btn btn-lg btn-primary">
+				Cancel
+				</button>
+				<button  disabled={this.state.isLoading} className="btn btn-lg btn-primary">
+				Submit
+				</button>
 				</div>
 				</div>
 				</div>
@@ -581,90 +503,15 @@ class SevaFormContainer extends Component {
 				<button ref="uploadBtn" className="btn btn-primary pull-right">Upload</button>
 				</FileUpload>
 				</div></div>}
-				{this.state.triggerUploadVideo && <div className="modal-bg"><div className="video-upload-container">
-				<button className = 'close-modal' onClick = {this.closeModal}>x</button>
-				{videoUrl}
-			<form onSubmit={this.onSubmitAudVidUrl} id="vid-aud-url-form">
-			<div className="row">
-			 <div className="col-md-12">
-		      <TextFieldGroup
-		       error={errors.name}
-	       	   onChange={this.onChange}
-		       value={typename}
-		       field="typename"
-			    label="Type Name"
-				/>
-		    </div>
-		    </div>
-				<div className="row">
-				 <div className="col-md-12">
-				  <TextFieldGroup
-				  error={errors.name}
-				  onChange={this.onChange}
-				  value={url}
-				  field="url"
-				  label="url"
-						/>
-				    </div>
-				    </div>
-				    <div className="row">
-					
-					 <div className="col-md-12">
-				   <TextFieldGroup
-				error={errors.name}
-				onChange={this.onChange}
-				value={metadata}
-				field="metadata"
-					label="Metadata"
-						/>
-				    </div>
-				    </div>
-				    <div className="row">
-				    		 <div className="col-md-12">
-				   	  <TextFieldGroup
-				       error={errors.name} 
-				     onChange={this.onChange}
-				   value={tags}
-				field="tags"
-					label="Tags"
-						/>
-				    </div> 
-				    </div>
-                  <div className="row">
-				    <div className="col-md-12">
-				   	  <label>Description</label>
-				<textarea 
-				label="Description"
-					cols="35"
-						rows="6"
-							onChange={this.onChange}
-				name="videoDescription"
-					placeholder = "Description"
-						value={videoDescription}
-				className="wordText messageColor"
-					/>
-				  </div>
-				</div>
-                <div className="row mr15">
-                  <div className="text-center">
-                   <button className="btn btn-lg btn-primary">
-					Submit
-				   </button>
-                  </div>                	
-                </div>
-
-					</form>
-				</div>
-				</div>}
 				</div>
 		);
 				}
-	}
+				}
 
 
 
-	SevaFormContainer.contextTypes = {
-			router:React.PropTypes.object.isRequired
-	}
+				SevaFormContainer.contextTypes = {
+						router:React.PropTypes.object.isRequired
+				}
 
-	export default SevaFormContainer;
+				export default SevaFormContainer;

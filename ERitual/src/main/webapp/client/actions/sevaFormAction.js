@@ -7,6 +7,7 @@ export const UPDATE_SEVA='UPDATE_SEVA';
 export const IMAGE_STREAM='IMAGE_STREAM';
 export const CLEAR_SEVA = 'CLEAR_SEVA';
 export const ADDAUDVID_INSEVA = 'ADDAUDVID_INSEVA';
+export const UPDATE_AUDVID_INSEVA='UPDATE_AUDVID_INSEVA';
 export function setSevaData(sevaData) {
 	  return {
 	    type: CREATE_SEVA,
@@ -37,6 +38,14 @@ export function audVidDetailsFormrequest(audVidDetails) {
 		    payload : request
 		  }
 	}
+
+export function editAudVidDetailsFormrequest(audVidDetails) {
+	const request = axios.post('http://localhost:8080/ERitual/er/seva/content_update',audVidDetails);
+	  return {
+	    type    : UPDATE_AUDVID_INSEVA,
+	    payload : request
+	  }
+}
 
 export function clearSevaData() {
 	return {

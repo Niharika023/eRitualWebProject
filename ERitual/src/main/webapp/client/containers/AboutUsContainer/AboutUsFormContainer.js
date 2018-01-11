@@ -177,6 +177,13 @@ class AboutUsFormContainer extends Component {
 		  	        			this.setState({ errors : { "form" : "AboutUs Name already exist" }, isLoading : false })
 		  	        		}
 						//condition when response is not null
+						if(res.payload.status==200 && res.payload.data==true)
+							{
+							this.props.addToast({  type:'success', 
+								text:`AboutUs updated successfully`, 
+								toastType:'auto'  });
+							//this.context.router.push('/ERitual/aboutUs');
+							}
 						else{
 							res.payload.data=JSON.parse(decodeURIComponent(res.payload.data.replace(/\+/g,'%20')));
 							let aboutUsFormData= res.payload.data;

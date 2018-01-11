@@ -35,8 +35,6 @@ class DonationFormContainer extends Component {
 		this.onClick=this.onClick.bind(this);
 		this.SelectTag=this.SelectTag.bind(this);
 		this.handleFile=this.handleFile.bind(this);
-		this.onSelect=this.onSelect.bind(this);
-
 	}
 
 	closeModal() {
@@ -97,7 +95,6 @@ class DonationFormContainer extends Component {
 	
 	//For fetching tag list
 	donationTagRenderOptions() {
-    	console.log("this.props",this.props);
     	if(this.props.tagConfigData!=undefined){
     	if(this.props.tagConfigData.length!=0){
     		let tagArr=[];
@@ -136,16 +133,6 @@ class DonationFormContainer extends Component {
         this.setState({scroll:''});
  	}
 	
-	onSelect(event){
-		if(event.target.value=='text'){
-			this.setState({triggerUploadVideo:false});
-			this.setState({showMessage:true});
-		}
-		else{
-		this.setState({triggerUploadVideo:true});
-		this.setState({showMessage:false});
-		}
-	}
 	selectLogoClick(event) {
 		this.setState({triggerUpload:true});
 	}

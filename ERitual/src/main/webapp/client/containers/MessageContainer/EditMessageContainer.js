@@ -40,12 +40,16 @@ class MessageFormContainer extends Component {
 				bannerTags:'',
 				triggerUploadImg:false,
 				triggerUploadBanner:false,
+				triggerUploadVideo:false,	
 				videoDescription:'',
 				selectedUrl :'',
 				triggerSelectedUrl: false,
 				showTextBox:false,
 				tag:'',
-				contentId:null
+				contentId:null,
+				hostedContentId:'',
+				type:'',
+				hostedId:null
 				
 		}
 
@@ -73,50 +77,57 @@ class MessageFormContainer extends Component {
 
 	//this method will call on reload of page
 	componentDidMount() {
-		console.log("this.props.editMessage",this.props);
-		const {title} = this.props.editMessage;
-		const {message} = this.props.editMessage;
-		const {imageId} = this.props.editMessage;
-		const {id}=this.props.editMessage;
-		const {available}=this.props.editMessage;
-		const {description}=this.props.editMessage;
-		if(this.props.editMessage.hostedContent!=null){
-			const l=this.props.editMessage.hostedContent.map((item) => {
-				this.setState({
-					url,
-					metadata,
-					mime,
-				});
-			})
-		}
-		
-		this.setState({
-			title,
-			message,
-			imageId,
-			id,
-			contentId:this.props.editMessage.hostedContentId,
-		});
-		this.getHostedContentDataById();
-		if(this.props.editMessage.hostedContentId != null){
-		this.state.triggerUploadVideo=true;
+		if(this.props.editMessage != []) {
+			const {title} = this.props.editMessage;
+			const {message} = this.props.editMessage;
+			const {imageId} = this.props.editMessage;
+			const {id}=this.props.editMessage;
+			const {available}=this.props.editMessage;
+			const {description}=this.props.editMessage;
+			const {tags}=this.props.editMessage;
+			if(this.props.editMessage.hostedContent!=null){
+				const l=this.props.editMessage.hostedContent.map((item) => {
+					this.setState({
+						url:item.url,
+						metadata:item.metadata.onclick,
+						mime:item.mime,
+					});
+				})
+			}
+			
+			this.setState({
+				title,
+				message,
+				imageId,
+				id,
+				contentId:this.props.editMessage.hostedContentId,
+				tag:this.props.editMessage.tags
+			});
+			this.getHostedContentDataById();
+			if(this.props.editMessage.hostedContentId != null){
+			this.state.triggerUploadVideo=true;
+			}
 		}
 	}
 	
 	getHostedContentDataById() {
-		event.preventDefault();
-			this.props.getHostedContentDataById(this.props.editMessage.hostedContentId).then(
+		 event.preventDefault();
+		//this.state.triggerUploadVideo=true;
+		let hostedContentId=this.props.editMessage.hostedContentId;
+			this.props.getHostedContentDataById(hostedContentId).then(
 					(res) => {
+						
 							res.payload.data=JSON.parse(decodeURIComponent(res.payload.data.replace(/\+/g,'%20')));
 							let hostedContentData= res.payload.data;
 							this.setState({
 								typename:hostedContentData.name,
 								tags:hostedContentData.tags,
 								videoDescription:hostedContentData.description,
+								hostedId:hostedContentData.id
 							});
 					},
-				);
-			}
+			);
+		}
 	
 	componentWillUnmount() {
 		this.props.clearMessageData();
@@ -168,21 +179,18 @@ class MessageFormContainer extends Component {
 
 	//For fetching tag list
 	sriTagRenderOptions() {
-    	console.log("this.props",this.props);
-    	if(this.props.tagConfigData!=undefined){
-    	if(this.props.tagConfigData.length!=0){
-    		let tagArr=[];
-    	tagArr=(this.props.tagConfigData.tagByKeyConfig.value.tags).split(",");
-    	console.log("tags",tagArr);
-    		const tagList = tagArr.map((d) => 
-    		{
-    			return (<option key={d}>{d}</option>
-    			)
-    			});
-    		return tagList;
-    	}
-    	}
-    }
+		if(this.props.tagConfigData!=undefined){
+	    	if(this.props.tagConfigData.length!=0){
+	    		let tagArr=[];
+	    	tagArr=(this.props.tagConfigData.tagByKeyConfig.value.tags).split(",");
+	    		const tagList = tagArr.map((tag) => 
+	    		{
+	    			return (<option key={tag} selected = {tag === this.state.tag}>{tag}</option>
+	    			)
+	    			});
+	    		return tagList;
+	    	}
+	    	}    }
 
 	
 	handleFile(event){
@@ -264,7 +272,14 @@ class MessageFormContainer extends Component {
 	//For uploading video/audio/pdf
 	onSubmitAudVidUrl(event){
 		event.preventDefault();
-		
+		if(this.state.tag=='Banner')
+			this.state.type='image';
+		if(this.state.tag=='My Latest Articles')
+			this.state.type='text';
+		if(this.state.tag=='My Latest Videos')
+			this.state.type='video';
+		if(this.state.tag=='My Latest Audios')
+			this.state.type='audio';
 		let audVidDetails= {
 				"name":this.state.typename,
 				"description":this.state.videoDescription,
@@ -276,9 +291,10 @@ class MessageFormContainer extends Component {
 						"onclick":this.state.metadata
 						} 
 					
-							}]
+							}],
+				"id":this.state.hostedId
 		}
-		this.props.audVidDetailsFormrequest(audVidDetails).then(
+		this.props.editAudVidDetailsFormrequest(audVidDetails).then(
 				(res) => {
 					console.log("res.payload.data",res.payload.data)
 					if(!res.payload.data && res.payload.status==600) {
@@ -437,20 +453,7 @@ class MessageFormContainer extends Component {
 				</div>
                
               </div>
-              
               <div className="row">
-              {triggerUploadVidAudPdf && 
-              <div className="col-xs-6">
-				<label>Type</label>
-				<select name="type" className=" form-control  font-color "  onChange={this.selectAudVid}>
-				<option value="">Select Type</option>
-				<option value="audio" >Audio</option>
-				<option value="video"  >Video</option>
-				<option value="pdf">Pdf</option>
-				<option value="text">Text</option>
-				</select>
-			
-				</div>}
               {triggerUploadImg && <div className="col-xs-6 mt20">
               <label>Upload Image</label>
 	                {imageUploadSuccess && <img src = {messageImage} width="100%"/>}

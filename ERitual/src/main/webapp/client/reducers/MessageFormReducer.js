@@ -12,12 +12,15 @@ export default function(state = [], action) {
 	 }
 	      break;
 	 case GET_MESSAGE_BY_ID:
+		 
 		 return {
-		 	editMessage: JSON.parse(decodeURIComponent(action.payload.data.replace(/\+/g,'%20')))
+		 	...state,
+ 			editMessage: JSON.parse(decodeURIComponent(action.payload.data.replace(/\+/g,'%20')))
 	      }
 	      break;
 	 case GET_HOSTED_CONTENT_BY_ID:
 		 return {
+		 	...state,
 		 	hostedContentList: JSON.parse(decodeURIComponent(action.payload.data.replace(/\+/g,'%20')))
 	      }
 	      break;

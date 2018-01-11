@@ -113,12 +113,10 @@ class MessageFormContainer extends Component {
 
 	//For fetching tag list
 	sriTagRenderOptions() {
-    	console.log("this.props",this.props);
     	if(this.props.tagConfigData!=undefined){
     	if(this.props.tagConfigData.length!=0){
     		let tagArr=[];
     	tagArr=(this.props.tagConfigData.tagByKeyConfig.value.tags).split(",");
-    	console.log("tags",tagArr);
     		const tagList = tagArr.map((d) => 
     		{
     			return (<option key={d}>{d}</option>
@@ -268,12 +266,10 @@ class MessageFormContainer extends Component {
 	}
 	
 	 sevaTagRenderOptions() {
-	    	console.log("this.props",this.props);
 	    	if(this.props.tagConfigData!=undefined){
 	    	if(this.props.tagConfigData.length!=0){
 	    		let tagArr=[];
 	    	tagArr=(this.props.tagConfigData.tagByKeyConfig.value.tags).split(",");
-	    	console.log("tags",tagArr);
 	    		const tagList = tagArr.map((d) => 
 	    		{
 	    			return (<option key={d}>{d}</option>
@@ -386,18 +382,7 @@ class MessageFormContainer extends Component {
               </div>
               
               <div className="row">
-              {triggerUploadVidAudPdf && 
-              <div className="col-xs-6">
-				<label>Type</label>
-				<select name="type" className=" form-control  font-color "  onChange={this.selectAudVid}>
-				<option value="">Select Type</option>
-				<option value="audio" >Audio</option>
-				<option value="video"  >Video</option>
-				<option value="pdf">Pdf</option>
-				<option value="text">Text</option>
-				</select>
-			
-				</div>}
+              
               {triggerUploadImg && <div className="col-xs-6 mt20">
               <label>Upload Image</label>
 	                {imageUploadSuccess && <img src = {messageImage} width="100%"/>}

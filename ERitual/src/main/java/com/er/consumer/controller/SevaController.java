@@ -34,6 +34,7 @@ public class SevaController {
 	private static final String SEVA_LIST_BY_ID="/get/byId";
 	private static final String UPDATE_SEVA="/update";
 	private static final String CREATE_CONTENT="/content_create";
+	private static final String UPDATE_CONTENT="/content_update";
 	
 	
 	@RequestMapping(value = SEVA_LIST, method = RequestMethod.GET)
@@ -107,6 +108,24 @@ public class SevaController {
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 	}
 	
+	@RequestMapping(value = UPDATE_CONTENT, method = RequestMethod.POST)
+	public void updateContent(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+		CommonUtility.isSessionActive(response, (String) session.getAttribute("access_token"));
+		String roleLess="";
+		if(session.getAttribute("roles")!=null){
+			roleLess="";
+		}
+		else{
+			roleLess="unauthorized";
+		}
+		JSONObject reqObj = CommonUtility.readInputStream(request);
+		MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
+		String urlParameter = reqObj.toString();
+		map.add("hostedContent", urlParameter.toString());
+		String url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/hosted-content/update";
+		ServiceResponse responseObj = HttpUtil.sendPostForCreateOrUpdate(url, map,roleLess,(String) session.getAttribute("access_token"));
+		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
+	}
 	@RequestMapping(value = DELETE_SEVA_ID, method = RequestMethod.GET)
 	public void removeSevaId(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 		String url =null;
