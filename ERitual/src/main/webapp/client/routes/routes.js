@@ -28,6 +28,7 @@ import TagConfigForm from '../components/TagConfig/TagConfigForm';
 import TagConfig from '../containers/TagConfigContainer/TagConfigListForm';
 import AboutUs from '../components/AboutUs/aboutUsForm';
 import SevaDetails from  '../components/Seva/SevaDetailsComponents';
+import DonationDetails from  '../components/Donation/DonationDetailsComponents';
 /*import Otp from '../components/login/Otp';
 */
 
@@ -61,5 +62,6 @@ export default (
     <Route path= "tagConfig" component={TagConfig} />
     <Route path= "aboutUs" component={AboutUs} />
     <Route path= "sevaDetails/:id" component={SevaDetails} />
+    <Route path= "donationDetails/:id" component={DonationDetails} />
   </Route>
 )
