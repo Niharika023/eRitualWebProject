@@ -93,7 +93,6 @@ class EditSevaContainer extends Component {
 	}
 
 	editHostedContent(){
-	console.log("edit",this.state.tag);
 	}
 	scrollPage(error){
         for(var scroll in error.errors)

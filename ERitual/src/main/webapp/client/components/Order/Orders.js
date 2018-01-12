@@ -18,13 +18,14 @@ const Order = ({orderRenderList,orderDetails}) => {
 		let showEvent='';
 		if(item.seva!=null){
 			name=item.seva.name;
-			
+			showSeva=true;
 			}
-		if(item.donation!=null){
+		else if(item.donation!=null){
 			name=item.donation.name;
+			showDonation=true;
 			}
-		if(item.event!=null){name=item.event.name}
-		else{name=""}
+		else if(item.event!=null){name=item.event.name}
+		else{name="No data"}
       return ( 
     		  
     		  <tr className="font-color p-ver-70" key={index}>
@@ -34,8 +35,10 @@ const Order = ({orderRenderList,orderDetails}) => {
     		  </Link>
     		  </td>
     		  <td className="" > {item.tags}</td>
-    		  <td className="col-sm-2"><Link to={{ pathname: '/ERitual/messageDetail/'+item.id}}  className=" link-secondary  active ">{name}
-    		  </Link>
+    		  <td className="col-sm-2">{showSeva && <td><Link to={{ pathname: '/ERitual/sevaDetails/'+item.seva.id}}  className=" link-secondary  active ">{name}
+    		  </Link></td>}
+    		  {showDonation && <td><Link to={{ pathname: '/ERitual/donationDetails/'+item.donation.id}}  className=" link-secondary  active ">{name}
+    		  </Link></td>}
     		  </td>
     		  <td className="" > Rs.{item.amount}</td>
     		  <td className="" > {item.creatorEmail}</td>

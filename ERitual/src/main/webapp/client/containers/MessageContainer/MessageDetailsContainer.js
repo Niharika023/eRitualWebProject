@@ -41,13 +41,20 @@ class MessageDetailsContainer extends Component {
     	        showHostContent:false,
     	        url:'',
     	        metadata:'',
-    	        type:''
+    	        type:'',
+    	        pdfId:null,
+    	        pdfUploadSuccess:false,
+    	        showVideoOrAudioDesc:false,
+    	        videoDescription:'',
+    	        showMessage:true,
+    	        showpdfUpload:false
     	        	
       }
 
       this.onChange = this.onChange.bind(this);// bind(this) is needed here,
       this.selectLogoClick = this.selectLogoClick.bind(this);
       this.closeModal = this.closeModal.bind(this);
+      this.getHostedContentDataById=this.getHostedContentDataById.bind(this);
     }
     
     imageStreamRequest(imageId){
@@ -75,6 +82,31 @@ class MessageDetailsContainer extends Component {
     			showHostContent:true
     		})
     	}
+    	if(this.props.editMessage.imageId!=null)
+    		{
+    		this.setState({
+    			message,
+    			showpdfUpload:false,
+    			imageUploadSuccess:true,
+    			showVideoOrAudioDesc:false
+    		})
+    		}
+    	if( this.props.editMessage.hostedContentId !=null){
+    		this.setState({
+    			pdfId:this.props.editMessage.message,
+    			showpdfUpload:false,
+    			showVideoOrAudioDesc:true,
+    			imageUploadSuccess:false
+    		})
+    	}
+    	if((this.props.editMessage.imageId ==null ) && this.props.editMessage.hostedContentId ==null){
+    		this.setState({
+    			showpdfUpload:true,
+    			showVideoOrAudioDesc:false,
+    			imageUploadSuccess:false
+    		})
+    	}
+    	this.getHostedContentDataById();
     	let messageDate=new Date(this.props.editMessage.createdTS);
 		let formattedDate=messageDate.getFullYear() + '-' + (messageDate.getMonth()+1) + '-' + messageDate.getDate();
 		this.state.createdTS=formattedDate;
@@ -83,7 +115,6 @@ class MessageDetailsContainer extends Component {
     	this.setState({
     		title,
     		imageId,
-    		message,
     		id,
     		tags
     	});
@@ -99,6 +130,25 @@ class MessageDetailsContainer extends Component {
     		'logoImage':''
     	});
     }
+    
+    getHostedContentDataById() {
+		 event.preventDefault();
+		//this.state.triggerUploadVideo=true;
+		let hostedContentId=this.props.editMessage.hostedContentId;
+			this.props.getHostedContentDataById(hostedContentId).then(
+					(res) => {
+						
+							res.payload.data=JSON.parse(decodeURIComponent(res.payload.data.replace(/\+/g,'%20')));
+							let hostedContentData= res.payload.data;
+							console.log("hostedContentData",hostedContentData);
+							this.setState({
+								typename:hostedContentData.name,
+								videoDescription:hostedContentData.description,
+								hostedId:hostedContentData.id
+							});
+					},
+			);
+		}
     
     onChange(event) {
     	event.preventDefault();
@@ -210,7 +260,8 @@ class MessageDetailsContainer extends Component {
 	          this.setState({isUploadLoading:false});
 	        }
 	      };
-        const {errors ,success,image,tags,message,url,metadata,type,imageUploadSuccess,showHostContent,hostedListArr,messageImage,isLoading,title,time,imageId,createdTS} = this.state;
+        const {errors ,success,image,tags,message,url,showpdfUpload,showVideoOrAudioDesc,videoDescription,metadata,pdfId,type,pdfUploadSuccess,imageUploadSuccess,showHostContent,hostedListArr,messageImage,isLoading,title,time,imageId,createdTS} = this.state;
+        let pdfSrc = `http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/image/stream/${pdfId}`;
         let imgSrc = `http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/image/stream/${imageId}`;
         return (
         		<div>
@@ -235,30 +286,30 @@ class MessageDetailsContainer extends Component {
 				<tr >{title}</tr>
 				</tr>
 			</tr>
-			<tr className="row">
+			{showVideoOrAudioDesc && <tr className="row">
 			<th className="col-md-2">
 			<tr ><h3>Url</h3></tr>
 			</th>
 			<tr className="col-md-10 p-ver-20">
 			<tr >{url}</tr>
 			</tr>
-		</tr>
-		<tr className="row">
+		</tr>}
+		{showVideoOrAudioDesc && <tr className="row">
 		<th className="col-md-2">
 		<tr ><h3>Metadata</h3></tr>
 		</th>
 		<tr className="col-md-10 p-ver-20">
 		<tr >{metadata}</tr>
 		</tr>
-	</tr>
-	<tr className="row">
+	</tr>}
+	{showVideoOrAudioDesc && <tr className="row">
 	<th className="col-md-2">
 	<tr ><h3>Type</h3></tr>
 	</th>
 	<tr className="col-md-10 p-ver-20">
 	<tr >{type}</tr>
 	</tr>
-</tr>
+</tr>}
 			<tr className="row">
 			<th className="col-md-2">
 			<tr ><h3>Tags</h3></tr>
@@ -267,14 +318,31 @@ class MessageDetailsContainer extends Component {
 			<tr >{tags}</tr>
 			</tr>
 		</tr>
-				<tr className="row">
+		{showpdfUpload  && <tr className="row">
+		<th className="col-md-2">
+		<tr ><h3>Articles</h3></tr>
+		</th>
+		<tr className="col-md-10 p-ver-20">
+		<tr ><a href={pdfSrc} target="_blank"><span className="ml10">Click to view</span></a></tr>
+		</tr>
+	</tr>}
+				{imageUploadSuccess && <tr className="row">
 					<th className="col-md-2">
 					<tr ><h3>Message</h3></tr>
 					</th>
 					<tr className="col-md-10 p-ver-20  ">
 					<tr className="message-height">{message}</tr>
 					</tr>
+				</tr>}
+				{showVideoOrAudioDesc && <tr className="row">
+				<th className="col-md-2">
+				<tr ><h3>Description</h3></tr>
+				</th>
+				<tr className="col-md-10 p-ver-20  ">
+				<tr className="message-height">{videoDescription}</tr>
 				</tr>
+			</tr>}
+				
 				</tbody>
 			</table>
 

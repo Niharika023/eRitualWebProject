@@ -1,7 +1,7 @@
 import { FETCH_TAGCONFIG_LIST } from '../actions/tagConfigAction';
 import { DELETE_TAGCONFIG_BY_ID } from '../actions/tagConfigAction';
 import { FETCH_TAGCONFIG_LIST_BY_ID } from '../actions/tagConfigAction';
-import { CLEAR_TAGCONFIG } from '../actions/tagConfigAction';
+import { CLEAR_TAGCONFIG } from '../actions/tagConfigFormAction';
 
 export default function(state = [], action) {
   switch (action.type) {

@@ -3,7 +3,7 @@ import AboutUsFormContainer from '../../containers/AboutUsContainer/AboutUsFormC
 import { Link } from 'react-router';
 import { userTagConfigFormsRequest } from '../../actions/tagConfigFormAction'
 import { getAboutUsByKeyRequest } from '../../actions/tagConfigFormAction'
-import { clearTagConfigData } from '../../actions/donationFormAction';
+import { clearTagConfigData } from '../../actions/tagConfigFormAction';
 import {LargeLogo} from '../common/Logos';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -36,7 +36,6 @@ AboutUsForm.propTypes = {
 }
 
 function mapStateToProps(state) {
-	console.log("map",state.AboutUsReducer);
 	  return {
 		  tagConfig:state.tagConfigReducer,
 		  tag:state.tagList,

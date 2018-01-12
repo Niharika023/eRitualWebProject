@@ -44,6 +44,7 @@ class DonationDetailsContainer extends Component {
       this.onChange = this.onChange.bind(this);// bind(this) is needed here,
       this.selectLogoClick = this.selectLogoClick.bind(this);
       this.closeModal = this.closeModal.bind(this);
+      this.onClick=this.onClick.bind(this);
     }
     
     imageStreamRequest(imageId){
@@ -102,6 +103,14 @@ class DonationDetailsContainer extends Component {
       });
     }
     
+    onClick(event){
+		this.context.router.push('/ERitual/donation');
+	this.setState({
+			'triggerUpload':false,
+			'logoImage':'',
+			'triggerUploadVideo':false,
+		});
+	}
     
     // method to check the validity of the form
     isValid() {
@@ -128,7 +137,12 @@ class DonationDetailsContainer extends Component {
         return (
         		<div className="mt50">
         		<div className="p20 user-entry-forms details-form">
-                <h1 className="mt0 mb20 text-center page-header page-hdrCstm"> Seva Details</h1>
+                <h1 className="mt0 mb20 text-center page-header page-hdrCstm"> Donation Details</h1>
+               {/* <div className="btn-toolbar">
+				  <Link onClick={this.onClick} className="link-secondary  active coursor-pointer">
+					Back
+					</Link>
+					</div>*/}
                 <table className="table table-bordered table-striped mt30 ">
 				<tbody>
 				<tr className="row">

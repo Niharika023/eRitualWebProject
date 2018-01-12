@@ -43,7 +43,12 @@ class MessageFormContainer extends Component {
 				videoDescription:'',
 				selectedUrl :'',
 				triggerSelectedUrl: false,
-				showTextBox:false
+				showTextBox:false,
+				triggerUploadPdf:false,
+				pdfUploadSuccess:false,
+				isPdfUpload:false,
+				fileName:'',
+				aboutPdf:''
 				
 		}
 
@@ -89,9 +94,10 @@ class MessageFormContainer extends Component {
 		else if(this.state.tag=='My Latest Articles') {
 		//this.setState({triggerUploadVideo:true});
 			this.setState({triggerUploadImg:false});
+			this.setState({triggerUploadPdf:true});
 			this.setState({triggerUploadBanner:false});
 			this.setState({triggerUploadVideo:false});
-			this.setState({showTextBox:true});
+			//this.setState({showTextBox:true});
 			this.setState({triggerUploadVidAudPdf:false});
 			this.setState({triggerSelectedUrl:false});
 		}else {
@@ -201,8 +207,19 @@ class MessageFormContainer extends Component {
 
 	selectLogoClick(event) {
 		event.preventDefault();
-		this.setState({triggerUpload:true});
-	}
+		 this.state.imageOrPdf='';
+		 this.state.isPdfUpload=false;
+		 this.setState({triggerUpload:true});
+		 this.state.imageOrPdf=event.target.name;
+		 if( this.state.imageOrPdf=="aboutUsPdf"){
+
+		 this.setState({ panchangaPdf:event.target.name })
+
+		 }if( this.state.imageOrPdf=="aboutUsImg"){
+		 this.setState({ panchangaImg:event.target.name})	
+		 }
+			
+		}
 	
 	//For uploading video/audio/pdf
 	onSubmitAudVidUrl(event){
@@ -281,7 +298,7 @@ class MessageFormContainer extends Component {
 	    }
 	render() {
 		var uploadedImageSrc;
-		let options={
+    	let options={
 				baseUrl:'http://localhost:8080/ERitual/#',
 				requestHeaders: {
 					'Authorization':`Basic ${JSON.parse(localStorage.getItem('user')).token}`,
@@ -291,29 +308,58 @@ class MessageFormContainer extends Component {
 				chooseFile : (files) => {
 					const reader = new FileReader();
 					reader.onload = (e2) => {
-						if(files[0].size > 2*1024*1024) {
-							alert("The maximum supported file size is 2MB");
-							return false;
-						}
-						else {
-							let _URL = window.URL || window.webkitURL;
-							let img = new Image();
-							img.onload = () => {
-								if(img.width < 300 || img.height < 300) {
-									alert("Minimum dimensions of file should be 300x300");
-									return false;
-								}
-								else {
-									this.setState({logoImage:e2.target.result,messageImage:e2.target.result,isUploadLoading:false});
-									if(img.width < img.height) {
-										uploadedImageStyles.content.width = "auto";
-										uploadedImageStyles.content.height = "100%";
+						if( this.state.imageOrPdf=='aboutUsPdf'){
+							if(!(files[0].type == "application/pdf")) {
+								alert("Select only Pdf file");
+								return false;
+							}
+							else {
+								let _URL = window.URL || window.webkitURL;
+								let img = new Image();
+								/*img.onload = () => {
+									if(img.width < 300 || img.height < 300) {
+										alert("Minimum dimensions of file should be 300x300");
+										return false;
 									}
+									else {*/
+										this.setState({logoImage:e2.target.result,aboutPdf:e2.target.result,fileName:files[0].name,isPdfUpload:true,isUploadLoading:false});
+										/*if(img.width < img.height) {
+											uploadedImageStyles.content.width = "auto";
+											uploadedImageStyles.content.height = "100%";
+										}
 
-								}
-							};
-							img.src = _URL.createObjectURL(files[0]);
+									}
+								};*/
+								//img.src = _URL.createObjectURL(files[0]);
+							}
+						}else if ( this.state.imageOrPdf=="aboutUsImg"){
+							if(files[0].size > 2*1024*1024) {
+								alert("The maximum supported file size is 2MB");
+								return false;
+							}
+							else {
+								let _URL = window.URL || window.webkitURL;
+								let img = new Image();
+								img.onload = () => {
+									if(img.width < 300 || img.height < 300) {
+										alert("Minimum dimensions of file should be 300x300");
+										return false;
+									}
+									else {
+										this.setState({logoImage:e2.target.result,messageImage:e2.target.result,isUploadLoading:false});
+										if(img.width < img.height) {
+											uploadedImageStyles.content.width = "auto";
+											uploadedImageStyles.content.height = "100%";
+										}
+
+									}
+								};
+								img.src = _URL.createObjectURL(files[0]);
+							}
 						}
+						
+					
+					
 						return;
 					};
 					reader.readAsDataURL(files[0]);
@@ -330,12 +376,23 @@ class MessageFormContainer extends Component {
 						method: 'POST',
 						data: form
 					}).then((response) => {
+						if( this.state.panchangaPdf=='aboutUsPdf'){
+							this.setState({
+								message:response.data.id,
+								panchangaPdf:'',
+								pdfUploadSuccess:true
+							})
+							
+						}if(this.state.panchangaImg=='aboutUsImg'){
+							console.log("response.data.id",response.data.id);
+							this.setState({
+								imageId:response.data.id,
+								panchangaImg:'',
+								imageUploadSuccess:true
+							})
+						}	
 						this.setState({
-							imageId:response.data.id
-						})
-
-						this.setState({
-							imageUploadSuccess:true
+							//imageUploadSuccess:true
 						},()=>{
 						})
 					})
@@ -353,8 +410,7 @@ class MessageFormContainer extends Component {
 					this.setState({isUploadLoading:false});
 				}
 		};
-
-		const {errors ,success,showTextBox,videoDescription,image,bannerTags,triggerUploadBanner,triggerSelectedUrl,message,videoUrl,triggerUploadImg,triggerUploadVidAudPdf,typename,url,metadata,tags,description,imageUploadSuccess,showMessage,messageImage,isLoading,title} = this.state;
+		const {errors ,success,showTextBox,isPdfUpload,fileName,aboutPdf,videoDescription,pdfUploadSuccess,triggerUploadPdf,image,bannerTags,pdfName,triggerUploadBanner,triggerSelectedUrl,message,videoUrl,triggerUploadImg,triggerUploadVidAudPdf,typename,url,metadata,tags,description,imageUploadSuccess,showMessage,messageImage,isLoading,title} = this.state;
 		return (
 				<div>
         		<form className="p20 user-entry-forms details-form" onSubmit={this.onSubmitSamastahnamForm}>
@@ -382,7 +438,14 @@ class MessageFormContainer extends Component {
               </div>
               
               <div className="row">
-              
+              {triggerUploadPdf && <div className="col-xs-6 mt20">
+              <label>Upload Image</label>
+              {pdfUploadSuccess && <a href={aboutPdf} target="_blank"><span className="ml10"> Click to view</span></a>}
+              <div className="pull-right logo-container" onClick={this.selectLogoClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
+                {this.state.logoImageOnCard != '' && <img ref="logoOnCard" src={this.state.logoImageOnCard} style={uploadedImageStyles}/> }
+                <button name="aboutUsPdf" ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer "> Upload Pdf </button>
+              </div>
+              </div>}
               {triggerUploadImg && <div className="col-xs-6 mt20">
               <label>Upload Image</label>
 	                {imageUploadSuccess && <img src = {messageImage} width="100%"/>}
@@ -476,7 +539,8 @@ class MessageFormContainer extends Component {
 	            </div></div>}*/}
 				 
 				 {this.state.triggerUpload && <div className="modal-bg"><div className="file-upload-container">
-					{this.state.logoImage != '' && <img  className="full-width logo-upload-preview mb20" src={this.state.logoImage}/> }
+				 {isPdfUpload && <div> {fileName}</div>}	
+					 {this.state.logoImage != '' && <img  className="full-width logo-upload-preview mb20" src={this.state.logoImage}/> }
 					<button className = 'close-modal' onClick = {this.closeModal}>x</button>
 					<FileUpload options={options} clascloseModalsName="upload-btn-container">
 					<button ref="chooseBtn" className="btn btn-primary mr20">Choose File</button>

@@ -78,7 +78,7 @@ class SevaDetailsContainer extends Component {
     }
     
     componentWillUnmount() {
-    	
+    	this.props.clearSevaData();
     }
 
     closeModal() {

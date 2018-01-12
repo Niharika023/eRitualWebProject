@@ -32,7 +32,7 @@ public class OrderController {
 		String name=null;
 		String queryParameter="";
 		if( request.getParameter("search") != null)
-			queryParameter= "creator=" +request.getParameter("search");
+			queryParameter= "creatorLike=" +request.getParameter("search");
 		if( request.getParameter("targetType") != null)
 			queryParameter+= ";targetType=" +request.getParameter("targetType");
 		String pageSize=request.getParameter("pageSize");

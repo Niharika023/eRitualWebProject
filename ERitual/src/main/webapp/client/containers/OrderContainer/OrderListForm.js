@@ -206,6 +206,7 @@ this.onSubmit(event,this.state.itemsPerPage,this.state.activePage);
                                             <option value="" selected = {this.state.istargetType===""} >--- Select Target Type ---</option>
                                             <option value={this.state.istargetType='SEVA'}  >Seva  </option>
                                             <option value={this.state.istargetType='EVENT'} >Event</option>
+                                            <option value={this.state.istargetType='DONATION'} >Donation</option>
                                         </select>
                                         
                                     </div>

@@ -36,7 +36,8 @@ class AboutUsFormContainer extends Component {
         imageUploadSuccess:false,
         pdfUploadSuccess:false,
         fileName:'',
-        isPdfUpload:''
+        isPdfUpload:'',
+        showDownloadLink:false
         
       }
 
@@ -73,12 +74,15 @@ class AboutUsFormContainer extends Component {
 			imageId,
 			id,
 		});
+		if(this.props.editAboutUs.editAboutUs.value.panchangaId!=null){
+			this.state.showDownloadLink=false;
+		}
 
 	}
 
 
 	componentWillUnmount() {
-		this.props.clearDonationData();
+		this.props.clearTagConfigData();
 	}
 	
     closeModal() {
@@ -230,7 +234,7 @@ class AboutUsFormContainer extends Component {
 										return false;
 									}
 									else {*/
-										this.setState({logoImage:e2.target.result,aboutPdf:e2.target.result,fileName:files[0].name,isPdfUpload:true,isUploadLoading:false});
+										this.setState({logoImage:e2.target.result,aboutPdf:e2.target.result,fileName:files[0].name,isPdfUpload:true,showDownloadLink:false,isUploadLoading:false});
 										/*if(img.width < img.height) {
 											uploadedImageStyles.content.width = "auto";
 											uploadedImageStyles.content.height = "100%";
@@ -318,7 +322,7 @@ class AboutUsFormContainer extends Component {
 					this.setState({isUploadLoading:false});
 				}
 		};
-    	 const {errors ,success,imageId,panchangaId,pdfUploadSuccess,isPdfUpload,fileName,overview,panchanga,aboutPdf,isLoading,messageImage,imageUploadSuccess,uploadedImageStyles} = this.state;
+    	 const {errors ,success,imageId,panchangaId,pdfUploadSuccess,showDownloadLink,isPdfUpload,fileName,overview,panchanga,aboutPdf,isLoading,messageImage,imageUploadSuccess,uploadedImageStyles} = this.state;
     	 let pdfSrc = `http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/image/stream/${panchangaId}`;
     	 let imgSrc = `http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/image/stream/${imageId}`;
     	 console.log("imgSrc",imgSrc);
@@ -368,9 +372,9 @@ class AboutUsFormContainer extends Component {
 			
 			<div className="col-xs-12 mt20">
             <label>Panchanga</label>
-	               
-	                {pdfUploadSuccess && <a href={aboutPdf} target="_blank"><span className="ml10"> Click to view</span></a>}
-	                {!pdfUploadSuccess && <a href={pdfSrc} target="_blank"><span className="ml10">Click to view</span></a>}
+	               {showDownloadLink && <div> Please upload file</div>}
+	                {pdfUploadSuccess && !showDownloadLink && <a href={aboutPdf} target="_blank"><span className="ml10"> Click to view</span></a>}
+	                {!pdfUploadSuccess && !showDownloadLink && <a href={pdfSrc} target="_blank"><span className="ml10">Click to view</span></a>}
 	                <div className="pull-right logo-container" onClick={this.selectLogoClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
 	                  {this.state.logoImageOnCard != '' && <img ref="logoOnCard" src={this.state.logoImageOnCard} style={uploadedImageStyles}/> }
 	                  <button name="aboutUsPdf" ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer "> Upload Pdf </button>
@@ -416,5 +420,7 @@ class AboutUsFormContainer extends Component {
     	
     }
 }
-
+ AboutUsFormContainer.contextTypes = {
+	router:React.PropTypes.object.isRequired
+	                	}
 export default AboutUsFormContainer;

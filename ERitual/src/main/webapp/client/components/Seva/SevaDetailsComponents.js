@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import SevaDetailsContainer from '../../containers/SevaContainer/sevaDetailsContainer';
+import {clearSevaData} from '../../actions/sevaFormAction';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import {userEditSevasRequest} from '../../actions/sevaFormAction';
@@ -13,12 +14,12 @@ class SevaDetails extends Component {
 		this.props.userEditSevasRequest(this.props.params.id);
 	}
     render() {
-    	const {userEditSevasRequest, sevaIdForEdit,editSeva,addToast} = this.props;
+    	const {userEditSevasRequest, sevaIdForEdit,editSeva,addToast,clearSevaData} = this.props;
         return (
             <div className="row full-height">
               <div className="col-md-12  full-height">
                 <LargeLogo id="large_logo" className="large-logo"/>
-                {this.props.editSeva &&  this.props.editSeva.length != 0 && <SevaDetailsContainer  userEditSevasRequest={userEditSevasRequest}  sevaIdForEdit = {sevaIdForEdit} editSeva = {editSeva} id = {this.props.params.id}  addToast={addToast} deleteToast = {deleteToast}  />} 
+                {this.props.editSeva &&  this.props.editSeva.length != 0 && <SevaDetailsContainer  userEditSevasRequest={userEditSevasRequest}  sevaIdForEdit = {sevaIdForEdit} editSeva = {editSeva} id = {this.props.params.id}  addToast={addToast} deleteToast = {deleteToast} clearSevaData={clearSevaData} />} 
               </div>
             </div>
         );
@@ -41,8 +42,9 @@ function mapDispatchToProps(dispatch) {
 	return {
 		
 		userEditSevasRequest: bindActionCreators({userEditSevasRequest }, dispatch),
+		clearSevaData: bindActionCreators({ clearSevaData }, dispatch),
 	
 	  };
 	}
 
-export default connect(mapStateToProps, {userEditSevasRequest,addToast} )(SevaDetails)
+export default connect(mapStateToProps, {userEditSevasRequest,addToast,clearSevaData} )(SevaDetails)
