@@ -33,7 +33,8 @@ const Seva = ({sevaRenderList,deleteSeva}) => {
       return ( 
     		  
     		  <tr className="font-color p-ver-70" key={index}>
-              <td className="col-sm-2" > {item.name}</td>
+              <td className="col-sm-2" > <Link to={{ pathname: '/ERitual/sevaDetails/'+item.id}}  className=" link-secondary  active ">{item.name}
+    		  </Link></td>
               <td className="col-sm-2" > {item.tags}</td>
               <td className="col-sm-2" > Rs.{item.amount}</td>
               <td className="col-sm-2" > {time}</td>

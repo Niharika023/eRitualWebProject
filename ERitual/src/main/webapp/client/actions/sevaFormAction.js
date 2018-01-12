@@ -61,7 +61,7 @@ export function setImageStream(imageUrl) {
 	  };
 	}
 export function userEditSevasRequest(sevaIdForEdit) {
-	const request = axios.get('http://localhost:8080/ERitual/er/seva/get/byId'+"?sevaId="+ sevaIdForEdit);
+	 const request = axios.get('http://localhost:8080/ERitual/er/seva/get/byId'+"?sevaId="+ sevaIdForEdit);
 	  return {
 	    type    : GET_SEVA_BY_ID,
 	    payload : request
