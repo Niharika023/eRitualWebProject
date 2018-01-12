@@ -34,7 +34,9 @@ class AboutUsFormContainer extends Component {
         tagValue:'',
         tags:'',
         imageUploadSuccess:false,
-        pdfUploadSuccess:false
+        pdfUploadSuccess:false,
+        fileName:'',
+        isPdfUpload:''
         
       }
 
@@ -99,6 +101,7 @@ class AboutUsFormContainer extends Component {
 	
 		 event.preventDefault();
 		 this.state.imageOrPdf='';
+		 this.state.isPdfUpload=false;
 		 this.setState({triggerUpload:true});
 		 this.state.imageOrPdf=event.target.name;
 		 if( this.state.imageOrPdf=="aboutUsPdf"){
@@ -181,7 +184,7 @@ class AboutUsFormContainer extends Component {
 							this.props.addToast({  type:'success', 
 								text:`AboutUs updated successfully`, 
 								toastType:'auto'  });
-							//this.context.router.push('/ERitual/aboutUs');
+							this.context.router.push('/ERitual/home');
 							}
 						else{
 							res.payload.data=JSON.parse(decodeURIComponent(res.payload.data.replace(/\+/g,'%20')));
@@ -193,7 +196,7 @@ class AboutUsFormContainer extends Component {
 								this.props.addToast({  type:'success', 
 									text:`AboutUs created successfully`, 
 									toastType:'auto'  });
-								this.context.router.push('/ERitual/aboutUs');
+								this.context.router.push('/ERitual/home');
 							}
 						}
 					},
@@ -221,21 +224,21 @@ class AboutUsFormContainer extends Component {
 							else {
 								let _URL = window.URL || window.webkitURL;
 								let img = new Image();
-								img.onload = () => {
+								/*img.onload = () => {
 									if(img.width < 300 || img.height < 300) {
 										alert("Minimum dimensions of file should be 300x300");
 										return false;
 									}
-									else {
-										this.setState({logoImage:e2.target.result,aboutPdf:e2.target.result,isUploadLoading:false});
-										if(img.width < img.height) {
+									else {*/
+										this.setState({logoImage:e2.target.result,aboutPdf:e2.target.result,fileName:files[0].name,isPdfUpload:true,isUploadLoading:false});
+										/*if(img.width < img.height) {
 											uploadedImageStyles.content.width = "auto";
 											uploadedImageStyles.content.height = "100%";
 										}
 
 									}
-								};
-								img.src = _URL.createObjectURL(files[0]);
+								};*/
+								//img.src = _URL.createObjectURL(files[0]);
 							}
 						}else if ( this.state.imageOrPdf=="aboutUsImg"){
 							if(files[0].size > 2*1024*1024) {
@@ -315,9 +318,8 @@ class AboutUsFormContainer extends Component {
 					this.setState({isUploadLoading:false});
 				}
 		};
-    	 const {errors ,success,imageId,panchangaId,pdfUploadSuccess,overview,panchanga,aboutPdf,isLoading,messageImage,imageUploadSuccess,uploadedImageStyles} = this.state;
+    	 const {errors ,success,imageId,panchangaId,pdfUploadSuccess,isPdfUpload,fileName,overview,panchanga,aboutPdf,isLoading,messageImage,imageUploadSuccess,uploadedImageStyles} = this.state;
     	 let pdfSrc = `http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/image/stream/${panchangaId}`;
-    	console.log("pdfSrc",pdfSrc);
     	 let imgSrc = `http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/image/stream/${imageId}`;
     	 console.log("imgSrc",imgSrc);
     	 return (
@@ -367,8 +369,8 @@ class AboutUsFormContainer extends Component {
 			<div className="col-xs-12 mt20">
             <label>Panchanga</label>
 	               
-	                {pdfUploadSuccess && <a href={aboutPdf} target="_blank"><span className="ml10"> Download</span></a>}
-	                {!pdfUploadSuccess && <a href={pdfSrc} target="_blank"><span className="ml10">Download</span></a>}
+	                {pdfUploadSuccess && <a href={aboutPdf} target="_blank"><span className="ml10"> Click to view</span></a>}
+	                {!pdfUploadSuccess && <a href={pdfSrc} target="_blank"><span className="ml10">Click to view</span></a>}
 	                <div className="pull-right logo-container" onClick={this.selectLogoClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
 	                  {this.state.logoImageOnCard != '' && <img ref="logoOnCard" src={this.state.logoImageOnCard} style={uploadedImageStyles}/> }
 	                  <button name="aboutUsPdf" ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer "> Upload Pdf </button>
@@ -401,7 +403,8 @@ class AboutUsFormContainer extends Component {
 			</div>
 			</form>
 			 {this.state.triggerUpload && <div className="modal-bg"><div className="file-upload-container">
-				{this.state.logoImage != '' && <img  className="full-width logo-upload-preview mb20" src={this.state.logoImage}/> }
+			{isPdfUpload && <div> {fileName}</div>}	
+			 {this.state.logoImage != '' && !isPdfUpload && <img  className="full-width logo-upload-preview mb20" src={this.state.logoImage}/> }
 				<button className = 'close-modal' onClick = {this.closeModal}>x</button>
 				<FileUpload options={options} clascloseModalsName="upload-btn-container">
 				<button ref="chooseBtn" className="btn btn-primary mr20">Choose File</button>

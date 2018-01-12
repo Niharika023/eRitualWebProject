@@ -13,10 +13,18 @@ const Order = ({orderRenderList,orderDetails}) => {
 		let bookedDate=new Date(item.createdTS);
 		let formattedDate=bookedDate.getFullYear() + '-' + (bookedDate.getMonth()+1) + '-' + bookedDate.getDate();
 		let name='';
-		if(item.seva!=null){name=item.seva.name}
-		if(item.donation!=null){name=item.donation.name}
+		let showSeva='';
+		let showDonation='';
+		let showEvent='';
+		if(item.seva!=null){
+			name=item.seva.name;
+			
+			}
+		if(item.donation!=null){
+			name=item.donation.name;
+			}
 		if(item.event!=null){name=item.event.name}
-		else{name="No Data"}
+		else{name=""}
       return ( 
     		  
     		  <tr className="font-color p-ver-70" key={index}>

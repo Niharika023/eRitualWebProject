@@ -3,7 +3,7 @@ import AboutUsFormContainer from '../../containers/AboutUsContainer/AboutUsFormC
 import { Link } from 'react-router';
 import { userTagConfigFormsRequest } from '../../actions/tagConfigFormAction'
 import { getAboutUsByKeyRequest } from '../../actions/tagConfigFormAction'
-import { clearDonationData } from '../../actions/donationFormAction';
+import { clearTagConfigData } from '../../actions/donationFormAction';
 import {LargeLogo} from '../common/Logos';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -18,12 +18,12 @@ class AboutUsForm extends Component {
 		this.props.getAboutUsByKeyRequest(key);
 	}
     render() {
-      const {userTagConfigFormsRequest,getAboutUsByKeyRequest,editAboutUs,clearDonationData,addToast} = this.props;
+      const {userTagConfigFormsRequest,getAboutUsByKeyRequest,editAboutUs,clearTagConfigData,addToast} = this.props;
         return (
             <div className="row full-height">
               <div className="col-md-8 col-md-offset-2 full-height">
                 <LargeLogo id="large_logo" className="large-logo"/>
-                {this.props.editAboutUs &&  this.props.editAboutUs.length != 0 && <AboutUsFormContainer clearDonationData={clearDonationData} addToast={addToast} userTagConfigFormsRequest={userTagConfigFormsRequest} editAboutUs={editAboutUs} getAboutUsByKeyRequest={getAboutUsByKeyRequest}/>} 
+                {this.props.editAboutUs &&  this.props.editAboutUs.length != 0 && <AboutUsFormContainer clearTagConfigData={clearTagConfigData} addToast={addToast} userTagConfigFormsRequest={userTagConfigFormsRequest} editAboutUs={editAboutUs} getAboutUsByKeyRequest={getAboutUsByKeyRequest}/>} 
               </div>
             </div>
         );
@@ -50,7 +50,7 @@ function mapDispatchToProps(dispatch) {
 	return {
 		userTagConfigFormsRequest: bindActionCreators({userTagConfigFormsRequest }, dispatch),
 		getAboutUsByKeyRequest: bindActionCreators({getAboutUsByKeyRequest }, dispatch),
-		clearDonationData: bindActionCreators({ clearDonationData }, dispatch),
+		clearTagConfigData: bindActionCreators({ clearTagConfigData }, dispatch),
 		addToast:bindActionCreators({ addToast }, dispatch),
 		/*tagRequest: bindActionCreators({ tagRequest }, dispatch),
 		valueRequest: bindActionCreators({ valueRequest }, dispatch),
@@ -59,6 +59,6 @@ function mapDispatchToProps(dispatch) {
 	  };
 	}
 
-export default connect(mapStateToProps, {userTagConfigFormsRequest,addToast,getAboutUsByKeyRequest,clearDonationData} )(AboutUsForm)
+export default connect(mapStateToProps, {userTagConfigFormsRequest,addToast,getAboutUsByKeyRequest,clearTagConfigData} )(AboutUsForm)
 
 
