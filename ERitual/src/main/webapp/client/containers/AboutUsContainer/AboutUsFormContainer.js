@@ -61,7 +61,6 @@ class AboutUsFormContainer extends Component {
 	}
 
     componentDidMount() {
-    	console.log("about us",this.props.editAboutUs);
 		const {overview} = this.props.editAboutUs.editAboutUs.value;
 		const {panchangaId} = this.props.editAboutUs.editAboutUs.value;
 		const {imageId} = this.props.editAboutUs.editAboutUs.value;
@@ -290,6 +289,7 @@ class AboutUsFormContainer extends Component {
 							})
 							
 						}if(this.state.panchangaImg=='aboutUsImg'){
+							console.log("response.data.id",response.data.id);
 							this.setState({
 								imageId:response.data.id,
 								panchangaImg:'',
@@ -317,7 +317,9 @@ class AboutUsFormContainer extends Component {
 		};
     	 const {errors ,success,imageId,panchangaId,pdfUploadSuccess,overview,panchanga,aboutPdf,isLoading,messageImage,imageUploadSuccess,uploadedImageStyles} = this.state;
     	 let pdfSrc = `http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/image/stream/${panchangaId}`;
+    	console.log("pdfSrc",pdfSrc);
     	 let imgSrc = `http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/image/stream/${imageId}`;
+    	 console.log("imgSrc",imgSrc);
     	 return (
     		<div>
     		<form className="p20 user-entry-forms details-form" onSubmit={this.onSubmit} id="aboutUs-form">
@@ -365,11 +367,11 @@ class AboutUsFormContainer extends Component {
 			<div className="col-xs-12 mt20">
             <label>Panchanga</label>
 	               
-	                {pdfUploadSuccess && <a href={aboutPdf} target="_blank">Download</a>}
-	                {!pdfUploadSuccess && <a href={pdfSrc} target="_blank">Download</a>}
+	                {pdfUploadSuccess && <a href={aboutPdf} target="_blank"><span className="ml10"> Download</span></a>}
+	                {!pdfUploadSuccess && <a href={pdfSrc} target="_blank"><span className="ml10">Download</span></a>}
 	                <div className="pull-right logo-container" onClick={this.selectLogoClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
 	                  {this.state.logoImageOnCard != '' && <img ref="logoOnCard" src={this.state.logoImageOnCard} style={uploadedImageStyles}/> }
-	                  <button name="aboutUsPdf" ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer "><i className="fa fa-file-pdf-o" aria-hidden="true"> Upload Pdf</i> </button>
+	                  <button name="aboutUsPdf" ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer "> Upload Pdf </button>
 	                </div>
 			</div>
 			</div>
@@ -380,7 +382,7 @@ class AboutUsFormContainer extends Component {
 	                {!imageUploadSuccess && <img src = {imgSrc} width="100%"/>}
 	                <div className="pull-right logo-container" onClick={this.selectLogoClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
 	                  {this.state.logoImageOnCard != '' && <img ref="logoOnCard" src={this.state.logoImageOnCard} style={uploadedImageStyles}/> }
-	                  <button name="aboutUsImg" ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer "><i className="fa fa-picture-o" aria-hidden="true"> Upload Image</i></button>
+	                  <button name="aboutUsImg" ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer "> Upload Image</button>
 
 	                </div>
 			</div>

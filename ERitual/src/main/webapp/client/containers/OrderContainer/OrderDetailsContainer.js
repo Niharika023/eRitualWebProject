@@ -32,7 +32,8 @@ class OrderDetailsContainer extends Component {
 				selectDate:null,
 				time:null,
 				minutes:null,
-				hours:null
+				hours:null,
+				tags:''
 		}
 
 	}
@@ -49,6 +50,7 @@ class OrderDetailsContainer extends Component {
 			creatorEmail:orderData.creatorEmail,
 			amount:orderData.amount,
 			executionDate:orderData.executionDate,
+			tags:orderData.tags
 		})
 		let bookedDate=new Date(orderData.createdTS);
 			let formattedDate=bookedDate.getFullYear() + '-' + (bookedDate.getMonth()+1) + '-' + bookedDate.getDate();
@@ -122,7 +124,7 @@ class OrderDetailsContainer extends Component {
 
 
 	render() {
-		const {orderId,targetType,creatorName,amount,orderListArr} = this.state;
+		const {orderId,targetType,creatorName,amount,tags,orderListArr} = this.state;
 		return (
 				<div>
 				{/*<nav class="breadcrumb">
@@ -168,6 +170,14 @@ class OrderDetailsContainer extends Component {
 							<tr >{this.state.creatorEmail}</tr>
 							</tr>
 						</tr>
+						<tr className="row">
+						<th className="col-md-2">
+						<tr ><h3>Tag</h3></tr>
+						</th>
+						<tr className="col-md-10 mt20">
+						<tr >{this.state.tags}</tr>
+						</tr>
+					</tr>
 						<tr className="row">
 							<th className="col-md-2 ">
 							<tr ><h3>Scheduled Date</h3></tr>

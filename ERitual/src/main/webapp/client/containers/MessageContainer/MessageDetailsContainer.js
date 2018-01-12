@@ -35,7 +35,14 @@ class MessageDetailsContainer extends Component {
     	        title:'',
     	        message:'',
     	        createdTS:null,
-    	        hour:null
+    	        hour:null,
+    	        tags:'',
+    	        hostedListArr:'',
+    	        showHostContent:false,
+    	        url:'',
+    	        metadata:'',
+    	        type:''
+    	        	
       }
 
       this.onChange = this.onChange.bind(this);// bind(this) is needed here,
@@ -54,6 +61,20 @@ class MessageDetailsContainer extends Component {
     	const {imageId} = this.props.editMessage;
     	const {id}=this.props.editMessage;
     	const {createdTS}=this.props.editMessage;
+    	const {tags}=this.props.editMessage;
+    	const {hostedContentId}=this.props.editMessage;
+    	if(this.props.editMessage.hostedContentId!=null){
+    		const  hostedListArr = this.props.editMessage.hostedContent.map((item) => {
+    			this.state.url=item.url;
+    			this.state.metadata=item.metadata.onClick;
+    			this.state.type=item.type;
+    		
+    		});
+    		this.setState({
+    			hostedListArr,
+    			showHostContent:true
+    		})
+    	}
     	let messageDate=new Date(this.props.editMessage.createdTS);
 		let formattedDate=messageDate.getFullYear() + '-' + (messageDate.getMonth()+1) + '-' + messageDate.getDate();
 		this.state.createdTS=formattedDate;
@@ -63,7 +84,8 @@ class MessageDetailsContainer extends Component {
     		title,
     		imageId,
     		message,
-    		id
+    		id,
+    		tags
     	});
     }
     
@@ -188,7 +210,7 @@ class MessageDetailsContainer extends Component {
 	          this.setState({isUploadLoading:false});
 	        }
 	      };
-        const {errors ,success,image,message,imageUploadSuccess,messageImage,isLoading,title,time,imageId,createdTS} = this.state;
+        const {errors ,success,image,tags,message,url,metadata,type,imageUploadSuccess,showHostContent,hostedListArr,messageImage,isLoading,title,time,imageId,createdTS} = this.state;
         let imgSrc = `http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/image/stream/${imageId}`;
         return (
         		<div>
@@ -213,6 +235,38 @@ class MessageDetailsContainer extends Component {
 				<tr >{title}</tr>
 				</tr>
 			</tr>
+			<tr className="row">
+			<th className="col-md-2">
+			<tr ><h3>Url</h3></tr>
+			</th>
+			<tr className="col-md-10 p-ver-20">
+			<tr >{url}</tr>
+			</tr>
+		</tr>
+		<tr className="row">
+		<th className="col-md-2">
+		<tr ><h3>Metadata</h3></tr>
+		</th>
+		<tr className="col-md-10 p-ver-20">
+		<tr >{metadata}</tr>
+		</tr>
+	</tr>
+	<tr className="row">
+	<th className="col-md-2">
+	<tr ><h3>Type</h3></tr>
+	</th>
+	<tr className="col-md-10 p-ver-20">
+	<tr >{type}</tr>
+	</tr>
+</tr>
+			<tr className="row">
+			<th className="col-md-2">
+			<tr ><h3>Tags</h3></tr>
+			</th>
+			<tr className="col-md-10 p-ver-20">
+			<tr >{tags}</tr>
+			</tr>
+		</tr>
 				<tr className="row">
 					<th className="col-md-2">
 					<tr ><h3>Message</h3></tr>
@@ -221,7 +275,6 @@ class MessageDetailsContainer extends Component {
 					<tr className="message-height">{message}</tr>
 					</tr>
 				</tr>
-
 				</tbody>
 			</table>
 

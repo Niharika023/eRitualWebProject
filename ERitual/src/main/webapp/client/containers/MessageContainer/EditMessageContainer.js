@@ -49,7 +49,9 @@ class MessageFormContainer extends Component {
 				contentId:null,
 				hostedContentId:'',
 				type:'',
-				hostedId:null
+				hostedId:null,
+				id:null,
+				typename:''
 				
 		}
 
@@ -101,11 +103,34 @@ class MessageFormContainer extends Component {
 				imageId,
 				id,
 				contentId:this.props.editMessage.hostedContentId,
-				tag:this.props.editMessage.tags
+				//tag:this.props.editMessage.tags
 			});
+			this.state.tag=this.props.editMessage.tags;
 			this.getHostedContentDataById();
-			if(this.props.editMessage.hostedContentId != null){
+			if(this.props.editMessage.hostedContentId != null ){
 			this.state.triggerUploadVideo=true;
+			}
+			if(this.state.tag=='Banner'){
+				this.setState({triggerUploadBanner:true});
+				this.setState({triggerUploadImg:false});
+				this.setState({triggerUploadVidAudPdf:false});
+				this.setState({showTextBox:true});
+				this.setState({triggerSelectedUrl:false});
+				this.setState({triggerUploadVideo:false});
+				
+			}
+			else if(this.state.tag=='My Latest Articles') {
+			//this.setState({triggerUploadVideo:true});
+				this.setState({triggerUploadImg:false,triggerUploadBanner:false,triggerUploadVideo:false,showTextBox:true
+					,triggerUploadVidAudPdf:false,triggerSelectedUrl:false,triggerUploadVideo:false},()=>{
+					});
+				}
+			else {
+				this.setState({triggerUploadImg:false});
+				this.setState({triggerUploadBanner:false});
+				this.setState({triggerUploadVideo:true});
+				this.setState({showTextBox:false});
+				this.setState({triggerSelectedUrl:true});
 			}
 		}
 	}
@@ -121,7 +146,6 @@ class MessageFormContainer extends Component {
 							let hostedContentData= res.payload.data;
 							this.setState({
 								typename:hostedContentData.name,
-								tags:hostedContentData.tags,
 								videoDescription:hostedContentData.description,
 								hostedId:hostedContentData.id
 							});
@@ -143,6 +167,13 @@ class MessageFormContainer extends Component {
 	}
 	//on select tag
 	SelectTag(event){
+		this.state.url='';
+		this.state.metadata='';
+		this.state.mime=null;
+		this.state.type='';
+		this.state.videoDescription='';
+		this.state.hostedId=null;
+		this.state.contentId=null;
 		this.state.tag=event.target.value;
 		if(this.state.tag=='Banner'){
 			this.setState({triggerUploadBanner:true});
@@ -235,8 +266,9 @@ class MessageFormContainer extends Component {
 					"imageId":this.state.imageId,
 					"hostedContentId":this.state.contentId,
 					"tags":this.state.tag,
+					"id":this.state.id
 			}
-			this.props.userMessageFormsRequest(message).then(
+			this.props.userMessageUpdateFormsRequest(message).then(
 					(res) => {
 						if(!res.payload.response && res.payload.status==600) {
 							this.setState({ errors : { "form" : "Sorry,you are not authorized to create or update message, please contact to your  admin" }, isLoading : false })
@@ -245,7 +277,7 @@ class MessageFormContainer extends Component {
 							this.setState({ errors : { "form" : "Message already exist" }, isLoading : false })
 						}
 						else{
-							res.payload.data=JSON.parse(decodeURIComponent(res.payload.data.replace(/\+/g,'%20')));
+							//res.payload.data=JSON.parse(decodeURIComponent(res.payload.data.replace(/\+/g,'%20')));
 							let messageFormData= res.payload.data;
 							this.props.addToast({  type:'success', 
 								text:`Message created successfully`, 
@@ -280,10 +312,58 @@ class MessageFormContainer extends Component {
 			this.state.type='video';
 		if(this.state.tag=='My Latest Audios')
 			this.state.type='audio';
-		let audVidDetails= {
+		let audVidDetails={}
+		if(this.state.hostedId!=null)
+			{
+			audVidDetails= {
+					"name":this.state.typename,
+					"description":this.state.videoDescription,
+					"tags":"",
+					"items":[{
+						"url":this.state.url,
+						"type":this.state.type,
+						"metadata":{
+							"onclick":this.state.metadata
+							} 
+						
+								}],
+					"id":this.state.hostedId
+			}
+			this.props.editAudVidDetailsFormrequest(audVidDetails).then(
+					(res) => {
+						console.log("res.payload.data",res.payload.data)
+						if(!res.payload.data && res.payload.status==600) {
+							this.props.addToast({  type:'error', 
+								text:`Sorry,you are not authorized to create or update seva, please contact to your  admin`, 
+								toastType:'auto'  });
+							this.context.router.push('/ERitual/seva');	
+						}
+						else if(res.payload.status==204){
+							this.setState({ errors : { "form" : "NameselectAudVid already exist" }, isLoading : false })
+						}
+						else{
+							let contentFormData= res.payload.data;
+							
+							this.setState({selectedUrl:this.state.url});
+							if(contentFormData.message!= null) {
+								this.setState({ errors : { "form" : sevaFormData.message }, isLoading : false })
+							}
+							else {
+								this.props.addToast({  type:'success', 
+									text:`Data uploaded successfully`, 
+									toastType:'auto'  });
+								this.closeModal();
+								//this.context.router.push('/ERitual/messageForm');
+							}
+						}
+					},
+				);
+			}
+		else{
+		audVidDetails= {
 				"name":this.state.typename,
 				"description":this.state.videoDescription,
-				"tags":this.state.tags,
+				"tags":"",
 				"items":[{
 					"url":this.state.url,
 					"type":this.state.type,
@@ -292,9 +372,8 @@ class MessageFormContainer extends Component {
 						} 
 					
 							}],
-				"id":this.state.hostedId
 		}
-		this.props.editAudVidDetailsFormrequest(audVidDetails).then(
+		this.props.audVidDetailsFormrequest(audVidDetails).then(
 				(res) => {
 					console.log("res.payload.data",res.payload.data)
 					if(!res.payload.data && res.payload.status==600) {
@@ -319,11 +398,13 @@ class MessageFormContainer extends Component {
 							this.props.addToast({  type:'success', 
 								text:`Data uploaded successfully`, 
 								toastType:'auto'  });
-							this.context.router.push('/ERitual/messageForm');
+							//this.context.router.push('/ERitual/messageForm');
 						}
 					}
 				},
 			);
+		}
+		
 	}
 	
 	selectAudVid(event) {
@@ -427,7 +508,8 @@ class MessageFormContainer extends Component {
 				}
 		};
 
-		const {errors ,success,showTextBox,videoDescription,tag,image,bannerTags,triggerUploadBanner,triggerSelectedUrl,message,videoUrl,triggerUploadImg,triggerUploadVidAudPdf,typename,url,metadata,tags,description,imageUploadSuccess,showMessage,messageImage,isLoading,title} = this.state;
+		const {errors ,success,showTextBox,imageId,videoDescription,tag,image,bannerTags,triggerUploadBanner,triggerSelectedUrl,message,videoUrl,triggerUploadImg,triggerUploadVidAudPdf,typename,url,metadata,tags,description,imageUploadSuccess,showMessage,messageImage,isLoading,title} = this.state;
+		let imgSrc = `http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/image/stream/${imageId}`;
 		return (
 				<div>
         		<form className="p20 user-entry-forms details-form" onSubmit={this.onSubmitSamastahnamForm}>
@@ -466,7 +548,8 @@ class MessageFormContainer extends Component {
 				
 				 {triggerUploadBanner && <div className="col-xs-6 mt20">
 	              <label>Upload Banner</label>
-		                {imageUploadSuccess && <img src = {messageImage} width="100%"/>}
+	              {imageUploadSuccess && <img src = {messageImage} width="100%"/>}
+					{!imageUploadSuccess && <img src={imgSrc} width="100%"/>}
 		                <div className="pull-right logo-container" onClick={this.selectLogoClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
 		                  {this.state.logoImageOnCard != '' && <img ref="logoOnCard" src={this.state.logoImageOnCard} style={uploadedImageStyles}/> }
 		                  <button ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload</button>
@@ -591,17 +674,6 @@ class MessageFormContainer extends Component {
 						label="Metadata"
 							/>
 					    </div>
-					    </div>
-					    <div className="row">
-					    		 <div className="col-md-12">
-					   	  <TextFieldGroup
-					       error={errors.name}
-					     onChange={this.onChange}
-					   value={tags}
-					field="tags"
-						label="Tags"
-							/>
-					    </div> 
 					    </div>
 	                  <div className="row">
 					    <div className="col-md-12">

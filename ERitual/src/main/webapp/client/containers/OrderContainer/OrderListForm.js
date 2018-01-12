@@ -227,12 +227,14 @@ this.onSubmit(event,this.state.itemsPerPage,this.state.activePage);
                         <table className="table table-bordered table-striped mt30">
                                <thead>
                                     <tr className="font-color ">
-                                   <th className="tabel-header">Target Type</th>
+                                    <th className="tabel-header">Transaction Id</th>
+                                    <th className="tabel-header">Booked Date</th>
+                                   <th className="tabel-header">Entity</th>
+                                   <th className="tabel-header">Tags</th>
+                                   <th className="tabel-header">Title</th>
+                                   <th className="tabel-header">Amount</th>
                                  <th className="tabel-header">Email Id</th>
-                                 <th className="tabel-header">Booked Date</th>
-                                 <th className="tabel-header">Scheduled Date</th>
-                                 <th className="tabel-header">Tags</th>
-                                 <th className="tabel-header">Amount</th>
+                                 <th className="tabel-header">Phone No.</th>
                                 </tr>
                             </thead>
                               <Order orderRenderList ={orderList} />

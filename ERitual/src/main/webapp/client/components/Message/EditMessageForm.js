@@ -6,7 +6,7 @@ import {userEditMessagesRequest, userMessageUpdateFormsRequest, clearMessageData
 import {LargeLogo} from '../common/Logos';
 import { bindActionCreators } from 'redux';
 import {addToast, deleteToast} from '../../actions/Toasts';
-import {editAudVidDetailsFormrequest} from '../../actions/sevaFormAction';
+import {editAudVidDetailsFormrequest,audVidDetailsFormrequest} from '../../actions/sevaFormAction';
 import {tagByKeyRequest} from '../../actions/sevaFormAction';
 
 class EditMessageForm extends Component {
@@ -18,13 +18,13 @@ class EditMessageForm extends Component {
 		this.props.tagConfigData;
 	}
     render() {
-    	const {userMessageUpdateFormsRequest,getHostedContentDataById,tagConfigData, userEditMessagesRequest, editAudVidDetailsFormrequest,message,hostedContentList,editMessage,addToast,clearMessageData} = this.props;
+    	const {userMessageUpdateFormsRequest,getHostedContentDataById,audVidDetailsFormrequest,tagConfigData, userEditMessagesRequest, editAudVidDetailsFormrequest,message,hostedContentList,editMessage,addToast,clearMessageData} = this.props;
         console.log("edit msg props ", this.props.editMessage);
     	return (
             <div className="row full-height">
               <div className="col-md-8 col-md-offset-2 full-height">
                 <LargeLogo id="large_logo" className="large-logo"/>
-                {this.props.editMessage &&  this.props.editMessage.length != 0 && <EditMessageContainer tagConfigData={tagConfigData} hostedContentList={hostedContentList} editAudVidDetailsFormrequest= {editAudVidDetailsFormrequest} getHostedContentDataById={getHostedContentDataById} clearMessageData = {clearMessageData} userMessageUpdateFormsRequest={userMessageUpdateFormsRequest} userEditMessagesRequest={userEditMessagesRequest}  message = {message} editMessage = {editMessage} id = {this.props.params.id}  addToast={addToast} deleteToast = {deleteToast}  />} 
+                {this.props.editMessage &&  this.props.editMessage.length != 0 && <EditMessageContainer audVidDetailsFormrequest={audVidDetailsFormrequest} tagConfigData={tagConfigData} hostedContentList={hostedContentList} editAudVidDetailsFormrequest= {editAudVidDetailsFormrequest} getHostedContentDataById={getHostedContentDataById} clearMessageData = {clearMessageData} userMessageUpdateFormsRequest={userMessageUpdateFormsRequest} userEditMessagesRequest={userEditMessagesRequest}  message = {message} editMessage = {editMessage} id = {this.props.params.id}  addToast={addToast} deleteToast = {deleteToast}  />} 
               </div>
             </div>
         );
@@ -53,7 +53,8 @@ function mapDispatchToProps(dispatch) {
 		getHostedContentDataById:bindActionCreators({ getHostedContentDataById }, dispatch),
 		editAudVidDetailsFormrequest : bindActionCreators({ editAudVidDetailsFormrequest }, dispatch),
 		tagByKeyRequest: bindActionCreators({ tagByKeyRequest }, dispatch),
+		audVidDetailsFormrequest : bindActionCreators({ audVidDetailsFormrequest }, dispatch),
 	  };
 	}
 
-export default connect(mapStateToProps, {userEditMessagesRequest,getHostedContentDataById,tagByKeyRequest,editAudVidDetailsFormrequest,userMessageUpdateFormsRequest,addToast,clearMessageData} )(EditMessageForm)
+export default connect(mapStateToProps, {userEditMessagesRequest,getHostedContentDataById,audVidDetailsFormrequest,tagByKeyRequest,editAudVidDetailsFormrequest,userMessageUpdateFormsRequest,addToast,clearMessageData} )(EditMessageForm)

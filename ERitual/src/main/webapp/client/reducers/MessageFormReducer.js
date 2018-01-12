@@ -27,7 +27,7 @@ export default function(state = [], action) {
 	      
 	 case UPDATE_MESSAGE:
 	      return {
-		 messageData: action.payload.messageData
+		 editMessageData: action.payload.messageData
 	      }
 	      break;
 	 case CLEAR_MESSAGE:

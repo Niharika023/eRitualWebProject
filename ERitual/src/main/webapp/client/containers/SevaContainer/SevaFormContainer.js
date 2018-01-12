@@ -411,21 +411,6 @@ class SevaFormContainer extends Component {
 						/>
 						</div>
 				<div className="col-xs-6">
-				<label>Time</label><span className = "required"></span>
-				<Datetime 
-				onChange ={this.handleDateTimeSelect}
-				dateFormat={false}
-				isValidDate={this.valid}
-				timeFormat={this.state.isTime}
-				value={selectedTime}
-				inputProps={{ placeholder: "Time" }}
-				/>
-				{errors.time && <span className="help-block has-error material-label error-form "> {errors.time}</span>}
-
-				</div>
-				</div>
-				<div className="row mb10">
-				<div className="col-xs-6">
 				<label>Tags</label>
 				<select name="type" className=" form-control  font-color" onChange={this.SelectTag}>
 				<option value=""> Select Tags</option>
@@ -439,6 +424,22 @@ class SevaFormContainer extends Component {
 									label="Tags"
 										/>*/}
 				</div>
+				{/*<div className="col-xs-6">
+				<label>Time</label><span className = "required"></span>
+				<Datetime 
+				onChange ={this.handleDateTimeSelect}
+				dateFormat={false}
+				isValidDate={this.valid}
+				timeFormat={this.state.isTime}
+				value={selectedTime}
+				inputProps={{ placeholder: "Time" }}
+				/>
+				{errors.time && <span className="help-block has-error material-label error-form "> {errors.time}</span>}
+
+				</div>*/}
+				</div>
+				<div className="row mb10">
+				
 				{triggerUploadImg && <div className="col-xs-6 mt20">
 				<label>Upload Image</label>
 				{imageUploadSuccess && <img src = {sevaImage} width="100%"/>}
@@ -459,17 +460,18 @@ class SevaFormContainer extends Component {
 				className="wordText messageColor"
 					/>
 					</div>
+					<div className="col-xs-6">
+					<TextFieldGroup
+					error={errors.amount}
+					label="Seva Amount"
+						onChange={this.onChange}
+					value={amount}
+					field="amount"
+						/>
+						</div>
 				</div>
 				<div className="row mb10">
-				<div className="col-xs-6">
-				<TextFieldGroup
-				error={errors.amount}
-				label="Seva Amount"
-					onChange={this.onChange}
-				value={amount}
-				field="amount"
-					/>
-					</div>
+				
 				</div>
 				<div className="row mb10">
 				<div className="col-xs-12">

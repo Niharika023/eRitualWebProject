@@ -209,9 +209,9 @@ class MessageFormContainer extends Component {
 		event.preventDefault();
 		
 		let audVidDetails= {
-				"name":this.state.typename,
+				"name":this.state.title,
 				"description":this.state.videoDescription,
-				"tags":this.state.tags,
+				"tags":this.state.tag,
 				"items":[{
 					"url":this.state.url,
 					"type":this.state.type,
@@ -487,17 +487,6 @@ class MessageFormContainer extends Component {
 				<button className = 'close-modal' onClick = {this.closeModal}>x</button>
 				{videoUrl}
 				<form onSubmit={this.onSubmitAudVidUrl} id=" vid-aud-url-form">
-				<div className="row">
-				 <div className="col-md-12">
-			      <TextFieldGroup
-			       error={errors.name}
-		       	   onChange={this.onChange}
-			       value={typename}
-			       field="typename"
-				    label="Type Name"
-					/>
-			    </div>
-			    </div>
 					<div className="row">
 					 <div className="col-md-12">
 					  <TextFieldGroup
@@ -520,17 +509,6 @@ class MessageFormContainer extends Component {
 						label="Metadata"
 							/>
 					    </div>
-					    </div>
-					    <div className="row">
-					    		 <div className="col-md-12">
-					   	  <TextFieldGroup
-					       error={errors.name}
-					     onChange={this.onChange}
-					   value={tags}
-					field="tags"
-						label="Tags"
-							/>
-					    </div> 
 					    </div>
 	                  <div className="row">
 					    <div className="col-md-12">
