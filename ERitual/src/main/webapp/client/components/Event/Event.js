@@ -29,7 +29,7 @@ const Event = ({eventRenderList,deleteEvent}) => {
 		      return ( 
 		    		  
 		    		  <tr className="font-color p-ver-70" key={index}>
-		              <td className="col-sm-2" > {item.name}</td>
+		              <td className="col-sm-2" ><Link to={{ pathname: '/ERitual/eventDetails/'+item.id}}  className=" link-secondary  active ">{item.name}</Link> </td>
 		              <td className="col-sm-2" > {item.description}</td>
 		              <td className="col-sm-1" > {item.date}</td>
 		              <td className="col-sm-1" > {item.city}</td>
