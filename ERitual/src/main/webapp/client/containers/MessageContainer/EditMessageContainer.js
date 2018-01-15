@@ -623,7 +623,7 @@ class MessageFormContainer extends Component {
 	                {imageUploadSuccess && <img src = {messageImage} width="100%"/>}
 	                <div className="pull-right logo-container" onClick={this.selectLogoClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
 	                  {this.state.logoImageOnCard != '' && <img ref="logoOnCard" src={this.state.logoImageOnCard} style={uploadedImageStyles}/> }
-	                  <button ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload</button>
+	                  <button name="aboutUsImg" ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload</button>
 	                </div>
 				</div>}
 				
@@ -634,7 +634,7 @@ class MessageFormContainer extends Component {
 					{!imageUploadSuccess && <img src={imgSrc} width="100%"/>}
 		                <div className="pull-right logo-container" onClick={this.selectLogoClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
 		                  {this.state.logoImageOnCard != '' && <img ref="logoOnCard" src={this.state.logoImageOnCard} style={uploadedImageStyles}/> }
-		                  <button ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload</button>
+		                  <button name="aboutUsImg" ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload</button>
 		                </div>
 					</div>}
 		                  {showTextBox && <div>

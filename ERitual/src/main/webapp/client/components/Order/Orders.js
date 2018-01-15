@@ -9,7 +9,6 @@ const Order = ({orderRenderList,orderDetails}) => {
 		return <tbody><tr><td>Loading</td></tr></tbody>
 	}
 	const  orderList = orderRenderList.orderData.map((item,index) => {
-		console.log("item",item);
 		let bookedDate=new Date(item.createdTS);
 		let formattedDate=bookedDate.getFullYear() + '-' + (bookedDate.getMonth()+1) + '-' + bookedDate.getDate();
 		let name='';
@@ -38,6 +37,8 @@ const Order = ({orderRenderList,orderDetails}) => {
     		  <td className="col-sm-2">{showSeva && <td><Link to={{ pathname: '/ERitual/sevaDetails/'+item.seva.id}}  className=" link-secondary  active ">{name}
     		  </Link></td>}
     		  {showDonation && <td><Link to={{ pathname: '/ERitual/donationDetails/'+item.donation.id}}  className=" link-secondary  active ">{name}
+    		  </Link></td>}
+    		  {showEvent && <td><Link to={{ pathname: '/ERitual/eventDetails/'+item.event.id}}  className=" link-secondary  active ">{name}
     		  </Link></td>}
     		  </td>
     		  <td className="" > Rs.{item.amount}</td>

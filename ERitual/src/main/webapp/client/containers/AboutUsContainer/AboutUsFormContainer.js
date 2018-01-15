@@ -180,7 +180,7 @@ class AboutUsFormContainer extends Component {
 						}
 						//condition for duplicate aboutUs name
 						 else if(res.payload.status==204){
-		  	        			this.setState({ errors : { "form" : "AboutUs Name already exist" }, isLoading : false })
+		  	        			this.setState({ errors : { "form" : "Something went wrong.." }, isLoading : false })
 		  	        		}
 						//condition when response is not null
 						if(res.payload.status==200 && res.payload.data==true)
