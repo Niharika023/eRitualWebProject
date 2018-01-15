@@ -38,13 +38,15 @@ class DonationDetailsContainer extends Component {
     	        description:'',
     	        amount:'',
     	        createdTS:null,
-    	        hour:null
+    	        hour:null,
+    	        triggredNoData:false
       }
 
       this.onChange = this.onChange.bind(this);// bind(this) is needed here,
       this.selectLogoClick = this.selectLogoClick.bind(this);
       this.closeModal = this.closeModal.bind(this);
       this.onClick=this.onClick.bind(this);
+      this.showNodata=this.showNodata.bind(this);
     }
     
     imageStreamRequest(imageId){
@@ -63,6 +65,11 @@ class DonationDetailsContainer extends Component {
     	const {time}=this.props.editDonation;
     	const {id}=this.props.editDonation;
     	const {createdTS}=this.props.editDonation;
+    	if(this.props.editDonation.imageId == null ||this.props.editDonation.imageId == "" || this.props.editDonation.imageId == undefined ){
+    		this.state.triggredNoData = true;
+    	}else {
+    		this.state.triggredNoData= false;
+    	}
     	let messageDate=new Date(this.props.editDonation.createdTS);
 		let formattedDate=messageDate.getFullYear() + '-' + (messageDate.getMonth()+1) + '-' + messageDate.getDate();
 		this.state.createdTS=formattedDate;
@@ -76,7 +83,11 @@ class DonationDetailsContainer extends Component {
     		tags,
     		amount,
     		time
-    	});
+    	},
+    	  ()=>{
+    		 this.showNodata(event); 
+    	  }
+    	);
     }
     
     componentWillUnmount() {
@@ -88,6 +99,15 @@ class DonationDetailsContainer extends Component {
     		'triggerUpload':false,
     		'logoImage':''
     	});
+    }
+    showNodata(event) {
+    	if(this.state.imageId == null || this.state.imageId == "" || this.state.imageId == undefined ){
+    		this.state.triggredNoData = true
+    	}else {
+    		this.state.triggredNoData= false;
+    	}
+    	console.log(this.state.triggredNoData);
+     
     }
     
     onChange(event) {
@@ -132,7 +152,7 @@ class DonationDetailsContainer extends Component {
     	const {imageUrl} = this.props;
     	let imageData;
     	
-        const {errors ,description,success,tags,name,image,amount,imageUploadSuccess,messageImage,isLoading,time,imageId,createdTS} = this.state;
+        const {errors ,description,success,tags,name,image,amount,triggredNoData,imageUploadSuccess,messageImage,isLoading,time,imageId,createdTS} = this.state;
         let imgSrc = `http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/image/stream/${imageId}`;
         return (
         		<div className="mt50">
@@ -150,8 +170,9 @@ class DonationDetailsContainer extends Component {
 					<tr ><h3>Image</h3></tr>
 					</th>
 					<tr className="col-md-10 p-ver-20">
-					<tr >{imageUploadSuccess && <img src = {messageImage} width="100%"/>}
-	                {!imageUploadSuccess && <img src={imgSrc} width="100%"/>}</tr>
+					{ triggredNoData && <tr>No Image Available</tr>}
+					{!triggredNoData && <tr >{imageUploadSuccess && <img src = {messageImage} width="100%"/>}
+	                {!imageUploadSuccess && <img src={imgSrc} width="100%"/>}</tr>}
 					</tr>
 				</tr>
 				<tr className="row">

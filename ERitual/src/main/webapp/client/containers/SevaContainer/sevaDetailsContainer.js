@@ -31,6 +31,7 @@ class SevaDetailsContainer extends Component {
     	        isUploadLoading:true,
     	        isLoading:false,
     	        imageUploadSuccess:false,
+    	        triggredNoData:false,
     	        messageImage:"",
     	        name:'',
     	        message:'',
@@ -44,6 +45,7 @@ class SevaDetailsContainer extends Component {
       this.onChange = this.onChange.bind(this);// bind(this) is needed here,
       this.selectLogoClick = this.selectLogoClick.bind(this);
       this.closeModal = this.closeModal.bind(this);
+   
     }
     
     imageStreamRequest(imageId){
@@ -52,7 +54,7 @@ class SevaDetailsContainer extends Component {
     
     
     componentDidMount() { 
-         //console.log("Details"+JSON.stringify(this.props))
+        //console.log("Details"+JSON.stringify(this.props))
     	const {name} = this.props.editSeva;
     	const {tags} = this.props.editSeva;
     	const {imageId} = this.props.editSeva;
@@ -61,6 +63,11 @@ class SevaDetailsContainer extends Component {
     	const {time}=this.props.editSeva;
     	const {id}=this.props.editSeva;
     	const {createdTS}=this.props.editSeva;
+    	if(this.props.editSeva.imageId == null ||this.props.editSeva.imageId == "" || this.props.editSeva.imageId == undefined ){
+    		this.state.triggredNoData = true;
+    	}else {
+    		this.state.triggredNoData= false;
+    	}
     	let messageDate=new Date(this.props.editSeva.createdTS);
 		let formattedDate=messageDate.getFullYear() + '-' + (messageDate.getMonth()+1) + '-' + messageDate.getDate();
 		this.state.createdTS=formattedDate;
@@ -75,6 +82,8 @@ class SevaDetailsContainer extends Component {
     		amount,
     		time
     	});
+   
+    	
     }
     
     componentWillUnmount() {
@@ -111,7 +120,7 @@ class SevaDetailsContainer extends Component {
       // }
       return isValid;
     }
-
+    
     selectLogoClick(event) {
         this.setState({triggerUpload:true});
     }
@@ -122,10 +131,11 @@ class SevaDetailsContainer extends Component {
     	const {imageUrl} = this.props;
     	let imageData;
     	
-        const {errors ,description,success,tags,name,image,amount,imageUploadSuccess,messageImage,isLoading,time,imageId,createdTS} = this.state;
-        let imgSrc = `http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/image/stream/${imageId}`;
+        const {errors ,description,success,tags,name,image,amount,imageUploadSuccess,triggredNoData,messageImage,isLoading,time,imageId,createdTS} = this.state;
+
+       let imgSrc = `http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/image/stream/${imageId}`;
         return (
-        		<div className="mt50">
+        		<div className="mt50" >
         		<div className="p20 user-entry-forms details-form">
                 <h1 className="mt0 mb20 text-center page-header page-hdrCstm"> Seva Details</h1>
                 <table className="table table-bordered table-striped mt30 ">
@@ -135,8 +145,9 @@ class SevaDetailsContainer extends Component {
 					<tr ><h3>Image</h3></tr>
 					</th>
 					<tr className="col-md-10 p-ver-20">
-					<tr >{imageUploadSuccess && <img src = {messageImage} width="100%"/>}
-	                {!imageUploadSuccess && <img src={imgSrc} width="100%"/>}</tr>
+					{ triggredNoData && <tr>No Image available</tr>}
+					{!triggredNoData && <tr >{imageUploadSuccess && <img src = {messageImage} width="100%"/>}
+	                {!imageUploadSuccess && <img src={imgSrc} width="100%"/>}</tr>}
 					</tr>
 				</tr>
 				<tr className="row">

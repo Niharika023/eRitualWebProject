@@ -43,12 +43,14 @@ class EventDetailsContainer extends Component {
     	        city:'',
     	        contactDetails:'',
     	        createdTS:null,
-    	        hour:null
+    	        hour:null,
+    	        triggredNoData:false
       }
 
       this.onChange = this.onChange.bind(this);// bind(this) is needed here,
       this.selectLogoClick = this.selectLogoClick.bind(this);
       this.closeModal = this.closeModal.bind(this);
+  
     }
     
     imageStreamRequest(imageId){
@@ -71,6 +73,11 @@ class EventDetailsContainer extends Component {
     	const {contactDetails}=this.props.editEvent;
     	const {id}=this.props.editEvent;
     	const {createdTS}=this.props.editEvent;
+    	if(this.props.editEvent.imageId == null ||this.props.editEvent.imageId == "" || this.props.editEvent.imageId == undefined ){
+    		this.state.triggredNoData = true;
+    	}else {
+    		this.state.triggredNoData= false;
+    	}
     	let messageDate=new Date(this.props.editEvent.createdTS);
 		let formattedDate=messageDate.getFullYear() + '-' + (messageDate.getMonth()+1) + '-' + messageDate.getDate();
 		this.state.createdTS=formattedDate;
@@ -95,7 +102,7 @@ class EventDetailsContainer extends Component {
     componentWillUnmount() {
     	this.props.clearEventData();
     }
-
+ 
     closeModal() {
     	this.setState({
     		'triggerUpload':false,
@@ -137,7 +144,7 @@ class EventDetailsContainer extends Component {
     	const {imageUrl} = this.props;
     	let imageData;
     	
-        const {errors ,description,success,tags,name,image,amount,address1,address2,locality,city,contactDetails,imageUploadSuccess,eventImage,isLoading,time,imageId,createdTS} = this.state;
+        const {errors ,description,success,tags,name,triggredNoData,image,amount,address1,address2,locality,city,contactDetails,imageUploadSuccess,eventImage,isLoading,time,imageId,createdTS} = this.state;
         let imgSrc = `http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/image/stream/${imageId}`;
         return (
         		<div className="mt50">
@@ -150,8 +157,9 @@ class EventDetailsContainer extends Component {
 					<tr ><h3>Image</h3></tr>
 					</th>
 					<tr className="col-md-10 p-ver-20">
-					<tr >{imageUploadSuccess && <img src = {eventImage} width="100%"/>}
-	                {!imageUploadSuccess && <img src={imgSrc} width="100%"/>}</tr>
+					{ triggredNoData && <tr>No Image Availbale</tr>}
+					{ !triggredNoData && <tr >{imageUploadSuccess && <img src = {eventImage} width="100%"/>}
+	                {!imageUploadSuccess && <img src={imgSrc} width="100%"/>}</tr>}
 					</tr>
 				</tr>
 				<tr className="row">
