@@ -10,6 +10,7 @@ import { Link } from 'react-router';
 import {FontAwesome} from 'react-fontawesome';
 import Datetime from 'react-datetime';
 import {addToast, deleteToast} from '../../actions/Toasts';
+import {tagByKeyRequest} from '../../actions/sevaFormAction';
 
 class MessageListForm extends Component {
 	constructor(){
@@ -34,7 +35,8 @@ class MessageListForm extends Component {
                 triggerDelete:false,
                 confirmDelete:false,
                 deleteMessageId:'',
-                messageIndex:null
+                messageIndex:null,
+                tag:''
 
 		}
 		this.onCancel=this.onCancel.bind(this);
@@ -49,6 +51,7 @@ class MessageListForm extends Component {
 		this.scrollPage=this.scrollPage.bind(this);
 		 this.confirmedDeletion = this.confirmedDeletion.bind(this);
         this.closeModal = this.closeModal.bind(this);
+        this.SelectTag=this.SelectTag.bind(this);
 	}
 
 	scrollPage(){
@@ -79,6 +82,10 @@ class MessageListForm extends Component {
 
 	}
 
+	SelectTag(event){
+		this.state.tag=event.target.value;
+	}
+	
 	onStatus(event){
 		this.state.available=event.target.value;
 	}
@@ -145,6 +152,7 @@ class MessageListForm extends Component {
 		this.state.searchByMessage = "";
 		this.state.dateGreaterThan = null;
 		this.state.dateLesserThan = null;
+		this.state.tag="";
 		this.onSubmit(message,this.state.itemsPerPage,this.state.activePage);
 
 	}
@@ -206,9 +214,27 @@ class MessageListForm extends Component {
 		let pageNumber=this.state.activePage;
 		let searchByTitle =this.state.searchByTitle;
 		this.props.messageRenderList.messageRenderList(searchByTitle,this.state,pageSize,pageNumber);
+		let key='ui.tab.sri-samsthanam';
+		this.props.tagByKeyRequest.tagByKeyRequest(key);
+		//For fetching tag list
+		this.sriTagRenderOptions();
 		//this.props.deleteMessage.deleteMessage();
 	}
 
+	sriTagRenderOptions() {
+		if(this.props.tagConfigData!=undefined){
+	    	if(this.props.tagConfigData.length!=0){
+	    		let tagArr=[];
+	    	tagArr=(this.props.tagConfigData.tagByKeyConfig.value.tags).split(",");
+	    		const tagList = tagArr.map((tag) => 
+	    		{
+	    			return (<option key={tag} selected = {tag === this.state.tag}>{tag}</option>
+	    			)
+	    			});
+	    		return tagList;
+	    	}
+	    	}    }
+	
 	componentWillReceiveProps(nextProps) {
 		// if we changed routes...
 		if ((
@@ -223,7 +249,8 @@ class MessageListForm extends Component {
 
 	render() {
 
-		const {messageList,deleteMessage,location,addToast}=this.props;
+		const {messageList,deleteMessage,location,addToast,tagByKeyRequest,tagConfigData}=this.props;
+		const {tag}=this.state;
 		if(messageList.messageData!=undefined){
 			if(messageList.messageData.length!=0){
 				this.state.pageNum=Math.ceil(messageList.numItems / this.state.itemsPerPage);
@@ -357,6 +384,13 @@ class MessageListForm extends Component {
 							field="date"
 							/>
 							</div>
+							<div className="col-md-2">
+							  <label>Tags</label>
+							<select name="type" className=" form-control  font-color" onChange={this.SelectTag}>
+							<option value={tag}> Select Tags</option>
+							{this.sriTagRenderOptions()}
+							</select>
+							</div>
 							<div className="col-md-1">
 							<button  className="btn btn-lg btn-primary mt15" onClick={this.onSearch}>
 							<i className="kp-up-down blue mr_5"></i>
@@ -398,7 +432,7 @@ class MessageListForm extends Component {
 							<th className="tabel-header">Actions</th>
 							</tr>
 							</thead>
-							<Message messageRenderList ={messageList} deleteMessage={this.deleteMessage.bind(this)}/>
+							<Message messageRenderList ={messageList} tagByKeyRequest={tagByKeyRequest} tagConfigData={tagConfigData} deleteMessage={this.deleteMessage.bind(this)}/>
 							</table>
 							</div>
 							</div>
@@ -442,6 +476,7 @@ MessageListForm.contextTypes = {
 function mapStateToProps(state) {
 	return {
 		messageList:state.messageReducer ,
+		 tagConfigData:state.tagConfigFormReducer
 
 	}
 }
@@ -450,6 +485,7 @@ function mapDispatchToProps(dispatch) {
 		messageRenderList: bindActionCreators({messageRenderList}, dispatch),
 		deleteMessage: bindActionCreators({deleteMessage}, dispatch),
 		addToast:bindActionCreators({ addToast }, dispatch),
+		 tagByKeyRequest: bindActionCreators({ tagByKeyRequest }, dispatch),
 	};
 }
 

@@ -26,6 +26,12 @@ export function messageRenderList(searchByTitle,searchData,pageSize,pageNumber) 
 	else{
 		concatStr = concatStr + "searchByMessage=&";
 	}
+	if(searchData.tag !=""){
+		concatStr=concatStr+"searchByTag="+ searchData.tag+"&";
+	}
+	else{
+		concatStr = concatStr + "searchByTag=&";
+	}
 	if(searchData.orderByTitle !=""){
 		concatStr=concatStr+"orderByTitle="+ searchData.orderByTitle+"&";
 	}

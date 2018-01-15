@@ -39,6 +39,8 @@ public class MessageController {
 		String queryParameter="";
 		if( request.getParameter("searchByTitle") != null)
 			queryParameter+= "titleLike=" +request.getParameter("searchByTitle");
+		if( request.getParameter("searchByTag") != null)
+			queryParameter+= ";withTagPath=" +request.getParameter("searchByTag");
 		if( request.getParameter("searchByMessage") != null)
 			queryParameter+= ";messageLike=" +request.getParameter("searchByMessage");
 		if(request.getParameter("orderByTitle") != null)

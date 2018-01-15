@@ -62,7 +62,7 @@ class TagConfigFormContainer extends Component {
 	     if(this && !this.props.tagConfig) {
 	    	 return [];
 	     }
-	     if(this && this.props.tagConfig.tagConfigData.length==0 && this.state.selectedTagValues.indexOf(this.state.value) == -1) {
+	     if(this && this.props.tagConfig.tagConfigData.length==0 && this.state.selectedTagValues.indexOf(this.state.value) == -1 && this.state.selectedTagValues.length==0) {
 	    	 return [`Add ${this.state.value} to the list?`];
 	     }
 		 if(this && this.props.tagConfig.tagConfigData!=undefined){
@@ -149,7 +149,12 @@ class TagConfigFormContainer extends Component {
 		//condition for checking the validation
 		if(this.isValid()) {
 			this.setState({ errors: {}, isLoading:true });
-			alert(this.state.value);
+			let titile;
+			let keyName=(this.state.tag).split(",");
+			for(var i=0;i<keyName;i++){
+				titile=keyName[2];
+			}
+			alert(title);
 			let tagConfig= {
 					value:{
 						"type":"about-us",

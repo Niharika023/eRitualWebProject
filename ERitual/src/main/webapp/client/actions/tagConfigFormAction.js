@@ -7,6 +7,7 @@ export const CREATE_TAGCONFIG = 'CREATE_TAGCONFIG';
 export const FETCH_TAG ='FETCH_TAG';
 export const FETCH_VALUE ='FETCH_VALUE';
 export const GET_ABOUTUS_BY_ID='GET_ABOUTUS_BY_ID';
+export const CLEAR_ABOUTUS='CLEAR_ABOUTUS';
 
 export function setTagConfigData(tagConfigData) {
 	  return {
@@ -33,6 +34,13 @@ export function userEditTagConfigsRequest(tagConfigIdForEdit) {
 export function clearTagConfigData() {
 	return {
 	    type    : CLEAR_TAGCONFIG,
+	    payload:'clear'
+	 } 
+}
+
+export function clearAboutUsData() {
+	return {
+	    type    : CLEAR_ABOUTUS,
 	    payload:'clear'
 	 } 
 }

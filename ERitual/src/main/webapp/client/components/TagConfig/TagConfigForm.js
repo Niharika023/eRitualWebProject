@@ -13,11 +13,10 @@ import {addToast, deleteToast} from '../../actions/Toasts';
 class TagConfigForm extends Component {
 	componentDidMount(){
 		this.props.tagConfig;
-		this.props.tagRequest();
 		this.props.valueRequest();
 	}
     render() {
-      const {userTagConfigFormsRequest,tagRequest,valueRequest,tag,tagValue,tagConfig,addToast,tagConfigRenderList} = this.props;
+      const {userTagConfigFormsRequest,valueRequest,tag,tagValue,tagConfig,addToast,tagConfigRenderList} = this.props;
         return (
             <div className="row full-height">
               <div className="col-md-8 col-md-offset-2 full-height">

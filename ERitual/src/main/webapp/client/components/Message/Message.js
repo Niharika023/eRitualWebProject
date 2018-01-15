@@ -4,10 +4,12 @@ import EditMessageForm from '../../containers/MessageContainer/EditMessageContai
 import { Link } from 'react-router';
 import {LargeLogo} from '../common/Logos';
 
-const Message = ({messageRenderList,deleteMessage}) => {
+
+const Message = ({messageRenderList,deleteMessage,tagConfigData,tagByKeyRequest}) => {
 	if(messageRenderList.length == 0 ) {
 		return <tbody><tr><td>Loading</td></tr></tbody>
 	}
+	
 	const  messageList = messageRenderList.messageData.map((item,index) => {
 		let createdDate=new Date(item.createdTS);
 		let message="";

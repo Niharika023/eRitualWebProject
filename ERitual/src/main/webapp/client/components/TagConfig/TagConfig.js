@@ -8,7 +8,6 @@ const TagConfig = ({tagConfigRenderList,deleteTagConfig}) => {
 	if(tagConfigRenderList.length == 0 ) {
 		return <tbody><tr><td>Loading</td></tr></tbody>
 	}
-	console.log("y",tagConfigRenderList.tagConfigData);
 	const  tagConfigList = tagConfigRenderList.tagConfigData.map((item,index) => {
 		
       return ( 

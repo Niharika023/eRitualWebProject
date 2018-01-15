@@ -64,25 +64,24 @@ class AboutUsFormContainer extends Component {
 	}
 
     componentDidMount() {
-		const {overview} = this.props.editAboutUs.editAboutUs.value;
-		const {panchangaId} = this.props.editAboutUs.editAboutUs.value;
-		const {imageId} = this.props.editAboutUs.editAboutUs.value;
-		const {id} = this.props.editAboutUs.editAboutUs;
+		const {overview} = this.props.editAboutUs.value;
+		const {panchangaId} = this.props.editAboutUs.value;
+		const {imageId} = this.props.editAboutUs.value;
+		const {id} = this.props.editAboutUs;
 		this.setState({
 			overview,
 			panchangaId,
 			imageId,
 			id,
 		});
-		if(this.props.editAboutUs.editAboutUs.value.panchangaId!=null){
+		if(this.props.editAboutUs.value.panchangaId!=null){
 			this.state.showDownloadLink=false;
 		}
-
 	}
 
 
 	componentWillUnmount() {
-		this.props.clearTagConfigData();
+		this.props.clearAboutUsData();
 	}
 	
     closeModal() {
