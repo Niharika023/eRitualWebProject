@@ -11,6 +11,7 @@ import { Link } from 'react-router';
 import {FontAwesome} from 'react-fontawesome';
 import Datetime from 'react-datetime';
 import {addToast, deleteToast} from '../../actions/Toasts';
+import {tagByKeyRequest} from '../../actions/sevaFormAction';
 class SevaListForm extends Component {
 	constructor(){
 		super();
@@ -47,7 +48,8 @@ class SevaListForm extends Component {
 				triggerDelete:false,
 				confirmDelete:false,
 				deleteSevaId:'',
-				sevaIndex:null
+				sevaIndex:null,
+				tag:''
 
 		}
 		this.onCancel=this.onCancel.bind(this);
@@ -240,9 +242,27 @@ class SevaListForm extends Component {
 		let pageNumber=this.state.activePage;
 		let search =this.state.search;
 		this.props.sevaRenderList.sevaRenderList(search,this.state,pageSize,pageNumber);
+		let key='ui.tab.e-seva';
+		this.props.tagByKeyRequest.tagByKeyRequest(key);
+		//For fetching tag list
+		this.sevaTagRenderOptions();
 		//this.props.deleteSeva.deleteSeva();
 	}
 
+	sevaTagRenderOptions() {
+		if(this.props.tagConfigData!=undefined){
+	    	if(this.props.tagConfigData.length!=0){
+	    		let tagArr=[];
+	    	tagArr=(this.props.tagConfigData.tagByKeyConfig.value.tags).split(",");
+	    		const tagList = tagArr.map((tag) => 
+	    		{
+	    			return (<option key={tag} selected = {tag === this.state.tag}>{tag}</option>
+	    			)
+	    			});
+	    		return tagList;
+	    	}
+	    	}    }
+	
 	componentWillReceiveProps(nextProps) {
 		// if we changed routes...
 		if ((
@@ -256,7 +276,7 @@ class SevaListForm extends Component {
 	}
 
 	render() {
-		const {sevaList,deleteSeva,location,addToast}=this.props;
+		const {sevaList,deleteSeva,location,addToast,tag}=this.props;
 		if(sevaList.sevaData!=undefined){
 			if(sevaList.sevaData.length!=0){
 				this.state.pageNum=Math.ceil(sevaList.numItems / this.state.itemsPerPage);
@@ -342,6 +362,13 @@ class SevaListForm extends Component {
 								<option value="" selected={this.state.isAvailable === ""} >--- Select Availability ---</option>
 								<option value={this.state.isAvailable=true}  >True    </option>
 								<option value={this.state.isAvailable =false}  >False    </option>
+							</select>
+							</div>
+							<div className="col-md-2">
+							  <label>Tags</label>
+							<select name="type" className=" form-control  font-color" onChange={this.SelectTag}>
+							<option value={tag}> Select Tags</option>
+							{this.sevaTagRenderOptions()}
 							</select>
 							</div>
 							<div className="col-md-1">
@@ -449,6 +476,7 @@ SevaListForm.contextTypes = {
 function mapStateToProps(state) {
 	return {
 		sevaList:state.sevaReducer ,
+		tagConfigData:state.tagConfigFormReducer
 
 	}
 }
@@ -456,7 +484,8 @@ function mapDispatchToProps(dispatch) {
 	return {
 		sevaRenderList: bindActionCreators({sevaRenderList}, dispatch),
 		deleteSeva: bindActionCreators({deleteSeva}, dispatch),
-		addToast:bindActionCreators({ addToast }, dispatch)
+		addToast:bindActionCreators({ addToast }, dispatch),
+		tagByKeyRequest: bindActionCreators({ tagByKeyRequest }, dispatch),
 	};
 }
 

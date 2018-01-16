@@ -43,6 +43,8 @@ public class SevaController {
 		String queryParameter="";
 		if( request.getParameter("search") != null)
 			queryParameter= "nameLike=" +request.getParameter("search");
+		if( request.getParameter("searchByTag") != null)
+			queryParameter+= ";withTagPath=" +request.getParameter("searchByTag");
 		if(request.getParameter("orderByName") != null)
 			queryParameter+=";orderByName="+request.getParameter("orderByName");
 		if(request.getParameter("orderByAmount") !=null)

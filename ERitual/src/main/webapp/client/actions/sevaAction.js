@@ -29,6 +29,12 @@ export function sevaRenderList(search,searchData,pageSize,pageNumber) {
 	else{
 		concatStr = concatStr + "orderByName=&";
 	}
+	if(searchData.tag !=""){
+		concatStr=concatStr+"searchByTag="+ searchData.tag+"&";
+	}
+	else{
+		concatStr = concatStr + "searchByTag=&";
+	}
 	if(searchData.orderByAmount !=""){
 		concatStr=concatStr+"orderByAmount="+ searchData.orderByAmount+"&";
 	}
