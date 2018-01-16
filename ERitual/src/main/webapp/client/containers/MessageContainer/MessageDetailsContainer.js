@@ -47,7 +47,8 @@ class MessageDetailsContainer extends Component {
     	        showVideoOrAudioDesc:false,
     	        videoDescription:'',
     	        showMessage:true,
-    	        showpdfUpload:false
+    	        showpdfUpload:false,
+    	        editMessage:false
     	        	
       }
 
@@ -70,6 +71,11 @@ class MessageDetailsContainer extends Component {
     	const {createdTS}=this.props.editMessage;
     	const {tags}=this.props.editMessage;
     	const {hostedContentId}=this.props.editMessage;
+    	if(this.props.editMessage.imageId == null ||this.props.editMessage.imageId == "" || this.props.editMessage.imageId == undefined ){
+    		this.state.triggredNoData = true;
+    	}else {
+    		this.state.triggredNoData= false;
+    	}
     	if(this.props.editMessage.hostedContentId!=null){
     		const  hostedListArr = this.props.editMessage.hostedContent.map((item) => {
     			this.state.url=item.url;
@@ -260,7 +266,7 @@ class MessageDetailsContainer extends Component {
 	          this.setState({isUploadLoading:false});
 	        }
 	      };
-        const {errors ,success,image,tags,message,url,showpdfUpload,showVideoOrAudioDesc,videoDescription,metadata,pdfId,type,pdfUploadSuccess,imageUploadSuccess,showHostContent,hostedListArr,messageImage,isLoading,title,time,imageId,createdTS} = this.state;
+        const {errors ,success,image,tags,message,url,showpdfUpload,triggredNoData,showVideoOrAudioDesc,videoDescription,metadata,pdfId,type,pdfUploadSuccess,imageUploadSuccess,showHostContent,hostedListArr,messageImage,isLoading,title,time,imageId,createdTS} = this.state;
         let pdfSrc = `http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/image/stream/${pdfId}`;
         let imgSrc = `http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/image/stream/${imageId}`;
         return (
@@ -274,8 +280,9 @@ class MessageDetailsContainer extends Component {
 					<tr ><h3>Image</h3></tr>
 					</th>
 					<tr className="col-md-10 p-ver-20">
-					<tr >{imageUploadSuccess && <img src = {messageImage} width="100%"/>}
-	                {!imageUploadSuccess && <img src={imgSrc} width="100%"/>}</tr>
+					{ triggredNoData && <tr>Image not available.</tr>}
+					{ !triggredNoData && <tr>{imageUploadSuccess && <img src = {messageImage} width="100%"/>}
+	                {!imageUploadSuccess && <img src={imgSrc} width="100%"/>}</tr>}
 					</tr>
 				</tr>
 				<tr className="row">
