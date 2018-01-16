@@ -87,7 +87,7 @@ class MessageDetailsContainer extends Component {
     		this.setState({
     			message,
     			showpdfUpload:false,
-    			imageUploadSuccess:true,
+    			imageUploadSuccess:false,
     			showVideoOrAudioDesc:false
     		})
     		}
@@ -326,7 +326,7 @@ class MessageDetailsContainer extends Component {
 		<tr ><a href={pdfSrc} target="_blank"><span className="ml10">Click to view</span></a></tr>
 		</tr>
 	</tr>}
-				{imageUploadSuccess && <tr className="row">
+				{!imageUploadSuccess && <tr className="row">
 					<th className="col-md-2">
 					<tr ><h3>Message</h3></tr>
 					</th>

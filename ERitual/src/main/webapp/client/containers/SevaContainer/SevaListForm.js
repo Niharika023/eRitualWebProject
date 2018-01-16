@@ -65,6 +65,7 @@ class SevaListForm extends Component {
 		this.scrollPage=this.scrollPage.bind(this);
 		this.confirmedDeletion = this.confirmedDeletion.bind(this);
 		this.closeModal = this.closeModal.bind(this);
+		this.SelectTag=this.SelectTag.bind(this);
 	}
 
 	onChange(seva) {
@@ -177,7 +178,7 @@ class SevaListForm extends Component {
 		this.state.isAvailable="";
 		this.state.available="";
 		this.state.selectedIndex=0;
-
+		this.state.tag="";	
 		this.onSubmit(event,this.state.itemsPerPage,this.state.activePage);
 
 	}
@@ -249,6 +250,10 @@ class SevaListForm extends Component {
 		//this.props.deleteSeva.deleteSeva();
 	}
 
+	SelectTag(event){
+		this.state.tag=event.target.value;
+	}
+	
 	sevaTagRenderOptions() {
 		if(this.props.tagConfigData!=undefined){
 	    	if(this.props.tagConfigData.length!=0){
@@ -345,7 +350,7 @@ class SevaListForm extends Component {
 							</div>
 							</div>
 							<div className="row">
-							<div className="col-md-4 ">
+							<div className="col-md-3 ">
 							<TextFieldGroup
 							label="Name "
 								onChange={this.onChange}
@@ -359,14 +364,14 @@ class SevaListForm extends Component {
 							<span className="col-md-2"><label>Available</label></span>
 							<h4><i className="kp-up-down blue"></i></h4>
 							<select className=" form-control "  onChange={this.onStatus}  field = "available">
-								<option value="" selected={this.state.isAvailable === ""} >--- Select Availability ---</option>
+								<option value="" selected={this.state.isAvailable === ""} >Select Availability</option>
 								<option value={this.state.isAvailable=true}  >True    </option>
 								<option value={this.state.isAvailable =false}  >False    </option>
 							</select>
 							</div>
 							<div className="col-md-2">
 							  <label>Tags</label>
-							<select name="type" className=" form-control  font-color" onChange={this.SelectTag}>
+							<select name="type" className=" form-control" onChange={this.SelectTag}>
 							<option value={tag}> Select Tags</option>
 							{this.sevaTagRenderOptions()}
 							</select>
@@ -382,8 +387,8 @@ class SevaListForm extends Component {
 							Clear
 							</button>
 							</div>
-							<div className="col-md-1 col-md-offset-1 ">
-							<button  className="btn btn-lg  sector-division btn-primary mb15 mt15" onClick={this.onAdd}>
+							<div className="col-md-1  ">
+							<button  className="btn btn-lg  sector-division btn-primary  mt20" onClick={this.onAdd}>
 							Add Seva
 							</button>
 							</div>
