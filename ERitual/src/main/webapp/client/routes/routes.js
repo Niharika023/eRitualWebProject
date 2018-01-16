@@ -26,6 +26,7 @@ import otpVerification from '../components/Login/OtpVerification';
 import MessageDetail from '../components/Message/MessageDetails';
 import TagConfigForm from '../components/TagConfig/TagConfigForm';
 import TagConfig from '../containers/TagConfigContainer/TagConfigListForm';
+import EditTagConfig from '../components/TagConfig/EditTagConfigForm';
 import AboutUs from '../components/AboutUs/aboutUsForm';
 import SevaDetails from  '../components/Seva/SevaDetailsComponents';
 import DonationDetails from  '../components/Donation/DonationDetailsComponents';
@@ -60,6 +61,7 @@ export default (
     <Route path= "messageForm" component={MessageForm} />
     <Route path= "message" component={Message} />
     <Route path= "tagConfigForm" component={TagConfigForm} />
+    <Route path= "editTagConfig/:id" component={EditTagConfig} />
     <Route path= "tagConfig" component={TagConfig} />
     <Route path= "aboutUs" component={AboutUs} />
     <Route path= "sevaDetails/:id" component={SevaDetails} />
