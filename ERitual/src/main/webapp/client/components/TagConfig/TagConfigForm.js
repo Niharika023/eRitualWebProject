@@ -9,19 +9,22 @@ import {tagConfigRenderList} from '../../actions/tagConfigAction';
 import {LargeLogo} from '../common/Logos';
 import { bindActionCreators } from 'redux';
 import {addToast, deleteToast} from '../../actions/Toasts';
+import {tagByKeyRequest} from '../../actions/sevaFormAction';
 
 class TagConfigForm extends Component {
 	componentDidMount(){
 		this.props.tagConfig;
 		this.props.valueRequest();
+		this.props.tagConfigRenderList();
+		this.props.tagConfigData;
 	}
     render() {
-      const {userTagConfigFormsRequest,valueRequest,tag,tagValue,tagConfig,addToast,tagConfigRenderList} = this.props;
+      const {userTagConfigFormsRequest,valueRequest,tag,tagValue,tagConfig,tagByKeyRequest,addToast,tagConfigRenderList} = this.props;
         return (
             <div className="row full-height">
               <div className="col-md-8 col-md-offset-2 full-height">
                 <LargeLogo id="large_logo" className="large-logo"/>
-                <TagConfigFormContainer userTagConfigFormsRequest={userTagConfigFormsRequest} valueRequest={valueRequest} tagConfig={tagConfig} tagConfigRenderList = {tagConfigRenderList} addToast={addToast} tag = {tag} tagValue={tagValue} deleteToast = {deleteToast}/> 
+                <TagConfigFormContainer userTagConfigFormsRequest={userTagConfigFormsRequest} tagByKeyRequest={tagByKeyRequest} valueRequest={valueRequest} tagConfig={tagConfig} tagConfigRenderList = {tagConfigRenderList} addToast={addToast} tag = {tag} tagValue={tagValue} deleteToast = {deleteToast}/> 
               </div>
             </div>
         );
@@ -37,7 +40,8 @@ function mapStateToProps(state) {
 	  return {
 		  tagConfig:state.tagConfigReducer,
 		  tag:state.tagList,
-		  value:state.valueList
+		  value:state.valueList,
+		  tagConfigData:state.tagConfigFormReducer
 	  };
 	}
 
@@ -47,8 +51,9 @@ function mapDispatchToProps(dispatch) {
 		tagRequest: bindActionCreators({ tagRequest }, dispatch),
 		valueRequest: bindActionCreators({ valueRequest }, dispatch),
 		tagConfigRenderList:bindActionCreators({ tagConfigRenderList }, dispatch),
+		tagByKeyRequest: bindActionCreators({ tagByKeyRequest }, dispatch),
 
 	  };
 	}
 
-export default connect(mapStateToProps, {userTagConfigFormsRequest,tagRequest,valueRequest,addToast,tagConfigRenderList} )(TagConfigForm)
+export default connect(mapStateToProps, {userTagConfigFormsRequest,tagRequest,valueRequest,tagByKeyRequest,addToast,tagConfigRenderList} )(TagConfigForm)

@@ -68,9 +68,9 @@ public class TagConfigController {
 		MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
 		String urlParameter = reqObj.toString();
 		map.add("configuration", urlParameter.toString());
-		/*String url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/configuration/create-or-update";
+		String url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/configuration/create-or-update";
 		ServiceResponse responseObj = HttpUtil.sendPostForCreateOrUpdate(url, map,roleLess, (String) session.getAttribute("access_token"));
-		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());*/
+		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 		
 	}
 	

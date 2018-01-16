@@ -44,7 +44,7 @@ class NavigationBar extends Component {
 		if(event.target.selected == 'Message')
 			this.context.router.push('/ERitual/message');
 		if(event.target.selected == 'TagConfig')
-			this.context.router.push('/ERitual/tagConfig');
+			this.context.router.push('/ERitual/tagConfigForm');
 		if(event.target.selected == 'aboutUs')
 			this.context.router.push('/ERitual/aboutUs');
 	}

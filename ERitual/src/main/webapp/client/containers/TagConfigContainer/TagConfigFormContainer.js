@@ -46,7 +46,6 @@ class TagConfigFormContainer extends Component {
 			}
 		});
 	}
-	
 	onTagChange (event, { newValue }) {
 	    this.setState({
 	      value: newValue
@@ -59,13 +58,13 @@ class TagConfigFormContainer extends Component {
 	}
 	
 	 keyRenderOptions() {
-	     if(this && !this.props.tagConfig) {
+	     if(this && !this.props.tagConfig && this.props.tagConfig.tagConfigData ==undefined) {
 	    	 return [];
 	     }
-	     if(this && this.props.tagConfig.tagConfigData.length==0 && this.state.selectedTagValues.indexOf(this.state.value) == -1 && this.state.selectedTagValues.length==0) {
+	     else if(this && this.props.tagConfig.tagConfigData!=undefined && this.props.tagConfig.tagConfigData.length==0 && this.state.selectedTagValues.indexOf(this.state.value) == -1 && this.state.selectedTagValues.length==0) {
 	    	 return [`Add ${this.state.value} to the list?`];
 	     }
-		 if(this && this.props.tagConfig.tagConfigData!=undefined){
+	     else if(this && this.props.tagConfig.tagConfigData!=undefined){
 	    	if(this.props.tagConfig.tagConfigData.length!=0){
 	    		const tagList = this.props.tagConfig.tagConfigData.map((d) => 
 	    		{
@@ -149,19 +148,20 @@ class TagConfigFormContainer extends Component {
 		//condition for checking the validation
 		if(this.isValid()) {
 			this.setState({ errors: {}, isLoading:true });
-			let titile;
-			let keyName=(this.state.tag).split(",");
-			for(var i=0;i<keyName;i++){
-				titile=keyName[2];
+			let title;
+			let type;
+			let keyName=(this.state.value).split(".");
+			for(var i=0;i<keyName.length;i++){
+				title=keyName[2];
 			}
-			alert(title);
 			let tagConfig= {
 					value:{
-						"type":"about-us",
-						"title":"about-us",
+						"type":title,
+						"title":title,
 						"tags":this.state.value
 					}
 			}
+			console.log("tagConfig",tagConfig);
 			this.props.userTagConfigFormsRequest(tagConfig).then(
 					(res) => {
 						//condition for unauthorized admin
@@ -209,12 +209,30 @@ class TagConfigFormContainer extends Component {
 			   selectedTagValues : suggestion.toString().indexOf('to the list') == -1 ? this.state.selectedTagValues.concat(suggestion.toString()) : this.state.selectedTagValues.concat(this.state.value)
 		   },() => {
 			   document.querySelector('.react-autosuggest__input').value = "";
+		  this.sevaTagRenderOptions();
 		   });
-		  };
+		  
+	  };
 	
 	onSuggestionsClearRequested() {
 		
 	}
+	
+	sevaTagRenderOptions() {
+		this.props.tagByKeyRequest(this.state.selectedTagValues).then(
+				(res) => {
+					let configValue=JSON.parse(decodeURIComponent(res.payload.data.replace(/\+/g,'%20')));
+					if(configValue.value.overview)
+					{
+						this.context.router.push('/ERitual/aboutUs');
+					}
+				else{
+					this.state.configValue=configValue.value.tags;
+					this.state.showOverview=false;
+				}
+				})
+		   }
+	
 	
 	createTag() {
 		let tagsList = this.state.selectedTagValues.map((tag) => 
@@ -224,7 +242,7 @@ class TagConfigFormContainer extends Component {
 			 )
 		});
 		return tagsList;
-		
+		  
 	}
 	
 	removeTag(tag) {
@@ -236,7 +254,7 @@ class TagConfigFormContainer extends Component {
 	}
 	
 	render() {
-		const {errors ,success,configValue,tagKey,value,isLoading,checked} = this.state;
+		const {errors ,success,configValue,tagKey,value,isLoading,checked,showOverview} = this.state;
 		const inputProps = {
 	      placeholder: 'Key',
 	      value,
@@ -253,7 +271,7 @@ class TagConfigFormContainer extends Component {
 				</div>
 				{ errors.form && <div className="alert alert-danger">{errors.form}</div> }
 				<div className="row mb10">
-				<div className="col-xs-6 ">
+				<div className="col-xs-5 ">
 				<label>Key</label>
 				  <Autosuggest
 			        suggestions={this.keyRenderOptions() ? this.keyRenderOptions() : [] }
@@ -267,7 +285,17 @@ class TagConfigFormContainer extends Component {
 				  />
 		      	  <ul className = "selectedTags">{this.createTag()}</ul>
 			  </div>
-				<div className="col-xs-5 col-md-5">
+			  { showOverview && <div className="col-xs-5 col-md-5">
+			  <textarea 
+				cols="43"
+					rows="6"
+						onChange={this.onChange}
+				name="configValue"
+					placeholder = "configValue"
+						value={configValue}
+				className="wordText messageColor"
+					/></div>}
+			 {!showOverview && <div className="col-xs-6 col-md-6">
 				<TextFieldGroup
 				error={errors.value}
 				label="Value"
@@ -276,7 +304,7 @@ class TagConfigFormContainer extends Component {
 				name="configValue"
 				field="configValue"
 					/>
-					</div>
+					</div>}
 				  
 				</div>
 				<div className="row mt30">

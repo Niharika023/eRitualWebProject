@@ -11,7 +11,6 @@ const TagConfig = ({tagConfigRenderList,deleteTagConfig}) => {
 	const  tagConfigList = tagConfigRenderList.tagConfigData.map((item,index) => {
 		
       return ( 
-    		  
     		  <tr className="font-color p-ver-70" key={index}>
               <td className="col-sm-2" > {item.key}</td>
               <td className="col-sm-2" > {item.value.tags}</td>
