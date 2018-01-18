@@ -18,7 +18,7 @@ if(Validator.isEmpty(data.description)){
 }
 
 if(amount==''){
-	errors.amount = "Please enter the amount ";
+	errors.amount = "Please enter the amount ";	
 
 }
 if((amount!='')&&(!Validator.isNumeric(amount))){

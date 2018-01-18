@@ -772,7 +772,8 @@ class MessageFormContainer extends Component {
 					className="wordText messageColor"
 						/>
 					  </div>
-					</div>
+					  {errors.description && <span className="help-block has-error material-label error-form "> {errors.description}</span>} 
+					  </div>
 	                <div className="row mr15">
 	                  <div className="text-center">
 	                   <button className="btn btn-lg btn-primary">

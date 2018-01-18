@@ -459,6 +459,7 @@ class SevaFormContainer extends Component {
 						value={description}
 				className="wordText messageColor"
 					/>
+				{errors.description && <span className="help-block has-error material-label error-form "> {errors.description}</span>} 
 					</div>
 					<div className="col-xs-6">
 					<TextFieldGroup

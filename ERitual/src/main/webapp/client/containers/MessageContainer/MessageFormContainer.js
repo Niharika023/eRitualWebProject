@@ -492,52 +492,6 @@ class MessageFormContainer extends Component {
 				</div>
 				</div>
 				</form>
-				 {/*{this.state.triggerUpload && <div className="modal-bg"><div className="file-upload-container">
-	              {this.state.logoImage != '' && <img  className="full-width logo-upload-preview mb20" src={this.state.logoImage}/> }
-	              <button className = 'close-modal' onClick = {this.closeModal}>x</button>
-	              <form>
-	              <FileUpload options={options} >
-	              <div className = "row">
-	               <div className="col-xs-12">
-	               <button ref="chooseBtn" className="btn btn-primary mr20">Choose Image</button>
-	               </div>
-	              
-	              </div>
-	              <div className= "row">
-	              <div className="col-xs-12">
-	              <label>Image Description</label>
-					<textarea 
-					label="Message"
-						cols="38"
-							rows="6"
-								onChange={this.onChange}
-					name="message"
-						placeholder = "Type something.."
-							value={message}
-					className="wordText messageColor"
-						/>
-	              </div>
-	              </div>
-	              <div className="row">
-		    		 <div className="col-md-12">
-		   	  <TextFieldGroup
-		       error={errors.name}
-		     onChange={this.onChange}
-		   value={bannerTags}
-		field="tags"
-			label="Tags"
-				/>
-		    </div> 
-		    </div>
-	              <div className = "row">
-	                <div className="col-md-12 text-center">
-	                <button ref="uploadBtn" className="btn btn-primary">Upload</button>
-	                </div>
-	              </div>
-	              </FileUpload>
-	              </form>
-	            </div></div>}*/}
-				 
 				 {this.state.triggerUpload && <div className="modal-bg"><div className="file-upload-container">
 				 {isPdfUpload && <div> {fileName}</div>}	
 					 {this.state.logoImage != '' && <img  className="full-width logo-upload-preview mb20" src={this.state.logoImage}/> }

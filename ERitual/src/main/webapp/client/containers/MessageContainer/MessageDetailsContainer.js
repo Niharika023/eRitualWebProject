@@ -93,20 +93,21 @@ class MessageDetailsContainer extends Component {
     		this.setState({
     			message,
     			showpdfUpload:false,
-    			imageUploadSuccess:false,
+    			imageUploadSuccess:true,
     			showVideoOrAudioDesc:false
     		})
     		}
     	if( this.props.editMessage.hostedContentId !=null){
     		this.setState({
-    			pdfId:this.props.editMessage.message,
     			showpdfUpload:false,
     			showVideoOrAudioDesc:true,
     			imageUploadSuccess:false
     		})
+    	console.log("message detail",this.state.pdfId);
     	}
     	if((this.props.editMessage.imageId ==null ) && this.props.editMessage.hostedContentId ==null){
     		this.setState({
+    			pdfId:this.props.editMessage.message,
     			showpdfUpload:true,
     			showVideoOrAudioDesc:false,
     			imageUploadSuccess:false
@@ -146,7 +147,6 @@ class MessageDetailsContainer extends Component {
 						
 							res.payload.data=JSON.parse(decodeURIComponent(res.payload.data.replace(/\+/g,'%20')));
 							let hostedContentData= res.payload.data;
-							console.log("hostedContentData",hostedContentData);
 							this.setState({
 								typename:hostedContentData.name,
 								videoDescription:hostedContentData.description,
@@ -281,10 +281,9 @@ class MessageDetailsContainer extends Component {
 					</th>
 					<tr className="col-md-10 p-ver-20">
 					{ triggredNoData && <tr>Image not available.</tr>}
-					{ !triggredNoData && <tr>{imageUploadSuccess && <img src = {messageImage} width="100%"/>}
-	                {!imageUploadSuccess && <img src={imgSrc} width="100%"/>}</tr>}
+					{ !triggredNoData && <tr>{imageUploadSuccess && <img src = {imgSrc} width="100%"/>}</tr>}
 					</tr>
-				</tr>
+					</tr>
 				<tr className="row">
 				<th className="col-md-2">
 				<tr ><h3>Title</h3></tr>
@@ -333,15 +332,15 @@ class MessageDetailsContainer extends Component {
 		<tr ><a href={pdfSrc} target="_blank"><span className="ml10">Click to view</span></a></tr>
 		</tr>
 	</tr>}
-				 <tr className="row">
+				{!showpdfUpload && <tr className="row">
 				<th className="col-md-2">
 				<tr ><h3>Description</h3></tr>
 				</th>
 				<tr className="col-md-10 p-ver-20  ">
-				{!imageUploadSuccess && <tr className="message-height">{videoDescription}</tr>}
-				{showVideoOrAudioDesc && <tr className="message-height">{message}</tr>}
+				{showVideoOrAudioDesc &&  <tr className="message-height">{videoDescription}</tr>}
+				{imageUploadSuccess  && <tr className="message-height">{message}</tr>}
 				</tr>
-			</tr>
+			</tr>}
 				
 				</tbody>
 			</table>
