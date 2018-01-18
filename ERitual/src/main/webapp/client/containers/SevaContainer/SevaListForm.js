@@ -333,7 +333,7 @@ class SevaListForm extends Component {
 							</div>
 							<div className="col-md-1 col-md-offset-1">
 							<button  className="btn btn-lg  sector-division btn-primary mb15 mt15" onClick={this.onAdd}>
-							Add Seva
+							Add New
 							</button>
 							</div>
 							</div>
@@ -389,7 +389,7 @@ class SevaListForm extends Component {
 							</div>
 							<div className="col-md-1  ">
 							<button  className="btn btn-lg  sector-division btn-primary  mt20" onClick={this.onAdd}>
-							Add Seva
+							Add New
 							</button>
 							</div>
 							</div>

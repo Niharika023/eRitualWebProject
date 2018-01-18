@@ -257,7 +257,7 @@ class DonationListForm extends Component {
 							</div>
 							<div className="col-md-1 col-md-offset-2">
 							<button  className="btn btn-lg  sector-division btn-primary mb15 mt15" onClick={this.onAdd}>
-							Add Donation
+							Add New
 							</button>
 							</div>
 							</div>
@@ -316,7 +316,7 @@ class DonationListForm extends Component {
 							</div>
 							<div className="col-md-1 col-md-offset-2">
 							<button  className="btn btn-lg  sector-division btn-primary mb15 mt15" onClick={this.onAdd}>
-							Add Donation
+							Add New
 							</button>
 							</div>
 							</div>

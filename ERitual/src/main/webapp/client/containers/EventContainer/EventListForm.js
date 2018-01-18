@@ -327,7 +327,7 @@ class EventListForm extends Component {
 							</div>
 							<div className="col-md-1 mt20 ml35">
 							<button  className="btn btn-lg  sector-division btn-primary  " onClick={this.onAdd}>
-							Add Event
+							Add New
 							</button>
 							</div>
 							</div>
@@ -385,7 +385,7 @@ class EventListForm extends Component {
 							</div>
 							<div className="col-md-1 mt20 ml35">
 							<button  className="btn btn-lg  sector-division btn-primary  " onClick={this.onAdd}>
-							Add Event
+							Add New
 							</button>
 							</div>
 							</div>

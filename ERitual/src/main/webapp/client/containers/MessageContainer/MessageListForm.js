@@ -324,7 +324,7 @@ class MessageListForm extends Component {
 							</div>
 							<div className="col-md-1 ">
 							<button  className="btn btn-lg  sector-division btn-primary mb15 mt15" onClick={this.onAdd}>
-							Add Sri Samasthanam
+							Add New
 							</button>
 							</div>
 							</div>
@@ -404,7 +404,7 @@ class MessageListForm extends Component {
 							</div>
 							<div className="col-md-1 ml10">
 							<button  className="btn btn-lg  sector-division btn-primary mb15 mt15" onClick={this.onAdd}>
-							Add Sri Samasthanam
+							Add New
 							</button>
 							</div>
 							</div>
