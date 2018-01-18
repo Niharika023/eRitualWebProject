@@ -323,17 +323,17 @@ class DonationListForm extends Component {
 							<div className="row mt40">
 							<div className="col-md-3 filter-container">
 							<h2> Sort By Relevance</h2>
-							<select name="orderByName" className=" form-control  font-color mb10" onChange={this.changeSort}>
+							<select name="orderByName" className=" form-control link-secondary font-color mb10" onChange={this.changeSort}>
 							<option value="">Sort By Name</option>
 							<option value="asc">Ascending</option>
 							<option value="desc">Descending</option>
 							</select>
-							<select name="orderByAmount" className=" form-control  font-color mb10" onChange={this.changeSort}>
+							<select name="orderByAmount" className=" form-control link-secondary font-color mb10" onChange={this.changeSort}>
 							<option value="">Sort By Amount</option>
 							<option value="asc">Ascending</option>
 							<option value="desc">Descending</option>
 							</select>
-							<select name="orderByUpdatedTS" className=" form-control  font-color mb10" onChange={this.changeSort}>
+							<select name="orderByUpdatedTS" className=" form-control link-secondary font-color mb10" onChange={this.changeSort}>
 							<option value="">Sort By UpdatedTS</option>
 							<option value="asc">Ascending</option>
 							<option value="desc">Descending</option>
