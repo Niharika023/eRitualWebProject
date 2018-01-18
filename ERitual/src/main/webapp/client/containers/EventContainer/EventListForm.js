@@ -392,12 +392,12 @@ class EventListForm extends Component {
 							<div className="row mt40">
 							<div className="col-md-3  filter-container">
 							<h3> Sort By Relevance</h3>
-							<select name="orderByDate" className=" form-control  font-color mb10" onChange={this.changeSort}>
+							<select name="orderByDate" className=" form-control link-secondary font-color mb10" onChange={this.changeSort}>
 							<option value="">Sort By Date</option>
 							<option value="asc">Ascending</option>
 							<option value="desc">Descending</option>
 							</select>
-							<select name="orderByName" className=" form-control  font-color mb10" onChange={this.changeSort}>
+							<select name="orderByName" className=" form-control link-secondary font-color mb10" onChange={this.changeSort}>
 							<option value="">Sort By Name</option>
 							<option value="asc">Ascending</option>
 							<option value="desc">Descending</option>

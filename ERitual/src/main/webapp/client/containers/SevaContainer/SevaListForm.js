@@ -401,11 +401,11 @@ class SevaListForm extends Component {
 								<option value="asc">Sort By Ascending</option>
 								<option value="desc">Sort By Descending</option>
 							</select>
-							<select name="orderByTime" className=" form-control  font-color mb10 link-secondary coursor-pointer" onChange={this.changeSort}>
+							{/*<select name="orderByTime" className=" form-control  font-color mb10 link-secondary coursor-pointer" onChange={this.changeSort}>
 								<option value="">Sort By Time</option>
 								<option value="asc">Sort By Ascending</option>
 								<option value="desc">Sort By Descending</option>
-							</select>
+							</select>*/}
 							<select name="orderByAmount" className=" form-control  font-color mb10 link-secondary coursor-pointer" onChange={this.changeSort}>
 								<option value="">Sort By Amount</option>
 								<option value="asc">Sort By Ascending</option>

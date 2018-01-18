@@ -62,7 +62,7 @@ class MessageDetailsContainer extends Component {
         	 this.props.imageStreamRequest(imageId);
         }
     
-    
+    // will call on reload of page
     componentDidMount() {
     	const {title} = this.props.editMessage;
     	const {message} = this.props.editMessage;
@@ -79,7 +79,7 @@ class MessageDetailsContainer extends Component {
     	if(this.props.editMessage.hostedContentId!=null){
     		const  hostedListArr = this.props.editMessage.hostedContent.map((item) => {
     			this.state.url=item.url;
-    			this.state.metadata=item.metadata.onClick;
+    			this.state.metadata=item.metadata.onclick;
     			this.state.type=item.type;
     		
     		});
@@ -333,22 +333,15 @@ class MessageDetailsContainer extends Component {
 		<tr ><a href={pdfSrc} target="_blank"><span className="ml10">Click to view</span></a></tr>
 		</tr>
 	</tr>}
-				{!imageUploadSuccess && <tr className="row">
-					<th className="col-md-2">
-					<tr ><h3>Message</h3></tr>
-					</th>
-					<tr className="col-md-10 p-ver-20  ">
-					<tr className="message-height">{message}</tr>
-					</tr>
-				</tr>}
-				{showVideoOrAudioDesc && <tr className="row">
+				 <tr className="row">
 				<th className="col-md-2">
 				<tr ><h3>Description</h3></tr>
 				</th>
 				<tr className="col-md-10 p-ver-20  ">
-				<tr className="message-height">{videoDescription}</tr>
+				{!imageUploadSuccess && <tr className="message-height">{videoDescription}</tr>}
+				{showVideoOrAudioDesc && <tr className="message-height">{message}</tr>}
 				</tr>
-			</tr>}
+			</tr>
 				
 				</tbody>
 			</table>

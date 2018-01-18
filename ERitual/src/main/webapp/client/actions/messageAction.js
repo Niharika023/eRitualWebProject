@@ -36,7 +36,7 @@ export function messageRenderList(searchByTitle,searchData,pageSize,pageNumber) 
 		concatStr=concatStr+"orderByTitle="+ searchData.orderByTitle+"&";
 	}
 	else{
-		concatStr = concatStr + "orderByUpdatedTS=&";
+		concatStr = concatStr + "orderByTitle=&";
 	}
 	if(searchData.orderByUpdatedTS !=""){
 		concatStr=concatStr+"orderByUpdatedTS="+ searchData.orderByUpdatedTS+"&";
