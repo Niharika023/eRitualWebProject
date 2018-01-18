@@ -142,7 +142,7 @@ class EditSevaContainer extends Component {
 			this.setState({triggerUploadImg:false});
 			this.setState({triggerUploadVidAudPdf:true});
 		}
-		let timeArr= time.split(":");
+		/*let timeArr= time.split(":");
 		for(var i=0;i<timeArr.length;i++){
 			this.state.hours=timeArr[0];
 			this.state.minutes=timeArr[1];
@@ -150,7 +150,7 @@ class EditSevaContainer extends Component {
 		let selectedHour = this.state.hours%12;
 		if(selectedHour==0){
 			selectedHour=12;
-		}
+		}*/
 		if(available==true)
 			this.state.active=true;
 		else
@@ -164,8 +164,8 @@ class EditSevaContainer extends Component {
 			this.state.nakshatra=formFieldJSON.userNakshatra;
 			
 		} 
-		this.state.time=`${(selectedHour < 10) ? "0" + selectedHour : selectedHour}:${this.state.minutes}`;
-		this.state.selectedTime=`${(selectedHour < 10) ? "0" + selectedHour : selectedHour}:${this.state.minutes} ${(this.state.hours < 12)?'AM':'PM'}`;
+		/*this.state.time=`${(selectedHour < 10) ? "0" + selectedHour : selectedHour}:${this.state.minutes}`;
+		this.state.selectedTime=`${(selectedHour < 10) ? "0" + selectedHour : selectedHour}:${this.state.minutes} ${(this.state.hours < 12)?'AM':'PM'}`;*/
 		this.setState({
 			name,
 			description,
@@ -174,7 +174,7 @@ class EditSevaContainer extends Component {
 			id,
 			formFields,
 			available,
-			selectedTime:`${(selectedHour < 10) ? "0" + selectedHour : selectedHour}:${this.state.minutes} ${(this.state.hours < 12)?'AM':'PM'}`
+			//selectedTime:`${(selectedHour < 10) ? "0" + selectedHour : selectedHour}:${this.state.minutes} ${(this.state.hours < 12)?'AM':'PM'}`
 		});
 
 	}
@@ -638,7 +638,8 @@ class EditSevaContainer extends Component {
 					value={description}
 			className="wordText messageColor"
 				/>
-			  </div>
+			 {errors.description && <span className="help-block has-error material-label error-form "> {errors.description}</span>} 
+			</div>
 			  <div className="col-xs-6">
 				<TextFieldGroup
 				error={errors.amount}

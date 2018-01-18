@@ -283,7 +283,7 @@ class TagConfigFormContainer extends Component {
 				    focusFirstSuggestion={true}
 				    onSuggestionSelected={this.onSuggestionSelected.bind(this)}
 				  />
-		      	  <ul className = "selectedTags">{this.createTag()}</ul>
+		      	  {/*<ul className = "selectedTags">{this.createTag()}</ul>*/}
 			  </div>
 			  { showOverview && <div className="col-xs-5 col-md-5">
 			  <textarea 

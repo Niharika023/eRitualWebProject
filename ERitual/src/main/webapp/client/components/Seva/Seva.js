@@ -22,14 +22,14 @@ const Seva = ({sevaRenderList,deleteSeva}) => {
 		
 		}
 		if(item.name!=null){
-		 let timeArr= item.time.split(":");
+		 /*let timeArr= item.time.split(":");
 	    		let hours=timeArr[0];
 	    		let minutes=timeArr[1];
 	    	let selectedHour = hours%12;
 	    	if(selectedHour==0){
 	    		selectedHour=12;
 	    		}
-	    	let time=`${(selectedHour < 10) ? "0" + selectedHour : selectedHour}:${minutes} ${(hours < 12)?'AM':'PM'}`;
+	    	let time=`${(selectedHour < 10) ? "0" + selectedHour : selectedHour}:${minutes} ${(hours < 12)?'AM':'PM'}`;*/
       return ( 
     		  
     		  <tr className="font-color p-ver-70" key={index}>
@@ -37,7 +37,7 @@ const Seva = ({sevaRenderList,deleteSeva}) => {
     		  </Link></td>
               <td className="col-sm-2" > {item.tags}</td>
               <td className="col-sm-2" > Rs.{item.amount}</td>
-              <td className="col-sm-2" > {time}</td>
+              {/*<td className="col-sm-2" > {time}</td>*/}
               <td className="col-sm-2" > {item.available}</td>
               <td className="col-sm-2" > <tr>
             	<td>

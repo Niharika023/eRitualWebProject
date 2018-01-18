@@ -24,10 +24,10 @@ if((data.amount!='')&&(!Validator.isNumeric(data.amount))){
 	errors.amount = "Please enter the amount in digits only ";
 
 }
-if(data.time=='' || data.time==null){
+/*if(data.time=='' || data.time==null){
 	errors.time = "Please enter the time ";
 
-}
+}*/
 
 	
 	return {

@@ -433,7 +433,6 @@ class SevaListForm extends Component {
 											<th className="tabel-header">Name</th>
 											<th className="tabel-header">Tags</th>
 											<th className="tabel-header">Amount</th>
-											<th className="tabel-header">Time</th>
 											<th className="tabel-header">Available</th>
 											<th className="tabel-header">Actions</th>
 										</tr>
