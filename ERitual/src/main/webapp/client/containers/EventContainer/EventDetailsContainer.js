@@ -41,15 +41,18 @@ class EventDetailsContainer extends Component {
     	        address1:'',
     	        locality:'',
     	        city:'',
+    	        desp:'',
     	        contactDetails:'',
     	        createdTS:null,
     	        hour:null,
-    	        triggredNoData:false
+    	        triggredNoData:false,
+    	        showMoredesp:false,
       }
 
       this.onChange = this.onChange.bind(this);// bind(this) is needed here,
       this.selectLogoClick = this.selectLogoClick.bind(this);
       this.closeModal = this.closeModal.bind(this);
+      this.showMore = this.showMore.bind(this);
   
     }
     
@@ -78,6 +81,11 @@ class EventDetailsContainer extends Component {
     	}else {
     		this.state.triggredNoData= false;
     	}
+    	if(this.props.editEvent.description.length >=250){
+    		this.state.showMoredesp= true;
+    		this.state.desp=this.props.editEvent.description.slice(0, 250)+"...";
+    		 
+    		}
     	let messageDate=new Date(this.props.editEvent.createdTS);
 		let formattedDate=messageDate.getFullYear() + '-' + (messageDate.getMonth()+1) + '-' + messageDate.getDate();
 		this.state.createdTS=formattedDate;
@@ -109,7 +117,12 @@ class EventDetailsContainer extends Component {
     		'logoImage':''
     	});
     }
-    
+    showMore(event) {
+    	event.preventDefault();
+    		this.setState({
+    			showMoredesp:false
+    		})
+    }
     onChange(event) {
     	event.preventDefault();
     	this.setState({ [event.target.name]:event.target.value}, function() {
@@ -144,7 +157,7 @@ class EventDetailsContainer extends Component {
     	const {imageUrl} = this.props;
     	let imageData;
     	
-        const {errors ,description,success,tags,name,triggredNoData,image,amount,address1,address2,locality,city,contactDetails,imageUploadSuccess,eventImage,isLoading,time,imageId,createdTS} = this.state;
+        const {errors ,description,success,tags,name,desp,showMoredesp,triggredNoData,image,amount,address1,address2,locality,city,contactDetails,imageUploadSuccess,eventImage,isLoading,time,imageId,createdTS} = this.state;
         let imgSrc = `http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/image/stream/${imageId}`;
         return (
         		<div className="mt50">
@@ -182,9 +195,12 @@ class EventDetailsContainer extends Component {
 				<th className="col-md-2">
 				<tr ><h3>Description</h3></tr>
 				</th>
-				<tr className="col-md-10 p-ver-20  ">
+				{ showMoredesp && <tr className="col-md-10 p-ver-20  ">
+				<tr className="message-height">{desp} <Link to="" onClick={this.showMore} className=" link-secondary  active ">Read More</Link></tr>
+				</tr>}
+				{ !showMoredesp && <tr className="col-md-10 p-ver-20  ">
 				<tr className="message-height">{description}</tr>
-				</tr>
+				</tr>}
 			</tr>
 			<tr className="row">
 			<th className="col-md-2">

@@ -39,12 +39,15 @@ class SevaDetailsContainer extends Component {
     	        description:'',
     	        amount:'',
     	        createdTS:null,
-    	        hour:null
+    	        hour:null,
+    	        desp:"",
+    	        showMoredesp:false,
       }
 
       this.onChange = this.onChange.bind(this);// bind(this) is needed here,
       this.selectLogoClick = this.selectLogoClick.bind(this);
       this.closeModal = this.closeModal.bind(this);
+      this.showMore = this.showMore.bind(this);
    
     }
     
@@ -68,6 +71,14 @@ class SevaDetailsContainer extends Component {
     	}else {
     		this.state.triggredNoData= false;
     	}
+    	
+    
+    	if(this.props.editSeva.description.length >=250){
+    		this.state.showMoredesp= true;
+    		this.state.desp=this.props.editSeva.description.slice(0, 250)+"...";
+    		 
+    		}
+   
     	let messageDate=new Date(this.props.editSeva.createdTS);
 		let formattedDate=messageDate.getFullYear() + '-' + (messageDate.getMonth()+1) + '-' + messageDate.getDate();
 		this.state.createdTS=formattedDate;
@@ -81,9 +92,16 @@ class SevaDetailsContainer extends Component {
     		tags,
     		amount,
     		time
+    		
     	});
-   
+    
     	
+    }
+    showMore(event) {
+    	event.preventDefault();
+    		this.setState({
+    			showMoredesp:false
+    		})
     }
     
     componentWillUnmount() {
@@ -131,8 +149,8 @@ class SevaDetailsContainer extends Component {
     	const {imageUrl} = this.props;
     	let imageData;
     	
-        const {errors ,description,success,tags,name,image,amount,imageUploadSuccess,triggredNoData,messageImage,isLoading,time,imageId,createdTS} = this.state;
-
+        const {errors ,description,success,tags,name,desp,showMoredesp,image,amount,imageUploadSuccess,triggredNoData,messageImage,isLoading,time,imageId,createdTS} = this.state;
+        console.log("showMoredesp"+showMoredesp);
        let imgSrc = `http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/image/stream/${imageId}`;
         return (
         		<div className="mt50" >
@@ -170,9 +188,12 @@ class SevaDetailsContainer extends Component {
 				<th className="col-md-2">
 				<tr ><h3>Description</h3></tr>
 				</th>
-				<tr className="col-md-10 p-ver-20  ">
-				<tr className="message-height">{description}</tr>
-				</tr>
+				{ showMoredesp && <tr className="col-md-10 p-ver-20  ">
+				 <tr  className="message-height">{desp}<Link to="" onClick={this.showMore} className=" link-secondary  active ">Read More</Link></tr>
+				</tr>}
+				{ !showMoredesp && <tr className="col-md-10 p-ver-20  ">
+				<tr  className="message-height">{description}</tr>
+				</tr>}
 			</tr>
 			<tr className="row">
 			<th className="col-md-2">
