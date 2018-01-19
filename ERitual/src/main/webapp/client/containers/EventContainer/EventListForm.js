@@ -44,7 +44,8 @@ class EventListForm extends Component {
 				triggerDelete:false,
 				confirmDelete:false,
 				deleteEventId:'',
-				eventIndex:null
+				eventIndex:null,
+				showSearchBox:false
 
 		}
 		this.onCancel=this.onCancel.bind(this);
@@ -174,6 +175,7 @@ class EventListForm extends Component {
 		this.state.dateLesserThan = "";
 		this.state.isAvailable="";
 		this.state.available="";
+		this.state.showSearchBox=false;
 		this.onSubmit(event,this.state.itemsPerPage,this.state.activePage);
 
 	}
@@ -186,6 +188,9 @@ class EventListForm extends Component {
 				(res) => {
 					res.payload.data=JSON.parse(decodeURIComponent(res.payload.data.replace(/\+/g,'%20')));
 					let searchdata= res.payload.data;
+					if(searchdata.items.length==0){
+						this.state.showSearchBox=true;
+					}
 					if(searchdata.message!= null) {
 						this.setState({ errors : { "form" : searchdata.message }, isLoading : false })
 					}
@@ -209,6 +214,7 @@ class EventListForm extends Component {
 		this.state.dateLesserThan = "";
 		this.state.isAvailable="";
 		this.state.available="";
+		this.state.showSearchBox=false;
 		this.onSubmit(event,this.state.itemsPerPage,this.state.activePage);
 	}
 	handlePageClick(index){
@@ -265,8 +271,8 @@ class EventListForm extends Component {
 	}
 
 	render() {
-
 		const {eventList,deleteEvent,location,addToast}=this.props;
+		const {showSearchBox}=this.state;
 		if(eventList.eventData!=undefined){
 			if(eventList.eventData.length!=0){
 				this.state.pageNum=Math.ceil(eventList.numItems / this.state.itemsPerPage);
@@ -276,65 +282,6 @@ class EventListForm extends Component {
 		if(!this.props.eventList || this.props.eventList.length==0)
 			return <div>Loading</div>
 			else if(this.props.eventList ){
-				if(this.props.eventList.eventData.length==0){
-					return(
-							<div className="p30 " >
-							<div className="row">
-							<div className="col-md-offset-5">
-							<h1 className="mt0 mb20 ">Event List</h1>
-							</div>
-							</div>
-							<div className="row">
-							<div className="col-md-3 ">
-							<TextFieldGroup
-							label="Name "
-								onChange={this.onChange}
-							field="search"
-								value = {this.state.search}
-							name="searchByName"
-								asterisk=""
-									/>
-									</div>
-							<div className="col-md-2 ">
-							<TextFieldGroup
-							label="City "
-								onChange={this.onChange}
-							field="searchByCity"
-								value = {this.state.searchByCity}
-							name="searchByCity"
-								asterisk=""
-									/>
-									</div>
-							<div className="sector-division col-md-3 ">
-							<span className="col-md-4"><label>Available</label></span>
-							<h4><i className="kp-up-down blue "></i></h4>
-							<select className=" form-control  "  onChange={this.onStatus} field = "available">
-							<option value="" selected={this.state.isAvailable === ""} >--- Availability ---  </option>
-							<option value={this.state.isAvailable=true} >True     </option>
-							<option value={this.state.isAvailable=false} >False     </option>
-							</select>
-							</div>     
-							<div className="col-md-1 mt20">
-							<button  className="btn btn-lg btn-primary " onClick={this.onSearch}>
-							<i className="kp-up-down blue mr_5"></i>
-							Search
-							</button>
-							</div>
-							<div className="col-md-1 mt20">
-							<button  className="btn btn-lg btn-primary " onClick={this.onCancel}>
-							Clear
-							</button>
-							</div>
-							<div className="col-md-1 mt20 ml35">
-							<button  className="btn btn-lg  sector-division btn-primary  " onClick={this.onAdd}>
-							Add New
-							</button>
-							</div>
-							</div>
-							</div>
-					)
-				}
-				else
 					return (
 							<div className="p30 " >
 							<div className="row">
@@ -389,9 +336,10 @@ class EventListForm extends Component {
 							</button>
 							</div>
 							</div>
-							<div className="row mt40">
+							{showSearchBox && <div className="mt10per ml45per">Sorry No data found !!</div>}
+							{!showSearchBox && <div><div className="row mt40">
 							<div className="col-md-3  filter-container">
-							<h3> Sort By Relevance</h3>
+							<h3 className="filter-color"> Filters</h3>
 							<select name="orderByDate" className=" form-control link-secondary font-color mb10" onChange={this.changeSort}>
 							<option value="">Sort By Date</option>
 							<option value="asc">Ascending</option>
@@ -441,6 +389,7 @@ class EventListForm extends Component {
 							<button ref="uploadBtn" className="btn btn-primary pull-right col-md-4 " onClick={this.closeModal}>Cancel</button>
 							</div>
 							</div>
+							</div>}
 							</div>}
 							</div>
 

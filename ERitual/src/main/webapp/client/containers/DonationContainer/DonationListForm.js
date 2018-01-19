@@ -33,7 +33,8 @@ class DonationListForm extends Component {
                 triggerDelete:false,
                 confirmDelete:false,
                 deleteEventId:'',
-                eventIndex:null
+                eventIndex:null,
+                showSearchBox:false
 
 		}
 		this.onCancel=this.onCancel.bind(this);
@@ -147,6 +148,7 @@ class DonationListForm extends Component {
 		this.state.searchByLocality = "";
 		this.state.amountGreaterThan = "";
 		this.state.amountLesserThan = "";
+		this.state.showSearchBox=false;
 		this.onSubmit(donation,this.state.itemsPerPage,this.state.activePage);
 
 	}
@@ -159,6 +161,9 @@ class DonationListForm extends Component {
 				(res) => {
 					res.payload.data=JSON.parse(decodeURIComponent(res.payload.data.replace(/\+/g,'%20')));
 					let searchdata= res.payload.data;
+					if(searchdata.items.length==0){
+						this.state.showSearchBox=true;
+					}
 					if(searchdata.message!= null) {
 						this.setState({ errors : { "form" : searchdata.message }, isLoading : false })
 					}
@@ -198,74 +203,17 @@ class DonationListForm extends Component {
 	render() {
 
 		const {donationList,deleteDonation,location,addToast}=this.props;
+		const {showSearchBox}=this.state;
 		if(donationList.donationData!=undefined){
 			if(donationList.donationData.length!=0){
 				this.state.pageNum=Math.ceil(donationList.numItems / this.state.itemsPerPage);
 				this.state.startIndex=donationList.startIndex;
 			}
 		}
+		
 		if(!this.props.donationList || this.props.donationList.length==0)
 			return <div>Loading</div>
 			else if(this.props.donationList ){
-				if(this.props.donationList.donationData.length==0){
-					return(
-							<div className="p30 " >
-							<div className="row">
-							<div className="col-md-offset-5">
-							<h1 className="mt0 mb20 ">Dontion List</h1>
-							</div>
-							</div>
-							<div className="row">
-							<div className="col-md-2">
-							<TextFieldGroup
-							label="Name "
-								onChange={this.onChange}
-							field="search"
-								value = {this.state.search}
-							name="searchByName"
-								asterisk=""
-									/>
-									</div>
-							<div className="col-md-2">
-							<TextFieldGroup
-							onChange={this.onChange}
-							label="Max Amount"
-							field="amountGreaterThan"
-								value = {this.state.amountGreaterThan}
-							asterisk=""
-								/>
-								</div>
-							<div className="col-md-2">
-							<TextFieldGroup
-							onChange={this.onChange}
-							label="Min Amount"
-							field="amountLesserThan"
-								value = {this.state.amountLesserThan}
-							asterisk=""
-								/>
-								</div>
-							<div className="col-md-1">
-							<button  className="btn btn-lg btn-primary mt15" onClick={this.onSearch}>
-							<i className="kp-up-down blue mr_5"></i>
-							Search
-							</button>
-							</div>
-							<div className="col-md-1">
-							<button  className="btn btn-lg btn-primary mt15" onClick={this.onCancel}>
-							Clear
-							</button>
-							</div>
-							<div className="col-md-1 col-md-offset-2">
-							<button  className="btn btn-lg  sector-division btn-primary mb15 mt15" onClick={this.onAdd}>
-							Add New
-							</button>
-							</div>
-							</div>
-							<div className="mt10per ml45per">Sorry No data found !!</div>
-							</div>
-					)
-				}
-				else
 					return (
 							<div className="p30 " >
 							<div className="row">
@@ -273,7 +221,7 @@ class DonationListForm extends Component {
 							<h1 className="mt0 mb20 ">Donation List</h1>
 							</div>
 							</div>
-							<div className="row">
+							 <div className="row">
 							<div className="col-md-2 ">
 							<TextFieldGroup
 							label="Name "
@@ -320,9 +268,10 @@ class DonationListForm extends Component {
 							</button>
 							</div>
 							</div>
-							<div className="row mt40">
+							{showSearchBox && <div className="mt10per ml45per">Sorry No data found !!</div>}
+							{!showSearchBox && <div> <div className="row mt40">
 							<div className="col-md-3 filter-container">
-							<h2> Sort By Relevance</h2>
+							<h3 className="filter-color"> Filters</h3>
 							<select name="orderByName" className=" form-control link-secondary font-color mb10" onChange={this.changeSort}>
 							<option value="">Sort By Name</option>
 							<option value="asc">Ascending</option>
@@ -374,6 +323,7 @@ class DonationListForm extends Component {
 				             <button ref="uploadBtn" className="btn btn-primary pull-right col-md-4 " onClick={this.closeModal}>Cancel</button>
 				             </div>
 				             </div></div>}
+							</div>}
 							</div>
 
 					)

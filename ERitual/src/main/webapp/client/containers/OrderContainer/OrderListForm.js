@@ -22,6 +22,7 @@ class OrderListForm extends Component {
                 index:0,
                 targetType:"",
                 istargetType:"",
+                showSearchBox:false
 
 
                
@@ -65,11 +66,11 @@ this.onSubmit(event,this.state.itemsPerPage,this.state.activePage);
      
      onCancel(event)
      {
-         
          this.setState({ search :''});
         this.state.search = "";
         this.state.targetType = "";
         this.state.istargetType="";
+        this.state.showSearchBox=false;
          this.onSubmit(event,this.state.itemsPerPage,this.state.activePage,this.state.istargetType);
      }
      
@@ -82,7 +83,12 @@ this.onSubmit(event,this.state.itemsPerPage,this.state.activePage);
              (res) => {
                  res.payload.data=JSON.parse(decodeURIComponent(res.payload.data.replace(/\+/g,'%20')));
                  let searchdata= res.payload.data;
-                    if(searchdata.message!= null) {
+                 if(searchdata.items.length==0){
+                	 this.setState({ showSearchBox:true
+                		 })
+					} 
+                 console.log("this.state.showSearchBox",this.state.showSearchBox);
+                 if(searchdata.message!= null) {
                         this.setState({ errors : { "form" : searchdata.message }, isLoading : false })
                         }
                     else {
@@ -120,67 +126,21 @@ this.onSubmit(event,this.state.itemsPerPage,this.state.activePage);
     render() {
          
          const {orderList,deleteOrder,location}=this.props;
-  if(orderList==-1)  
- {
+         const {showSearchBox}=this.state;
+         console.log("showSearchBox",showSearchBox);
+         if(orderList==-1)  
+         {
          return <div><div className = "col-md-10 col-md-offset-2 mt70  "><h3> Sorry, you are not authorized to view the orders, please contact to your admin.</h3></div></div>;
-
-     }
+         }
          if(orderList.orderData!=undefined){
          if(orderList.orderData.length!=0){
          this.state.pageNum=Math.ceil(orderList.numItems / this.state.itemsPerPage);
          this.state.startIndex=orderList.startIndex;
          }
          }
-        
          if(this.props.orderList==undefined || this.props.orderList.length==0)
              return <div>Loading</div>
              else if(this.props.orderList){
-                 if(this.props.orderList.orderData==undefined || this.props.orderList.orderData.length==0){
-                     return(
-                             <div className="p30 "  >
-                             <div className="row">
-	 							<div className="col-md-offset-5">
-	 							<h1 className="mt0 mb20 ">Order List</h1>
-	 							</div>
-	 						</div>
-                                 <div className="row">
-                                    <div className="col-md-4 ">
-                                        <TextFieldGroup
-                                        label="Creator Name "
-                                        onChange={this.onChange}
-                                        field="search"
-                                        value = {this.state.search}
-                                        asterisk=""
-                                        />
-                                    </div>
-                                        <div className="sector-division col-md-3  ">
-                                        <span className="col-md-4"><label>Target Type</label></span>
-                                        <h4><i className="kp-up-down blue "></i></h4>
-                                        <select className=" form-control"  onChange={this.changePage} field = "targetType">
-                                            <option value="" selected = {this.state.istargetType===""} >--- Select Target Type --- </option>
-                                            <option value={this.state.istargetType='SEVA'}  >Seva  </option>
-                                            <option value={this.state.istargetType='EVENT'} >Event</option>
-                                        </select>
-                                        
-                                    </div>
-                                    <div className="col-md-1">
-                                        <button  className="btn btn-lg btn-primary " onClick={this.onSearch}>
-                                        Search
-                                        </button>
-                                    </div>
-                                    <div className="col-md-1">
-                                        <button  className="btn btn-lg btn-primary " onClick={this.onCancel}>
-                                        Clear
-                                        </button>
-                                    </div>
-                                </div>
-
-                            
-                        <div className="mt10per ml45per">Sorry No data found !!</div>
-                    </div>
-                     )
-                     }
-             else
                  return (
                          <div className="p30 " >
                          <div className="row">
@@ -225,7 +185,8 @@ this.onSubmit(event,this.state.itemsPerPage,this.state.activePage);
                             <div className="row">
                             
                           </div>
-                        <table className="table table-bordered table-striped mt30">
+                          {showSearchBox && <div className="mt10per ml45per">Sorry No data found !!</div>}
+                          {!showSearchBox && <div> <table className="table table-bordered table-striped mt30">
                                <thead>
                                     <tr className="font-color ">
                                     <th className="tabel-header">Transaction Id</th>
@@ -253,8 +214,8 @@ this.onSubmit(event,this.state.itemsPerPage,this.state.activePage);
               subContainerClassName={"pages pagination"}
               activeClassName={"active"} />
                       </div>
-             </div>
-            
+             </div>}
+            </div>
                   )
                 }
               }

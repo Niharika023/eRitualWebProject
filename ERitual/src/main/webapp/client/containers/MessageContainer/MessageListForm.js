@@ -36,7 +36,8 @@ class MessageListForm extends Component {
                 confirmDelete:false,
                 deleteMessageId:'',
                 messageIndex:null,
-                tag:''
+                tag:'',
+                showSearchBox:false
 
 		}
 		this.onCancel=this.onCancel.bind(this);
@@ -153,6 +154,9 @@ class MessageListForm extends Component {
 		this.state.dateGreaterThan = null;
 		this.state.dateLesserThan = null;
 		this.state.tag="";
+		this.state.showSearchBox=false;
+		this.state.creationDateGreaterThan=null;
+		this.state.creationDateLesserThan=null;
 		this.onSubmit(message,this.state.itemsPerPage,this.state.activePage);
 
 	}
@@ -165,6 +169,9 @@ class MessageListForm extends Component {
 				(res) => {
 					res.payload.data=JSON.parse(decodeURIComponent(res.payload.data.replace(/\+/g,'%20')));
 					let searchdata= res.payload.data;
+					if(searchdata.items.length==0){
+						this.state.showSearchBox=true;
+					}
 					if(searchdata.message!= null) {
 						this.setState({ errors : { "form" : searchdata.message }, isLoading : false })
 					}
@@ -250,7 +257,7 @@ class MessageListForm extends Component {
 	render() {
 
 		const {messageList,deleteMessage,location,addToast,tagByKeyRequest,tagConfigData}=this.props;
-		const {tag}=this.state;
+		const {tag,showSearchBox}=this.state;
 		if(messageList.messageData!=undefined){
 			if(messageList.messageData.length!=0){
 				this.state.pageNum=Math.ceil(messageList.numItems / this.state.itemsPerPage);
@@ -260,79 +267,6 @@ class MessageListForm extends Component {
 		if(!this.props.messageList || this.props.messageList.length==0)
 			return <div>Loading</div>
 			else if(this.props.messageList ){
-				if(this.props.messageList.messageData.length==0){
-					return(
-							<div className="p30 " >
-							<div className="row">
-							<div className="col-md-offset-5">
-							<h1 className="mt0 mb20 ">Message List</h1>
-							</div>
-							</div>
-							<div className="row">
-							<div className="col-md-2 ">
-							<TextFieldGroup
-							label="Title "
-								onChange={this.onChange}
-							field="searchByTitle"
-								value = {this.state.searchByTitle}
-							name="searchByTitle"
-								asterisk=""    
-									/>
-									</div>
-							{/*<div className="col-md-2">
-							<TextFieldGroup
-							label="Message "
-								onChange={this.onChange}
-							field="searchByMessage"
-								value = {this.state.searchByMessage}
-							name="searchByMessage"
-								asterisk=""    
-									/>
-									</div>*/}
-							<div className="col-md-2">
-							<label> From</label>
-							<Datetime 
-							onChange ={this.handleDateGreaterThanSelect}
-							dateFormat={true}
-							isValidDate={this.valid}
-							timeFormat={false}
-							value={this.state.dateGreaterThan}
-							field="date"
-							/>
-							</div>
-							<div className="col-md-2">
-							<label> To</label>
-							<Datetime 
-							onChange ={this.handleDateLesserThanSelect}
-							dateFormat={true}
-							isValidDate={this.valid}
-							timeFormat={false}
-							value={this.state.dateLesserThan}
-							field="date"
-							/>
-							</div>
-							<div className="col-md-1">
-							<button  className="btn btn-lg btn-primary mt15" onClick={this.onSearch}>
-							<i className="kp-up-down blue mr_5"></i>
-							Search
-							</button>
-							</div>
-							<div className="col-md-1">
-							<button  className="btn btn-lg btn-primary mt15" onClick={this.onCancel}>
-							Clear
-							</button>
-							</div>
-							<div className="col-md-1 ">
-							<button  className="btn btn-lg  sector-division btn-primary mb15 mt15" onClick={this.onAdd}>
-							Add New
-							</button>
-							</div>
-							</div>
-							<div className="mt10per ml45per">Sorry No data found !!</div>
-							</div>
-					)
-				}
-				else
 					return (
 							<div className="p30 " >
 							<div className="row">
@@ -408,9 +342,10 @@ class MessageListForm extends Component {
 							</button>
 							</div>
 							</div>
-							<div className="row mt40">
+							{showSearchBox && <div className="mt10per ml45per">Sorry No data found !!</div>}
+							{!showSearchBox && <div><div className="row mt40">
 							<div className="col-md-3 filter-container">
-							<h2> Sort By Relevance</h2>
+							<h3 className="filter-color"> Filters</h3>
 							<select name="orderByTitle" className=" form-control link-secondary font-color mb10" onChange={this.changeSort}>
 							<option value="">Sort By Title</option>
 							<option value="asc">Ascending</option>
@@ -457,6 +392,7 @@ class MessageListForm extends Component {
 				             <button ref="uploadBtn" className="btn btn-primary pull-right col-md-4 " onClick={this.closeModal}>Cancel</button>
 				             </div>
 				             </div></div>}
+							 </div>}
 							</div>
 
 					)

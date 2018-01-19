@@ -49,7 +49,8 @@ class SevaListForm extends Component {
 				confirmDelete:false,
 				deleteSevaId:'',
 				sevaIndex:null,
-				tag:''
+				tag:'',
+				showSearchBox:false
 
 		}
 		this.onCancel=this.onCancel.bind(this);
@@ -179,6 +180,7 @@ class SevaListForm extends Component {
 		this.state.available="";
 		this.state.selectedIndex=0;
 		this.state.tag="";	
+		this.state.showSearchBox=false;
 		this.onSubmit(event,this.state.itemsPerPage,this.state.activePage);
 
 	}
@@ -193,6 +195,9 @@ class SevaListForm extends Component {
 				(res) => {
 					res.payload.data=JSON.parse(decodeURIComponent(res.payload.data.replace(/\+/g,'%20')));
 					let searchdata= res.payload.data;
+					if(searchdata.items.length==0){
+						this.state.showSearchBox=true;
+					}
 					if(searchdata.message!= null) {
 						this.setState({ errors : { "form" : searchdata.message }, isLoading : false })
 					}
@@ -282,6 +287,7 @@ class SevaListForm extends Component {
 
 	render() {
 		const {sevaList,deleteSeva,location,addToast,tag}=this.props;
+		const {showSearchBox}=this.state;
 		if(sevaList.sevaData!=undefined){
 			if(sevaList.sevaData.length!=0){
 				this.state.pageNum=Math.ceil(sevaList.numItems / this.state.itemsPerPage);
@@ -291,57 +297,6 @@ class SevaListForm extends Component {
 		if(!this.props.sevaList || this.props.sevaList.length==0)
 			return <div>Loading........</div>
 			else if(this.props.sevaList ){
-				if(this.props.sevaList.sevaData==undefined || this.props.sevaList.sevaData.length==0){
-					return(
-							<div className="p30 " >
-							<div className="row">
-							<div className="col-md-offset-5">
-							<h1 className="mt0 mb20 ">Seva List</h1>
-							</div>
-							</div>
-							<div className="row">
-							<div className="col-md-4 ">
-							<TextFieldGroup
-							label="Name "
-								onChange={this.onChange}
-							field="search"
-								value = {this.state.search}
-							name="searchByName"
-								asterisk=""
-									/>
-									</div>
-							<div className="sector-division col-md-3  ">
-							<span className="col-md-2"><label>Available</label></span>
-							<h4><i className="kp-up-down blue"></i></h4>
-							<select className=" form-control "  onChange={this.onStatus}  field = "available">
-							<option value="" selected={this.state.isAvailable === ""} >--- Select Availability ---</option>
-
-							<option value={this.state.isAvailable=true}  >True    </option>
-							<option value={this.state.isAvailable =false}  >False    </option>
-							</select>
-							</div>
-							<div className="col-md-1">
-							<button  className="btn btn-lg btn-primary mt20" onClick={this.onSearch}>
-							<i className="kp-up-down blue mr_5"></i>
-							Search
-							</button>
-							</div>
-							<div className="col-md-1">
-							<button  className="btn btn-lg btn-primary mt20" onClick={this.onCancel}>
-							Clear
-							</button>
-							</div>
-							<div className="col-md-1 col-md-offset-1">
-							<button  className="btn btn-lg  sector-division btn-primary mb15 mt15" onClick={this.onAdd}>
-							Add New
-							</button>
-							</div>
-							</div>
-							<div className="mt10per ml45per">Sorry No data found !!</div>
-							</div>
-					)
-				}
-				else
 					return (
 							<div className="p30 " >
 							<div className="row">
@@ -393,8 +348,9 @@ class SevaListForm extends Component {
 							</button>
 							</div>
 							</div>
-							<div className="row mt40">
-							<div className="col-md-3 filter-container drop-down">
+							{showSearchBox && <div className="mt10per ml45per">Sorry No data found !!</div>}
+							{!showSearchBox && <div> <div className="row mt40">
+							<div className="col-md-3 filter-container">
 							<h3 className="filter-color"> Filters</h3>
 							<select name="orderByName" className=" form-control  font-color mb10 link-secondary coursor-pointer" onChange={this.changeSort}>
 								<option value="">Sort By Name</option>
@@ -462,6 +418,7 @@ class SevaListForm extends Component {
 							<button ref="uploadBtn" className="btn btn-primary pull-right col-md-4 " onClick={this.closeModal}>Cancel</button>
 							</div>
 							</div></div>}
+							</div>}
 							</div>
 					)
 			}
