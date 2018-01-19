@@ -68,7 +68,7 @@ class EventListForm extends Component {
 	onChange(event) {
 		this.setState({ [event.target.name]:event.target.value}, function() {
 			if(this.state.firstTimeFormSubmit) {
-				this.isValid();
+				//this.isValid();
 			}
 		});
 	}
@@ -204,19 +204,22 @@ class EventListForm extends Component {
 
 	onCancel(event)
 	{
-		this.setState({ search :''});
-		this.state.search = "";
-		this.state.searchByCity = "";
-		this.state.searchByLocality = "";
-		this.state.amountGreaterThan = "";
-		this.state.amountLesserThan = "";
-		this.state.dateGreaterThan = "";
-		this.state.dateLesserThan = "";
-		this.state.isAvailable="";
-		this.state.available="";
-		this.state.showSearchBox=false;
-		this.onSubmit(event,this.state.itemsPerPage,this.state.activePage);
+		this.setState({
+			search:"",
+			searchByCity :"",
+			searchByLocality: "",
+			amountGreaterThan: "",
+			amountLesserThan: "",
+			dateGreaterThan:"",
+			dateLesserThan:"",
+			isAvailable:"",
+			available:"",
+			showSearchBox:false,
+		},()=>{
+			this.onSubmit(event,this.state.itemsPerPage,this.state.activePage);
+		})
 	}
+	
 	handlePageClick(index){
 		this.state.activePage=index.selected;
 		this.onSubmit(event,this.state.itemsPerPage,this.state.activePage);

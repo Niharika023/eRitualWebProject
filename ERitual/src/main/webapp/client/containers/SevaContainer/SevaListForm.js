@@ -76,16 +76,20 @@ class SevaListForm extends Component {
 			}
 		});
 	}
+	
 	onAdd(){
 		this.context.router.push('/ERitual/sevaForm');
 	}
 
 	onSearch(seva)
 	{
-		this.state.activePage = 0;
-		this.onSubmit(event,this.state.itemsPerPage,this.state.activePage);
-
+		this.setState({
+			activePage:0
+		},()=>{
+			this.onSubmit(event,this.state.itemsPerPage,this.state.activePage);
+		})
 	}
+	
 	scrollPage(){
 		let elmnt = document.querySelector('.site-container');
 		elmnt.scrollIntoView();
@@ -94,31 +98,48 @@ class SevaListForm extends Component {
 	componentWillUpdate(){
 		this.scrollPage();
 	}
+	
 	onStatus(event){
 		event.preventDefault();
-		this.state.selectedIndex=event.target.selectedIndex;
-		this.state.isAvailable=event.target.value;
-		this.state.available = event.target.value;
-
-
+		this.setState({
+			selectedIndex:event.target.selectedIndex,
+			isAvailable:event.target.value,
+			available:event.target.value
+		},()=>{
+		})
 	}
 
 	changeSort(seva){
 		let sortBy=seva.target.name;
 		let sortByValue=seva.target.value;
 		if(sortBy=="orderByName"){
-			this.state.orderByName=sortByValue
+			this.setState({
+				orderByName:sortByValue
+			},()=>{
+				this.onSubmit();
+			})
 		}
 		if(sortBy=="orderByAmount"){
-			this.state.orderByAmount=sortByValue
+			this.setState({
+				orderByAmount:sortByValue
+			},()=>{
+				this.onSubmit();
+			})
 		}
 		if(sortBy=="orderByTime"){
-			this.state.orderByTime=sortByValue
+			this.setState({
+				orderByTime:sortByValue
+			},()=>{
+				this.onSubmit();
+			})
 		}
 		if(sortBy=="orderByUpdatedTS"){
-			this.state.orderByUpdatedTS=sortByValue
+			this.setState({
+				orderByUpdatedTS:sortByValue
+			},()=>{
+				this.onSubmit();
+			})
 		}
-		this.onSubmit();
 	}
 
 	closeModal() {
@@ -127,6 +148,8 @@ class SevaListForm extends Component {
 		});
 
 	}
+	
+	//This function is used to delete the row data
 	confirmedDeletion(event)
 	{
 		event.preventDefault();
@@ -166,23 +189,24 @@ class SevaListForm extends Component {
 
 	onCancel(event)
 	{
-		this.setState({ search :''});
-		this.state.search = "";
-		this.state.searchByCity = "";
-		this.state.searchByLocality = "";
-		this.state.amountGreaterThan = "";
-		this.state.amountLesserThan = "";
-		this.state.timeGreaterThan = "";
-		this.state.timeLesserThan = "";
-		this.state.selectedTimeGreater="";
-		this.state.selectedTimeLesser="";
-		this.state.isAvailable="";
-		this.state.available="";
-		this.state.selectedIndex=0;
-		this.state.tag="";	
-		this.state.showSearchBox=false;
-		this.onSubmit(event,this.state.itemsPerPage,this.state.activePage);
-
+		this.setState({ 
+			search :"",
+			searchByCity:"",
+			searchByLocality:"",
+			amountGreaterThan:"",
+			amountLesserThan:"",
+			timeGreaterThan:"",
+			timeLesserThan:"",
+			selectedTimeGreater:"",
+			selectedTimeLesser:"",
+			isAvailable:"",
+			available:"",
+			selectedIndex:0,
+			tag:"",
+			showSearchBox:false
+		},()=>{
+			this.onSubmit(event,this.state.itemsPerPage,this.state.activePage);
+		})
 	}
 
 
@@ -209,9 +233,12 @@ class SevaListForm extends Component {
 	}
 
 	handlePageClick(index){
-		this.state.activePage=index.selected;
-		this.onSubmit(event,this.state.itemsPerPage,this.state.activePage);
-		this.scrollPage();
+		this.setState({
+			activePage:index.selected
+		},()=>{
+			this.onSubmit(event,this.state.itemsPerPage,this.state.activePage);
+			this.scrollPage();
+		})
 	}
 
 	handleTimeGreaterThanSelect(selectedDate) {
@@ -256,7 +283,10 @@ class SevaListForm extends Component {
 	}
 
 	SelectTag(event){
-		this.state.tag=event.target.value;
+		this.setState({
+			tag:event.target.value
+		},()=>{
+		})
 	}
 	
 	sevaTagRenderOptions() {
