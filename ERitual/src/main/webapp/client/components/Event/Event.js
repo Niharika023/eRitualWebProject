@@ -17,16 +17,20 @@ const Event = ({eventRenderList,deleteEvent}) => {
 			item.available="false";
 		
 		}
-		if(item.time) {
-			let timeArr= item.time.split(":");
-	 		let hours=timeArr[0];
-	 		let minutes=timeArr[1];
-	 		let selectedHour = hours%12;
+		let time,timeArr,hours,minutes,selectedHour;
+		
+		if(item.name) {
+			if(item.time){
+			timeArr= item.time.split(":");
+	 		hours=timeArr[0];
+	 		minutes=timeArr[1];
+	 		selectedHour = hours%12;
 	 		if(selectedHour==0){
 	    		selectedHour=12;
 	    		}
-	 		let time=`${(selectedHour < 10) ? "0" + selectedHour : selectedHour}:${minutes} ${(hours < 12)?'AM':'PM'}`;
-		      return ( 
+	 		time=`${(selectedHour < 10) ? "0" + selectedHour : selectedHour}:${minutes} ${(hours < 12)?'AM':'PM'}`;
+			}
+	 		return ( 
 		    		  
 		    		  <tr className="font-color p-ver-70" key={index}>
 		              <td className="col-sm-2" ><Link to={{ pathname: '/ERitual/eventDetails/'+item.id}}  className=" link-secondary  active ">{item.name}</Link> </td>
