@@ -5,7 +5,6 @@ export default function validateInput(data) {
 	let errors = {};
 
 	if(Validator.isEmpty(data.name)) {
-		console.log("sevvva");
 		errors.name = "Please enter Name";
 	}
 	

@@ -357,9 +357,6 @@ class MessageFormContainer extends Component {
 								img.src = _URL.createObjectURL(files[0]);
 							}
 						}
-						
-					
-					
 						return;
 					};
 					reader.readAsDataURL(files[0]);
@@ -434,9 +431,7 @@ class MessageFormContainer extends Component {
 				</select>
 				{triggerSelectedUrl && <span>Url is : {this.state.selectedUrl}</span>}
 				</div>
-               
               </div>
-              
               <div className="row">
               {triggerUploadPdf && <div className="col-xs-6 mt20">
               <label>Upload Image</label>
@@ -454,8 +449,6 @@ class MessageFormContainer extends Component {
 	                  <button name="aboutUsImg" ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload</button>
 	                </div>
 				</div>}
-				
-				
 				 {triggerUploadBanner && <div className="col-xs-6 mt20">
 	              <label>Upload Banner</label>
 		                {imageUploadSuccess && <img src = {messageImage} width="100%"/>}

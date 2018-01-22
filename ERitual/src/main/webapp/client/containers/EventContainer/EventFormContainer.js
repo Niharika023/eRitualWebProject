@@ -85,8 +85,9 @@ class EventFormContainer extends Component {
 	}
 	onChange(event) {
 		event.preventDefault();
-		this.state.submitApplied=false;
-
+		this.setState({
+			submitApplied:false
+		})
 		this.setState({ [event.target.name]:event.target.value}, function() {
 			if(this.state.image!="" && this.state.firstTimeFormSubmit ==false)
 			{
@@ -103,22 +104,34 @@ class EventFormContainer extends Component {
 		const value = target.type === 'checkbox' ? target.checked : target.value;
 		const name = target.name;
 		if(name=="available"){
-			this.state.available=value;
+			this.setState({
+				available:value
+			})
 		}
 		else if(name=="checked"){
-			this.state.checked=value;
+			this.setState({
+				checked:value
+			})
 		}
 		else if(name=="name"){
-			this.state.eventUserName=value;
+			this.setState({
+				eventUserName:value
+			})
 		}
 		else if(name=="rashi"){
-			this.state.rashi=value;
+			this.setState({
+				rashi:value
+			})
 		}
 		else if(name=="nakshatra"){
-			this.state.nakshatra=value;
+			this.setState({
+				nakshatra:value
+			})
 		}
 		else if(name=="gotra"){
-			this.state.gotra=value;
+			this.setState({
+				gotra:value
+			})
 		}
 		this.setState({
 			[name]: value
@@ -142,7 +155,9 @@ class EventFormContainer extends Component {
 
 		for(var scroll in error.errors)
 		{
-			this.state.scroll= scroll;
+			this.setState({
+				scroll:scroll
+			})
 			break;                                        
 		} 
 		let elmnt = document.getElementById('event-form');
@@ -348,7 +363,6 @@ class EventFormContainer extends Component {
 						this.setState({
 							imageId:response.data.id
 						})
-
 						this.setState({
 							imageUploadSuccess:true
 						},()=>{

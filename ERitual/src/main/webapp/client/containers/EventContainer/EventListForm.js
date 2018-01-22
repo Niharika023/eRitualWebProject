@@ -75,11 +75,14 @@ class EventListForm extends Component {
 	onAdd(){
 		this.context.router.push('/ERitual/eventForm');
 	}
+	
 	onSearch(event)
 	{
-		this.state.activePage = 0;
-		this.onSubmit(event,this.state.itemsPerPage,this.state.activePage);
-
+		this.setState({
+			activePage:0
+		},()=>{
+			this.onSubmit(event,this.state.itemsPerPage,this.state.activePage);
+		})
 	}
 
 	scrollPage(){
@@ -93,29 +96,52 @@ class EventListForm extends Component {
 
 	onStatus(event){
 		event.preventDefault();
-		this.state.isAvailable=event.target.value;
-		this.state.available = event.target.value;
+		this.setState({
+			isAvailable:event.target.value,
+			available:event.target.value
+		},()=>{
+		})
 	}
 
 	changeSort(event){
 		let sortBy=event.target.name;
 		let sortByValue=event.target.value;
 		if(sortBy=="orderByName"){
-			this.state.orderByName=sortByValue
+			this.setState({
+				orderByName:sortByValue
+			},()=>{
+				this.onSubmit();
+			})
 		}
 		if(sortBy=="orderByAmount"){
-			this.state.orderByAmount=sortByValue
+			this.setState({
+				orderByAmount:sortByValue
+			},()=>{
+				this.onSubmit();
+			})
 		}
 		if(sortBy=="orderByCity" ){
-			this.state.orderByCity=sortByValue
+			this.setState({
+				orderByCity:sortByValue
+			},()=>{
+				this.onSubmit();
+			})
 		}
 		if(sortBy=="orderByDate"){
-			this.state.orderByDate=sortByValue
+			this.setState({
+				orderByDate:sortByValue
+			},()=>{
+				this.onSubmit();
+			})
 		}
 		if(sortBy=="orderByUpdatedTS"){
-			this.state.orderByUpdatedTS=sortByValue
+			this.setState({
+				orderByUpdatedTS:sortByValue
+			},()=>{
+				this.onSubmit();
+			})
 		}
-		this.onSubmit();
+		
 	}
 
 	//For delete event by id
@@ -165,20 +191,22 @@ class EventListForm extends Component {
 
 	onCancel(event)
 	{
-		this.setState({ search :''});
-		this.state.search = "";
-		this.state.searchByCity = "";
-		this.state.searchByLocality = "";
-		this.state.amountGreaterThan = "";
-		this.state.amountLesserThan = "";
-		this.state.dateGreaterThan = "";
-		this.state.dateLesserThan = "";
-		this.state.isAvailable="";
-		this.state.available="";
-		this.state.showSearchBox=false;
-		this.onSubmit(event,this.state.itemsPerPage,this.state.activePage);
-
+		this.setState({
+			search:"",
+			searchByCity:"",
+			searchByLocality:"",
+			amountGreaterThan:"",
+			amountLesserThan:"",
+			dateGreaterThan:"",
+			dateLesserThan:"",
+			isAvailable:"",
+			available:"",
+			showSearchBox:false
+		},()=>{
+			this.onSubmit(event,this.state.itemsPerPage,this.state.activePage);
+		})
 	}
+	
 	onSubmit(event) {
 		//event.preventDefault();
 		this.setState({ firstTimeFormSubmit : true })
@@ -188,6 +216,7 @@ class EventListForm extends Component {
 				(res) => {
 					res.payload.data=JSON.parse(decodeURIComponent(res.payload.data.replace(/\+/g,'%20')));
 					let searchdata= res.payload.data;
+					console.log("searchdata",searchdata);
 					if(searchdata.items.length==0){
 						this.state.showSearchBox=true;
 					}

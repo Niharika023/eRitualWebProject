@@ -34,12 +34,9 @@ class OrderDetailsContainer extends Component {
 				minutes:null,
 				hours:null,
 				tags:''
+			}
 		}
-
-	}
-
-
-
+ 
 	componentDidMount() {
 		let userName=[];
 		let userNameArr="";

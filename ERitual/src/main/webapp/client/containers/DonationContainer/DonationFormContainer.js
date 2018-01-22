@@ -26,9 +26,7 @@ class DonationFormContainer extends Component {
 				firstTimeFormSubmit:false,
 		        submitApplied:false,
 		        scroll:'',
-
 		}
-
 		this.onChange = this.onChange.bind(this);// bind(this) is needed here,
 		this.onSubmit = this.onSubmit.bind(this);
 		this.scrollPage=this.scrollPage.bind(this);
@@ -47,14 +45,15 @@ class DonationFormContainer extends Component {
 	
 	handleFile(event){
 		event.preventDefault();
-		this.state.videoUrl=event.target.value;
+		this.setState({
+			videoUrl:event.target.value
+		})
 		this.setState({ [event.target.name]:event.target.value}, function() {
 			if(this.state.firstTimeFormSubmit) {
 				this.isValid();
 			}
 		});
 	}
-	
 	
 	onClick(event){
 		this.context.router.push('/ERitual/donation');
@@ -65,7 +64,9 @@ class DonationFormContainer extends Component {
 		});
 	}
 	onChange(event) {
-	      this.state.submitApplied=false;
+		this.setState({
+			submitApplied:false
+		}) 
 		this.setState({ [event.target.name]:event.target.value}, function() {
 			if(this.state.firstTimeFormSubmit) {
 				this.isValid();
@@ -73,12 +74,12 @@ class DonationFormContainer extends Component {
 		});
 	}
 
-
 	//on select tag
 	SelectTag(event){
-		this.state.tag=event.target.value;
-		//this.setState({triggerUploadVideo:true});
-			this.setState({showTextBox:true});
+		this.setState({
+			tag:event.target.value,
+			showTextBox:true
+		})
 	}
 
 	// method to check the validity of the form
@@ -111,10 +112,11 @@ class DonationFormContainer extends Component {
 	
 	//method to scroll the page on reload
 	scrollPage(error){
-
         for(var scroll in error.errors)
         {
-            this.state.scroll= scroll;
+        	this.setState({
+        		scroll:scroll
+			})
             break;                                        
         } 
         let elmnt = document.getElementById('donation-form');

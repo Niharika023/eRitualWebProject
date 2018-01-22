@@ -89,7 +89,9 @@ class SevaFormContainer extends Component {
 
 	//on select tag
 	SelectTag(event){
-		this.state.tag=event.target.value;
+		this.setState({
+			tag:event.target.value
+		})
 		if(this.state.tag=='Special Packages'){
 			this.setState({triggerUploadImg:true});
 		}
@@ -108,8 +110,9 @@ class SevaFormContainer extends Component {
 
 	onChange(event) {
 		event.preventDefault();
-		this.state.submitApplied=false;
-
+		this.setState({
+			submitApplied:false
+		})
 		this.setState({ [event.target.name]:event.target.value}, function() {
 			if(this.state.firstTimeFormSubmit) {
 				this.isValid();
@@ -118,7 +121,9 @@ class SevaFormContainer extends Component {
 	}
 	handleFile(event){
 		event.preventDefault();
-		this.state.videoUrl=event.target.value;
+		this.setState({
+			videoUrl:event.target.value
+		})
 		this.setState({ [event.target.name]:event.target.value}, function() {
 			if(this.state.firstTimeFormSubmit) {
 				this.isValid();
@@ -164,7 +169,9 @@ class SevaFormContainer extends Component {
 	scrollPage(error){
 		for(var scroll in error.errors)
 		{
-			this.state.scroll= scroll;
+			this.setState({
+				scroll:scroll
+			})
 			/*            this.setState({scroll:scroll});
 			 */            break;                                        
 		} 
@@ -295,10 +302,14 @@ class SevaFormContainer extends Component {
 	selectAudVid(event) {
 		this.state.type=event.target.value;
 		if(this.state.type=='text'){
-			this.state.showTextBox=true;	
+			this.setState({
+				showTextBox:true
+			})
 		}
 		else{
-			this.state.showTextBox=false;	
+			this.setState({
+				showTextBox:false
+			})
 		}
 	}
 
