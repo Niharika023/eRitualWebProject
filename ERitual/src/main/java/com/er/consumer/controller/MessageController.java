@@ -127,7 +127,7 @@ public class MessageController {
 		if( request.getParameter("messageId") != null)
 			messageId= request.getParameter("messageId"); 
 		CommonUtility.isSessionActive(response, (String) session.getAttribute("access_token"));
-		String url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/message/get/"+messageId;
+		String url = baseUrl+"/eritual-web/rest/message/get/"+messageId;
 		ServiceResponse responseObj = HttpUtil.sendGet(url, (String) session.getAttribute("access_token"));
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 		
