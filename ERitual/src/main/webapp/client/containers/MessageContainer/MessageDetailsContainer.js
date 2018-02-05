@@ -64,6 +64,7 @@ class MessageDetailsContainer extends Component {
     
     // will call on reload of page
     componentDidMount() {
+    	console.log("this.props.editMessage",this.props.editMessage);
     	const {title} = this.props.editMessage;
     	const {message} = this.props.editMessage;
     	const {imageId} = this.props.editMessage;
@@ -71,7 +72,25 @@ class MessageDetailsContainer extends Component {
     	const {createdTS}=this.props.editMessage;
     	const {tags}=this.props.editMessage;
     	const {hostedContentId}=this.props.editMessage;
-    	if(this.props.editMessage.imageId == null ||this.props.editMessage.imageId == "" || this.props.editMessage.imageId == undefined ){
+    	if(this.props.editMessage.message !="" && this.props.editMessage.imageId!=null)
+		{
+		this.setState({
+			message,
+			imageId,
+			showpdfUpload:false,
+			imageUploadSuccess:true,
+			showVideoOrAudioDesc:false
+		});
+		}
+	else{
+		this.setState({
+			pdfId:this.props.editMessage.imageId,
+			showpdfUpload:true,
+			imageUploadSuccess:false,
+			showVideoOrAudioDesc:false
+		});
+	}
+    	if(this.state.imageId == null ||this.state.imageId == "" || this.state.imageId == undefined ){
     		this.state.triggredNoData = true;
     	}else {
     		this.state.triggredNoData= false;
@@ -88,22 +107,12 @@ class MessageDetailsContainer extends Component {
     			showHostContent:true
     		})
     	}
-    	if(this.props.editMessage.imageId!=null)
-    		{
-    		this.setState({
-    			message,
-    			showpdfUpload:false,
-    			imageUploadSuccess:true,
-    			showVideoOrAudioDesc:false
-    		})
-    		}
     	if( this.props.editMessage.hostedContentId !=null){
     		this.setState({
     			showpdfUpload:false,
     			showVideoOrAudioDesc:true,
     			imageUploadSuccess:false
     		})
-    	console.log("message detail",this.state.pdfId);
     	}
     	if((this.props.editMessage.imageId ==null ) && this.props.editMessage.hostedContentId ==null){
     		this.setState({
