@@ -100,21 +100,25 @@ class MessageListForm extends Component {
 	changeSort(message){
 		let sortBy=message.target.name;
 		let sortByValue=message.target.value;
-		if(sortBy=="orderByTitle"){
-			this.setState({
-				orderByTitle:sortByValue
-			},()=>{
-				this.onSubmit();
-			})
-		}
-		if(sortBy=="orderByUpdatedTS"){
-			this.setState({
-				orderByUpdatedTS:sortByValue
-			},()=>{
-				this.onSubmit();
-			})
-		}
-
+		this.setState({
+			orderByTitle:"",
+			orderByUpdatedTS:""
+		},()=>{
+			if(sortBy=="orderByTitle"){
+				this.setState({
+					orderByTitle:sortByValue
+				},()=>{
+					this.onSubmit();
+				})
+			}
+			if(sortBy=="orderByUpdatedTS"){
+				this.setState({
+					orderByUpdatedTS:sortByValue
+				},()=>{
+					this.onSubmit();
+				})
+			}
+		})
 	}
 
 	closeModal() {
@@ -278,7 +282,7 @@ class MessageListForm extends Component {
 
 	render() {
 		const {messageList,deleteMessage,location,addToast,tagByKeyRequest,tagConfigData}=this.props;
-		const {tag,showSearchBox}=this.state;
+		const {tag,showSearchBox,orderByTitle,orderByUpdatedTS}=this.state;
 		if(messageList.messageData!=undefined){
 			if(messageList.messageData.length!=0){
 				this.state.pageNum=Math.ceil(messageList.numItems / this.state.itemsPerPage);
@@ -368,12 +372,12 @@ class MessageListForm extends Component {
 						<div className="col-md-3 filter-container">
 						<h3 className="filter-color"> Filters</h3>
 						<select name="orderByTitle" className=" form-control link-secondary font-color mb10" onChange={this.changeSort}>
-						<option value="">Sort By Title</option>
+						<option value="" selected={orderByTitle === ""}>Sort By Title</option>
 						<option value="asc">Ascending</option>
 						<option value="desc">Descending</option>
 						</select>
 						<select name="orderByUpdatedTS" className=" form-control link-secondary font-color mb10" onChange={this.changeSort}>
-						<option value="">Sort By UpdatedTS</option>
+						<option value="" selected={orderByUpdatedTS === ""}>Sort By UpdatedTS</option>
 						<option value="asc">Ascending</option>
 						<option value="desc">Descending</option>
 						</select>

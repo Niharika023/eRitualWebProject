@@ -100,23 +100,24 @@ class MessageFormContainer extends Component {
 						url:item.url,
 						metadata:item.metadata.onclick,
 						mime:item.mime,
+						selectedUrl:item.url
 					});
 				})
 			}
-			if(this.props.editMessage.message !=null && this.props.editMessage.imageId!=null)
+			if(this.props.editMessage.message !="" && this.props.editMessage.imageId!=null)
 				{
 				this.setState({
-					message
+					message,
+					imageId
 				});
 				}
 			else{
 				this.setState({
-					pdfId:this.props.editMessage.message
+					pdfId:this.props.editMessage.imageId
 				});
 			}
 			this.setState({
 				title,
-				imageId,
 				id,
 				contentId:this.props.editMessage.hostedContentId,
 				//tag:this.props.editMessage.tags
@@ -133,7 +134,7 @@ class MessageFormContainer extends Component {
 				this.setState({showTextBox:true});
 				this.setState({triggerSelectedUrl:false});
 				this.setState({triggerUploadPdf:false});
-				
+				this.setState({triggerUploadVideo:false});
 			}
 			else if(this.state.tag=='My Latest Articles') {
 			//this.setState({triggerUploadVideo:true});
@@ -187,40 +188,52 @@ class MessageFormContainer extends Component {
 	}
 	//on select tag
 	SelectTag(event){
-		this.state.url='';
-		this.state.metadata='';
-		this.state.mime=null;
-		this.state.type='';
-		this.state.videoDescription='';
-		this.state.hostedId=null;
-		this.state.contentId=null;
-		this.state.tag=event.target.value;
-		if(this.state.tag=='Banner'){
-			this.setState({triggerUploadBanner:true});
-			this.setState({triggerUploadImg:false});
-			this.setState({triggerUploadVidAudPdf:false});
-			this.setState({showTextBox:true});
-			this.setState({triggerSelectedUrl:false});
-			this.setState({triggerUploadPdf:false});
-			
-		}
-		else if(this.state.tag=='My Latest Articles') {
-		//this.setState({triggerUploadVideo:true});
-			this.setState({triggerUploadImg:false});
-			this.setState({triggerUploadBanner:false});
-			this.setState({triggerUploadVideo:false});
-			this.setState({showTextBox:false});
-			this.setState({triggerUploadVidAudPdf:false});
-			this.setState({triggerSelectedUrl:false});
-			this.setState({triggerUploadPdf:true});
-		}else {
-			this.setState({triggerUploadImg:false});
-			this.setState({triggerUploadBanner:false});
-			this.setState({triggerUploadVideo:true});
-			this.setState({showTextBox:false});
-			this.setState({triggerSelectedUrl:true});
-			this.setState({triggerUploadPdf:false});
-		}
+		this.setState({
+			url:'',
+			metadata:'',
+			mime:null,
+			type:'',
+			videoDescription:'',
+			hostedId:null,
+			contentId:null,
+			typename:null,
+			tag:event.target.value,
+			selectedUrl:null,
+			messageImage:'',
+			aboutPdf:'',
+			message:'',
+			pdfSrc:'',
+			imgSrc:'',
+			imageId:'',
+			pdfId:''
+		},()=>{
+			if(this.state.tag=='Banner'){
+				this.setState({triggerUploadBanner:true});
+				this.setState({triggerUploadImg:false});
+				this.setState({triggerUploadVidAudPdf:false});
+				this.setState({showTextBox:true});
+				this.setState({triggerSelectedUrl:false});
+				this.setState({triggerUploadPdf:false});
+			}
+			else if(this.state.tag=='My Latest Articles') {
+			//this.setState({triggerUploadVideo:true});
+				this.setState({triggerUploadImg:false});
+				this.setState({triggerUploadPdf:true});
+				this.setState({triggerUploadBanner:false});
+				this.setState({triggerUploadVideo:false});
+				this.setState({showTextBox:false});
+				this.setState({triggerUploadVidAudPdf:false});
+				this.setState({triggerSelectedUrl:false});
+			}else {
+				this.setState({triggerUploadImg:false});
+				this.setState({triggerUploadBanner:false});
+				this.setState({triggerUploadVideo:true});
+				this.setState({showTextBox:false});
+				this.setState({triggerSelectedUrl:true});
+				this.setState({triggerUploadPdf:false});
+			}
+		});
+		
 	}
 	onChange(event) {
 		event.preventDefault();
@@ -283,14 +296,29 @@ class MessageFormContainer extends Component {
 		this.setState({ firstTimeFormSubmit : true })
 		if(this.isValid()) {
 			this.setState({ errors: {}, isLoading:true });
-			let message= {
-					"title":this.state.title,
-					"message":this.state.message,
-					"imageId":this.state.imageId,
-					"hostedContentId":this.state.contentId,
-					"tags":this.state.tag,
-					"id":this.state.id
-			}
+			let message;
+			if(this.state.imageId!='')
+				{
+				 message= {
+							"title":this.state.title,
+							"message":this.state.message,
+							"imageId":this.state.imageId,
+							"hostedContentId":this.state.contentId,
+							"tags":this.state.tag,
+							"id":this.state.id,
+					}
+				}
+			else
+				{
+				 message= {
+							"title":this.state.title,
+							"message":this.state.message,
+							"imageId":this.state.pdfId,
+							"hostedContentId":this.state.contentId,
+							"tags":this.state.tag,
+							"id":this.state.id,
+					}
+				}
 			this.props.userMessageUpdateFormsRequest(message).then(
 					(res) => {
 						if(!res.payload.response && res.payload.status==600) {
@@ -364,7 +392,6 @@ class MessageFormContainer extends Component {
 			}
 			this.props.editAudVidDetailsFormrequest(audVidDetails).then(
 					(res) => {
-						console.log("res.payload.data",res.payload.data)
 						if(!res.payload.data && res.payload.status==600) {
 							this.props.addToast({  type:'error', 
 								text:`Sorry,you are not authorized to create or update seva, please contact to your  admin`, 
@@ -408,7 +435,6 @@ class MessageFormContainer extends Component {
 		}
 		this.props.audVidDetailsFormrequest(audVidDetails).then(
 				(res) => {
-					console.log("res.payload.data",res.payload.data)
 					if(!res.payload.data && res.payload.status==600) {
 						this.props.addToast({  type:'error', 
 							text:`Sorry,you are not authorized to create or update seva, please contact to your  admin`, 
@@ -492,7 +518,7 @@ class MessageFormContainer extends Component {
 										return false;
 									}
 									else {*/
-										this.setState({logoImage:e2.target.result,aboutPdf:e2.target.result,fileName:files[0].name,isPdfUpload:true,isUploadLoading:false});
+										this.setState({logoImage:e2.target.result,pdfUploadSuccess:true,aboutPdf:e2.target.result,fileName:files[0].name,isPdfUpload:true,isUploadLoading:false});
 										/*if(img.width < img.height) {
 											uploadedImageStyles.content.width = "auto";
 											uploadedImageStyles.content.height = "100%";
@@ -516,7 +542,7 @@ class MessageFormContainer extends Component {
 										return false;
 									}
 									else {
-										this.setState({logoImage:e2.target.result,messageImage:e2.target.result,isUploadLoading:false});
+										this.setState({logoImage:e2.target.result,imageUploadSuccess:true,messageImage:e2.target.result,isUploadLoading:false});
 										if(img.width < img.height) {
 											uploadedImageStyles.content.width = "auto";
 											uploadedImageStyles.content.height = "100%";
@@ -527,9 +553,6 @@ class MessageFormContainer extends Component {
 								img.src = _URL.createObjectURL(files[0]);
 							}
 						}
-						
-					
-					
 						return;
 					};
 					reader.readAsDataURL(files[0]);
@@ -546,15 +569,14 @@ class MessageFormContainer extends Component {
 						method: 'POST',
 						data: form
 					}).then((response) => {
-						if( this.state.panchangaPdf=='aboutUsPdf'){
+						if( this.state.imageOrPdf=='aboutUsPdf'){
 							this.setState({
-								message:response.data.id,
+								pdfId:response.data.id,
 								panchangaPdf:'',
 								pdfUploadSuccess:true
 							})
 							
-						}if(this.state.panchangaImg=='aboutUsImg'){
-							console.log("response.data.id",response.data.id);
+						}if(this.state.imageOrPdf=='aboutUsImg'){
 							this.setState({
 								imageId:response.data.id,
 								panchangaImg:'',
@@ -610,7 +632,7 @@ class MessageFormContainer extends Component {
               </div>
               <div className="row">
               {triggerUploadPdf && <div className="col-xs-6 mt20">
-              <label>Upload Image</label>
+              <label>Upload Pdf</label>
               {pdfUploadSuccess && <a href={aboutPdf} target="_blank"><span className="ml10"> Click to view</span></a>}
               {!pdfUploadSuccess && <a href={pdfSrc} target="_blank"><span className="ml10">Click to view</span></a>}
               <div className="pull-right logo-container" onClick={this.selectLogoClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
@@ -738,7 +760,7 @@ class MessageFormContainer extends Component {
 					<div className="row">
 					 <div className="col-md-12">
 					  <TextFieldGroup
-					  error={errors.name}
+					  error={errors.url}
 					  onChange={this.onChange}
 					  value={url}
 					  field="url"

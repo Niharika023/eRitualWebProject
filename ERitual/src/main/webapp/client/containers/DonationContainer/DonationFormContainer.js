@@ -24,8 +24,8 @@ class DonationFormContainer extends Component {
 				success:{},
 				isLoading:false,
 				firstTimeFormSubmit:false,
-		        submitApplied:false,
-		        scroll:'',
+				submitApplied:false,
+				scroll:'',
 		}
 		this.onChange = this.onChange.bind(this);// bind(this) is needed here,
 		this.onSubmit = this.onSubmit.bind(this);
@@ -42,7 +42,7 @@ class DonationFormContainer extends Component {
 			'triggerUploadVideo':false,
 		});
 	}
-	
+
 	handleFile(event){
 		event.preventDefault();
 		this.setState({
@@ -54,10 +54,10 @@ class DonationFormContainer extends Component {
 			}
 		});
 	}
-	
+
 	onClick(event){
 		this.context.router.push('/ERitual/donation');
-	this.setState({
+		this.setState({
 			'triggerUpload':false,
 			'logoImage':'',
 			'triggerUploadVideo':false,
@@ -88,61 +88,61 @@ class DonationFormContainer extends Component {
 		const {errors, isValid } = validateInput(this.state);
 		// if(!isValid) {
 		this.setState({ errors });
-		  if(this.state.submitApplied)
-		      this.scrollPage({errors});
+		if(this.state.submitApplied)
+			this.scrollPage({errors});
 		// }
 		return isValid;
 	}
-	
+
 	//For fetching tag list
 	donationTagRenderOptions() {
-    	if(this.props.tagConfigData!=undefined){
-    	if(this.props.tagConfigData.length!=0){
-    		let tagArr=[];
-    	tagArr=(this.props.tagConfigData.tagByKeyConfig.value.tags).split(",");
-    		const tagList = tagArr.map((d) => 
-    		{
-    			return (<option key={d}>{d}</option>
-    			)
-    			});
-    		return tagList;
-    	}
-    	}
-    }
-	
+		if(this.props.tagConfigData!=undefined){
+			if(this.props.tagConfigData.length!=0){
+				let tagArr=[];
+				tagArr=(this.props.tagConfigData.tagByKeyConfig.value.tags).split(",");
+				const tagList = tagArr.map((d) => 
+				{
+					return (<option key={d}>{d}</option>
+					)
+				});
+				return tagList;
+			}
+		}
+	}
+
 	//method to scroll the page on reload
 	scrollPage(error){
-        for(var scroll in error.errors)
-        {
-        	this.setState({
-        		scroll:scroll
+		for(var scroll in error.errors)
+		{
+			this.setState({
+				scroll:scroll
 			})
-            break;                                        
-        } 
-        let elmnt = document.getElementById('donation-form');
-        for(var i=0; i<elmnt.length; i++){
-            if(elmnt[i].name==this.state.scroll)
-            {
-                 elmnt[i].focus();
-                 break;
-             }
-        }
-         if(this.state.scroll=='')
-        {
-	        let elmnt = document.querySelector('.site-container');
-	        elmnt.scrollIntoView();
-        }
-        this.setState({scroll:''});
- 	}
-	
+			break;                                        
+		} 
+		let elmnt = document.getElementById('donation-form');
+		for(var i=0; i<elmnt.length; i++){
+			if(elmnt[i].name==this.state.scroll)
+			{
+				elmnt[i].focus();
+				break;
+			}
+		}
+		if(this.state.scroll=='')
+		{
+			let elmnt = document.querySelector('.site-container');
+			elmnt.scrollIntoView();
+		}
+		this.setState({scroll:''});
+	}
+
 	selectLogoClick(event) {
 		this.setState({triggerUpload:true});
 	}
-	
+
 
 	onSubmit(event) {
 		event.preventDefault();
-	     this.state.submitApplied=true;
+		this.state.submitApplied=true;
 		this.setState({ firstTimeFormSubmit : true })
 		//condition for checking the validation
 		if(this.isValid()) {
@@ -162,9 +162,9 @@ class DonationFormContainer extends Component {
 							this.context.router.push('/ERitual/donation');
 						}
 						//conditon for duplicate donation name
-						 else if(res.payload.status==204){
-		  	        			this.setState({ errors : { "form" : "Donation Name already exist" }, isLoading : false })
-		  	        		}
+						else if(res.payload.status==204){
+							this.setState({ errors : { "form" : "Donation Name already exist" }, isLoading : false })
+						}
 						//conditon when response is not null
 						else{
 							res.payload.data=JSON.parse(decodeURIComponent(res.payload.data.replace(/\+/g,'%20')));
@@ -263,11 +263,11 @@ class DonationFormContainer extends Component {
 		const {errors ,success, name,amount,checked,showTextBox,videoDescription,image,bannerTags,triggerUploadBanner,message,videoUrl,triggerUploadImg,triggerUploadVidAudPdf,typename,url,metadata,tags,description,imageUploadSuccess,showMessage,messageImage,isLoading,title} = this.state;
 		return (
 				<div>
-        		<form className="p20 user-entry-forms details-form" onSubmit={this.onSubmit} id="donation-form">
-                <h1 className="mt0 mb20 text-center page-header page-hdrCstm">Donation Form</h1>
-                { errors.form && <div className="alert alert-danger">{errors.form}</div> }
-                <div className="row mb10">
-                <div className="col-xs-6 col-md-6">
+				<form className="p20 user-entry-forms details-form" onSubmit={this.onSubmit} id="donation-form">
+				<h1 className="mt0 mb20 text-center page-header page-hdrCstm">Donation Form</h1>
+				{ errors.form && <div className="alert alert-danger">{errors.form}</div> }
+				<div className="row mb10">
+				<div className="col-xs-6 col-md-6">
 				<TextFieldGroup
 				error={errors.name}
 				label="Donation Name"
@@ -285,49 +285,49 @@ class DonationFormContainer extends Component {
 				field="amount"
 					/>
 					</div>
-                  
-				
-              </div>
-              
-              <div className="row">
-              <div className="col-xs-6">
-			  <label>Tags</label>
-			<select name="type" className=" form-control  font-color" onChange={this.SelectTag}>
-			<option value=""> Select Tags</option>
-			{this.donationTagRenderOptions()}
-			</select>
-			
-			</div>
-				    <div className="col-md-6">
+
+
+				</div>
+
+				<div className="row">
+				<div className="col-xs-6">
+				<label>Tags</label>
+				<select name="type" className=" form-control  font-color" onChange={this.SelectTag}>
+				<option value=""> Select Tags</option>
+				{this.donationTagRenderOptions()}
+				</select>
+
+				</div>
+				<div className="col-md-6">
 				<textarea 
-					cols="38"
-						rows="6"
-							onChange={this.onChange}
+				cols="38"
+					rows="6"
+						onChange={this.onChange}
 				name="description"
 					placeholder = "Description"
 						value={description}
 				className="wordText messageColor"
 					/>
-				  </div>
+					</div>
 				</div>
 				<div className="row mt30">
 				<div className="col-md-4 col-md-offset-4">
-				  <div className="btn-toolbar">
-				  <button type="button" disabled={this.state.isLoading} onClick={this.onClick} className="btn btn-lg btn-primary">
-					Cancel
-					</button>
-				  <button  disabled={this.state.isLoading} className="btn btn-lg btn-primary">
-					Submit
-					</button>
+				<div className="btn-toolbar">
+				<button type="button" disabled={this.state.isLoading} onClick={this.onClick} className="btn btn-lg btn-primary">
+				Cancel
+				</button>
+				<button  disabled={this.state.isLoading} className="btn btn-lg btn-primary">
+				Submit
+				</button>
 				</div>
 				</div>
 				</div>
 				</form>
-				 </div>
-				 
+				</div>
+
 		);
-				}
 	}
+}
 
 
 

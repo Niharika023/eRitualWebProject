@@ -62,6 +62,7 @@ class SevaFormContainer extends Component {
 				contentId:'',
 				tag:'',
 				showTextBox:false,
+				imgName:''
 		}
 
 		this.onChange = this.onChange.bind(this);// bind(this) is needed here,
@@ -91,13 +92,19 @@ class SevaFormContainer extends Component {
 	SelectTag(event){
 		this.setState({
 			tag:event.target.value
+		},()=>{
+			this.state.submitApplied=false;
+			console.log("this.state.firstTimeFormSubmit",this.state.firstTimeFormSubmit);
+				if(this.state.firstTimeFormSubmit) {
+					this.isValid();
+				}
+			if(this.state.tag=='Special Packages'){
+				this.setState({triggerUploadImg:true});
+			}
+			else{
+				this.setState({triggerUploadImg:false});
+			}
 		})
-		if(this.state.tag=='Special Packages'){
-			this.setState({triggerUploadImg:true});
-		}
-		else{
-			this.setState({triggerUploadImg:false});
-		}
 	}
 
 	onClick(event){
@@ -283,9 +290,9 @@ class SevaFormContainer extends Component {
 							}
 						}
 					},
-			);
+				);
+			}
 		}
-	}
 
 	//method for calendar from current date
 	valid(current)
@@ -296,8 +303,15 @@ class SevaFormContainer extends Component {
 
 	selectLogoClick(event) {
 		event.preventDefault();
-		this.setState({triggerUpload:true});
-	}
+		this.setState({
+			triggerUpload:true
+			},()=>{
+		this.state.submitApplied=false;
+			if(this.state.firstTimeFormSubmit) {
+				this.isValid();
+			}
+			});
+		}
 
 	selectAudVid(event) {
 		this.state.type=event.target.value;
@@ -318,9 +332,9 @@ class SevaFormContainer extends Component {
 			if(this.props.tagConfigData.length!=0){
 				let tagArr=[];
 				tagArr=(this.props.tagConfigData.tagByKeyConfig.value.tags).split(",");
-				const tagList = tagArr.map((d) => 
+				const tagList = tagArr.map((tag) => 
 				{
-					return (<option key={d}>{d}</option>
+					return (<option key={tag} selected = {tag === this.state.tag}>{tag}</option>
 					)
 				});
 				return tagList;
@@ -353,7 +367,13 @@ class SevaFormContainer extends Component {
 									return false;
 								}
 								else {
-									this.setState({logoImage:e2.target.result,sevaImage:e2.target.result,isUploadLoading:false});
+									this.setState({logoImage:e2.target.result,sevaImage:e2.target.result,imgName:'templeImage',isUploadLoading:false}
+									,()=>{
+										this.state.submitApplied=false;
+											if(this.state.firstTimeFormSubmit) {
+												this.isValid();
+											}
+											});
 									if(img.width < img.height) {
 										uploadedImageStyles.content.width = "auto";
 										uploadedImageStyles.content.height = "100%";
@@ -404,7 +424,8 @@ class SevaFormContainer extends Component {
 		};
 
 
-		const {errors ,success,specialPackageShow,showTextBox,tags,image,sevaUserName,message,showMessage, name,selectedTime,preRequisite,imageUploadSuccess,gotra,rashi,sevaImage, nakshatra, description,amount,active,inActive,isLoading,checked,triggerUploadImg} = this.state;
+		const {errors ,success,specialPackageShow,showTextBox,tags,imgName,tag,image,sevaUserName,message,showMessage, name,selectedTime,preRequisite,imageUploadSuccess,gotra,rashi,sevaImage, nakshatra, description,amount,active,inActive,isLoading,checked,triggerUploadImg} = this.state;
+		console.log("imgName",imgName);
 		return (
 				<div>
 				<form className="p20 user-entry-forms details-form" onSubmit={this.onSubmit} id="seva-form">
@@ -434,6 +455,7 @@ class SevaFormContainer extends Component {
 								field="tags"
 									label="Tags"
 										/>*/}
+				{errors.tag && <span className="help-block has-error material-label error-form "> {errors.tag}</span>}
 				</div>
 				{/*<div className="col-xs-6">
 				<label>Time</label><span className = "required"></span>
@@ -450,40 +472,41 @@ class SevaFormContainer extends Component {
 				</div>*/}
 				</div>
 				<div className="row mb10">
-				
+
 				{triggerUploadImg && <div className="col-xs-6 mt20">
 				<label>Upload Image</label>
 				{imageUploadSuccess && <img src = {sevaImage} width="100%"/>}
 				<div className="pull-right logo-container" onClick={this.selectLogoClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
 				{this.state.logoImageOnCard != '' && <img ref="logoOnCard" src={this.state.logoImageOnCard} style={uploadedImageStyles}/> }
 					<button ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload</button>
+					{errors.imgName && <div className="help-block has-error material-label error-form "> {errors.imgName}</div>}
 				</div>
 				</div>}
 				<div className="col-md-6">
 				<label>Description</label>
 				<textarea 
 				cols="43"
-					rows="6"
-						onChange={this.onChange}
+				rows="6"
+					onChange={this.onChange}
 				name="description"
 					placeholder = "Description"
 						value={description}
 				className="wordText messageColor"
 					/>
 				{errors.description && <span className="help-block has-error material-label error-form "> {errors.description}</span>} 
+				</div>
+				<div className="col-xs-6">
+				<TextFieldGroup
+				error={errors.amount}
+				label="Seva Amount"
+					onChange={this.onChange}
+				value={amount}
+				field="amount"
+					/>
 					</div>
-					<div className="col-xs-6">
-					<TextFieldGroup
-					error={errors.amount}
-					label="Seva Amount"
-						onChange={this.onChange}
-					value={amount}
-					field="amount"
-						/>
-						</div>
 				</div>
 				<div className="row mb10">
-				
+
 				</div>
 				<div className="row mb10">
 				<div className="col-xs-12">

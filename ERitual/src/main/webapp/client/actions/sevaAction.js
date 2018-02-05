@@ -7,11 +7,11 @@ export const FETCH_SEARCHED_SEVA_LIST='export const';
 export const DELETE_SEVA_BY_ID='DELETE_SEVA_BY_ID';
 
 export function setSevaData(sevaData) {
-	  return {
-	    type: FETCH_SEVA_LIST,
-	    searchSeva
-	  };
-	}
+	return {
+		type: FETCH_SEVA_LIST,
+		searchSeva
+	};
+}
 
 export function sevaRenderList(search,searchData,pageSize,pageNumber) {
 	let concatStr="?";
@@ -20,9 +20,9 @@ export function sevaRenderList(search,searchData,pageSize,pageNumber) {
 		concatStr=concatStr+"search="+ search+"&";
 	}
 	else
-		{
+	{
 		concatStr = concatStr + "search=&";
-		}
+	}
 	if(searchData.orderByName !=""){
 		concatStr=concatStr+"orderByName="+ searchData.orderByName+"&";
 	}
@@ -86,29 +86,29 @@ export function sevaRenderList(search,searchData,pageSize,pageNumber) {
 	concatStr=concatStr+"pageSize="+ pageSize+"&";
 	concatStr=concatStr+"pageNumber="+pageNumber+"&";
 	const request = axios.get("http://localhost:8080/ERitual/er/seva/list "+concatStr);
-  return {
-    type    : FETCH_SEVA_LIST,
-    payload : request
-  }
-	
+	return {
+		type    : FETCH_SEVA_LIST,
+		payload : request
+	}
+
 }
 
 export function editSevaRenderList() {
 	const request = axios.get("http://localhost:8080/ERitual/er/seva/get/id");
-  return {
-    type    : FETCH_SEVA_LIST_BY_ID,
-    payload : request
-  }
-	
+	return {
+		type    : FETCH_SEVA_LIST_BY_ID,
+		payload : request
+	}
+
 }
 
 export function deleteSeva(sevaId,itemIndex) {
 	const request = axios.get("http://localhost:8080/ERitual/er/seva/delete"+"?sevaId="+ sevaId);
-  return {
-    type    : DELETE_SEVA_BY_ID,
-    payload : request
-  }
-	
+	return {
+		type    : DELETE_SEVA_BY_ID,
+		payload : request
+	}
+
 }
 
 

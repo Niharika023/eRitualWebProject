@@ -30,11 +30,11 @@ class DonationListForm extends Component {
 				amountGreaterThan:null,
 				amountLesserThan:null,
 				selectedIndex:null,
-                triggerDelete:false,
-                confirmDelete:false,
-                deleteEventId:'',
-                eventIndex:null,
-                showSearchBox:false
+				triggerDelete:false,
+				confirmDelete:false,
+				deleteEventId:'',
+				eventIndex:null,
+				showSearchBox:false
 
 		}
 		this.onCancel=this.onCancel.bind(this);
@@ -46,7 +46,7 @@ class DonationListForm extends Component {
 		this.changeSort=this.changeSort.bind(this);
 		this.scrollPage=this.scrollPage.bind(this);
 		this.confirmedDeletion = this.confirmedDeletion.bind(this);
-        this.closeModal = this.closeModal.bind(this);
+		this.closeModal = this.closeModal.bind(this);
 	}
 
 	onChange(donation) {
@@ -56,12 +56,12 @@ class DonationListForm extends Component {
 			}
 		});
 	}
-	
+
 	scrollPage(){
 		let elmnt = document.querySelector('.site-container');
 		elmnt.scrollIntoView();
 	}
-	
+
 	componentWillUpdate(){
 		this.scrollPage();
 	}
@@ -84,61 +84,78 @@ class DonationListForm extends Component {
 	changeSort(donation){
 		let sortBy=donation.target.name;
 		let sortByValue=donation.target.value;
-		if(sortBy=="orderByName"){
-			this.state.orderByName=sortByValue
-		}
-		if(sortBy=="orderByAmount"){
-			this.state.orderByAmount=sortByValue
-		}
-		if(sortBy=="orderByUpdatedTS"){
-			this.state.orderByUpdatedTS=sortByValue
-		}
-		this.onSubmit();
+		this.setState({
+			orderByName:"",
+			orderByAmount:"",
+			orderByUpdatedTS:""
+		},()=>{
+			if(sortBy=="orderByName"){
+				this.setState({
+					orderByName:sortByValue
+				},()=>{
+					this.onSubmit();
+				})
+			}
+			if(sortBy=="orderByAmount"){
+				this.setState({
+					orderByAmount:sortByValue
+				},()=>{
+					this.onSubmit();
+				})
+			}
+			if(sortBy=="orderByUpdatedTS"){
+				this.setState({
+					orderByUpdatedTS:sortByValue
+				},()=>{
+					this.onSubmit();
+				})
+				}
+			})
 	}
 
 	//For delete event by id
 	closeModal() {
-      this.setState({
-        triggerDelete:false,
-      });
+		this.setState({
+			triggerDelete:false,
+		});
 
-    }
-    confirmedDeletion(event)
-    {
-            event.preventDefault();
-            this.props.deleteDonation.deleteDonation(this.state.deleteDonationId,this.state.donationIndex).then(
-                    (res) => {
-                    	if(!res.payload.response && res.payload.status==600) {
-                    		this.props.addToast.addToast({  type:'error', 
-            					text:`Sorry,you are not authorized to delete donation, please contact to your  admin`, 
-            					toastType:'auto'  });
-            				this.context.router.push('/ERitual/donation');
-    	               		}
-                        let donationFormData= res.payload.data;
-                        if(res.payload.data!= true) {
-                            this.setState({ errors : { "form" : "Sorry not able to delete!" }, isLoading : false })
-                        }
-                          else {
-                            this.onSubmit();
-                              this.props.addToast.addToast({  type:'success', 
-                                text:`Donation deleted successfully`, 
-                                toastType:'auto'  });
-                              this.context.router.push('/ERitual/donation');
-                            
-                        }
-                    },
-            );
-     this.setState({deleteDonationId:'',donationIndex:null});
-      this.closeModal();
+	}
+	confirmedDeletion(event)
+	{
+		event.preventDefault();
+		this.props.deleteDonation.deleteDonation(this.state.deleteDonationId,this.state.donationIndex).then(
+				(res) => {
+					if(!res.payload.response && res.payload.status==600) {
+						this.props.addToast.addToast({  type:'error', 
+							text:`Sorry,you are not authorized to delete donation, please contact to your  admin`, 
+							toastType:'auto'  });
+						this.context.router.push('/ERitual/donation');
+					}
+					let donationFormData= res.payload.data;
+					if(res.payload.data!= true) {
+						this.setState({ errors : { "form" : "Sorry not able to delete!" }, isLoading : false })
+					}
+					else {
+						this.onSubmit();
+						this.props.addToast.addToast({  type:'success', 
+							text:`Donation deleted successfully`, 
+							toastType:'auto'  });
+						this.context.router.push('/ERitual/donation');
 
-    }
-    //For delete event by id
-    deleteDonation(e,donationId,itemIndex){
-      this.setState({deleteDonationId:donationId});
-      this.setState({donationIndex:itemIndex});
-      this.setState({triggerDelete:true});
-      
-    }
+					}
+				},
+		);
+		this.setState({deleteDonationId:'',donationIndex:null});
+		this.closeModal();
+
+	}
+	//For delete event by id
+	deleteDonation(e,donationId,itemIndex){
+		this.setState({deleteDonationId:donationId});
+		this.setState({donationIndex:itemIndex});
+		this.setState({triggerDelete:true});
+
+	}
 
 	onCancel(donation)
 	{
@@ -203,130 +220,130 @@ class DonationListForm extends Component {
 	render() {
 
 		const {donationList,deleteDonation,location,addToast}=this.props;
-		const {showSearchBox}=this.state;
+		const {showSearchBox,orderByUpdatedTS,orderByName,orderByAmount}=this.state;
 		if(donationList.donationData!=undefined){
 			if(donationList.donationData.length!=0){
 				this.state.pageNum=Math.ceil(donationList.numItems / this.state.itemsPerPage);
 				this.state.startIndex=donationList.startIndex;
 			}
 		}
-		
+
 		if(!this.props.donationList || this.props.donationList.length==0)
 			return <div>Loading</div>
 			else if(this.props.donationList ){
-					return (
-							<div className="p30 " >
-							<div className="row">
-							<div className="col-md-offset-5">
-							<h1 className="mt0 mb20 ">Donation List</h1>
-							</div>
-							</div>
-							 <div className="row">
-							<div className="col-md-2 ">
-							<TextFieldGroup
-							label="Name "
-								onChange={this.onChange}
-							field="search"
-								value = {this.state.search}
-							name="searchByName"
-								asterisk=""    
-									/>
-									</div>
-
-							<div className="col-md-2">
-							<TextFieldGroup
+				return (
+						<div className="p30 " >
+						<div className="row">
+						<div className="col-md-offset-5">
+						<h1 className="mt0 mb20 ">Donation List</h1>
+						</div>
+						</div>
+						<div className="row">
+						<div className="col-md-2 ">
+						<TextFieldGroup
+						label="Name "
 							onChange={this.onChange}
-							label="Max Amount"
+						field="search"
+							value = {this.state.search}
+						name="searchByName"
+							asterisk=""    
+								/>
+								</div>
+
+						<div className="col-md-2">
+						<TextFieldGroup
+						onChange={this.onChange}
+						label="Max Amount"
 							field="amountGreaterThan"
 								value = {this.state.amountGreaterThan}
-							asterisk=""
-								/>
-								</div>
-							<div className="col-md-2">
-							<TextFieldGroup
-							onChange={this.onChange}
-							label="Min Amount"
+						asterisk=""
+							/>
+							</div>
+						<div className="col-md-2">
+						<TextFieldGroup
+						onChange={this.onChange}
+						label="Min Amount"
 							field="amountLesserThan"
 								value = {this.state.amountLesserThan}
-							asterisk=""
-								/>
-								</div>
-							<div className="col-md-1">
-							<button  className="btn btn-lg btn-primary mt15" onClick={this.onSearch}>
-							<i className="kp-up-down blue mr_5"></i>
-							Search
-							</button>
+						asterisk=""
+							/>
 							</div>
-							<div className="col-md-1">
-							<button  className="btn btn-lg btn-primary mt15" onClick={this.onCancel}>
-							Clear
-							</button>
-							</div>
-							<div className="col-md-1 col-md-offset-2">
-							<button  className="btn btn-lg  sector-division btn-primary mb15 mt15" onClick={this.onAdd}>
-							Add New
-							</button>
-							</div>
-							</div>
-							{showSearchBox && <div className="mt10per ml45per">Sorry No data found !!</div>}
-							{!showSearchBox && <div> <div className="row mt40">
-							<div className="col-md-3 filter-container">
-							<h3 className="filter-color"> Filters</h3>
-							<select name="orderByName" className=" form-control link-secondary font-color mb10" onChange={this.changeSort}>
-							<option value="">Sort By Name</option>
-							<option value="asc">Ascending</option>
-							<option value="desc">Descending</option>
-							</select>
-							<select name="orderByAmount" className=" form-control link-secondary font-color mb10" onChange={this.changeSort}>
-							<option value="">Sort By Amount</option>
-							<option value="asc">Ascending</option>
-							<option value="desc">Descending</option>
-							</select>
-							<select name="orderByUpdatedTS" className=" form-control link-secondary font-color mb10" onChange={this.changeSort}>
-							<option value="">Sort By UpdatedTS</option>
-							<option value="asc">Ascending</option>
-							<option value="desc">Descending</option>
-							</select>
-							</div>
-							<div className="col-md-9"> 
-							<table className="table table-bordered table-striped">
-							<thead>
-							<tr className="font-color ">
-							<th className="tabel-header">Name</th>
-							<th className="tabel-header">Description</th>
-							<th className="tabel-header">Amount</th>
-							<th className="tabel-header">Actions</th>
-							</tr>
-							</thead>
-							<Donation donationRenderList ={donationList} deleteDonation={this.deleteDonation.bind(this)}/>
-							</table>
-							</div>
-							</div>
-							<div className="pull-left coursor-pointer">
-							<ReactPaginate previousLabel={"previous"}
-							nextLabel={"next"}
-							breakLabel={<a href="">...</a>}
-							breakClassName={"break-me"}
-							pageCount={this.state.pageNum}
-							marginPagesDisplayed={2}
-							pageRangeDisplayed={2}
-							onPageChange={this.handlePageClick}
-							containerClassName={"pagination"}
-							subContainerClassName={"pages pagination"}
-							activeClassName={"active"} />
-							</div>
-							 {this.state.triggerDelete && <div className="modal-bg"><div className="delete-container">
-				             <button className = 'close-modal' onClick = {this.closeModal}>x</button>
-				             <div className="delete-btn-container">
-				           	 <label> <h2>  Are you sure you want to delete the Donation?</h2></label>
-				             <button ref="chooseBtn" className="btn btn-primary mr20 col-md-4 " onClick={this.confirmedDeletion}>Delete</button>
-				             <button ref="uploadBtn" className="btn btn-primary pull-right col-md-4 " onClick={this.closeModal}>Cancel</button>
-				             </div>
-				             </div></div>}
-							</div>}
-							</div>
+						<div className="col-md-1">
+						<button  className="btn btn-lg btn-primary mt15" onClick={this.onSearch}>
+						<i className="kp-up-down blue mr_5"></i>
+						Search
+						</button>
+						</div>
+						<div className="col-md-1">
+						<button  className="btn btn-lg btn-primary mt15" onClick={this.onCancel}>
+						Clear
+						</button>
+						</div>
+						<div className="col-md-1 col-md-offset-2">
+						<button  className="btn btn-lg  sector-division btn-primary mb15 mt15" onClick={this.onAdd}>
+						Add New
+						</button>
+						</div>
+						</div>
+						{showSearchBox && <div className="mt10per ml45per">Sorry No data found !!</div>}
+						{!showSearchBox && <div> <div className="row mt40">
+						<div className="col-md-3 filter-container">
+						<h3 className="filter-color"> Filters</h3>
+						<select name="orderByName" className=" form-control link-secondary font-color mb10" onChange={this.changeSort}>
+						<option value="" selected={orderByName === ""}>Sort By Name</option>
+						<option value="asc">Ascending</option>
+						<option value="desc">Descending</option>
+						</select>
+						<select name="orderByAmount" className=" form-control link-secondary font-color mb10" onChange={this.changeSort}>
+						<option value="" selected={orderByAmount === ""}>Sort By Amount</option>
+						<option value="asc">Ascending</option>
+						<option value="desc">Descending</option>
+						</select>
+						<select name="orderByUpdatedTS" className=" form-control link-secondary font-color mb10" onChange={this.changeSort}>
+						<option value="" selected={orderByUpdatedTS === ""}>Sort By UpdatedTS</option>
+						<option value="asc">Ascending</option>
+						<option value="desc">Descending</option>
+						</select>
+						</div>
+						<div className="col-md-9"> 
+						<table className="table table-bordered table-striped">
+						<thead>
+						<tr className="font-color ">
+						<th className="tabel-header">Name</th>
+						<th className="tabel-header">Description</th>
+						<th className="tabel-header">Amount</th>
+						<th className="tabel-header">Actions</th>
+						</tr>
+						</thead>
+						<Donation donationRenderList ={donationList} deleteDonation={this.deleteDonation.bind(this)}/>
+						</table>
+						</div>
+						</div>
+						<div className="pull-left coursor-pointer">
+						<ReactPaginate previousLabel={"previous"}
+						nextLabel={"next"}
+						breakLabel={<a href="">...</a>}
+						breakClassName={"break-me"}
+						pageCount={this.state.pageNum}
+						marginPagesDisplayed={2}
+						pageRangeDisplayed={2}
+						onPageChange={this.handlePageClick}
+						containerClassName={"pagination"}
+						subContainerClassName={"pages pagination"}
+						activeClassName={"active"} />
+						</div>
+						{this.state.triggerDelete && <div className="modal-bg"><div className="delete-container">
+						<button className = 'close-modal' onClick = {this.closeModal}>x</button>
+						<div className="delete-btn-container">
+						<label> <h2>  Are you sure you want to delete the Donation?</h2></label>
+						<button ref="chooseBtn" className="btn btn-primary mr20 col-md-4 " onClick={this.confirmedDeletion}>Delete</button>
+						<button ref="uploadBtn" className="btn btn-primary pull-right col-md-4 " onClick={this.closeModal}>Cancel</button>
+						</div>
+						</div></div>}
+						</div>}
+						</div>
 
-					)
+				)
 			}
 	}
 }
@@ -350,7 +367,7 @@ function mapDispatchToProps(dispatch) {
 	return {
 		donationRenderList: bindActionCreators({donationRenderList}, dispatch),
 		deleteDonation: bindActionCreators({deleteDonation}, dispatch),
-		 addToast:bindActionCreators({ addToast }, dispatch)
+		addToast:bindActionCreators({ addToast }, dispatch)
 	};
 }
 

@@ -112,34 +112,42 @@ class SevaListForm extends Component {
 	changeSort(seva){
 		let sortBy=seva.target.name;
 		let sortByValue=seva.target.value;
-		if(sortBy=="orderByName"){
-			this.setState({
-				orderByName:sortByValue
-			},()=>{
-				this.onSubmit();
-			})
-		}
-		if(sortBy=="orderByAmount"){
-			this.setState({
-				orderByAmount:sortByValue
-			},()=>{
-				this.onSubmit();
-			})
-		}
-		if(sortBy=="orderByTime"){
-			this.setState({
-				orderByTime:sortByValue
-			},()=>{
-				this.onSubmit();
-			})
-		}
-		if(sortBy=="orderByUpdatedTS"){
-			this.setState({
-				orderByUpdatedTS:sortByValue
-			},()=>{
-				this.onSubmit();
-			})
-		}
+		this.setState({
+			orderByName:"",
+			orderByAmount:"",
+			orderByTime:"",
+			orderByUpdatedTS:""
+		},()=>{
+			if(sortBy=="orderByName"){
+				this.setState({
+					orderByName:sortByValue
+				},()=>{
+					this.onSubmit();
+				})
+			}
+			if(sortBy=="orderByAmount"){
+				this.setState({
+					orderByAmount:sortByValue
+				},()=>{
+					this.onSubmit();
+				})
+			}
+			if(sortBy=="orderByTime"){
+				this.setState({
+					orderByTime:sortByValue
+				},()=>{
+					this.onSubmit();
+				})
+			}
+			if(sortBy=="orderByUpdatedTS"){
+				this.setState({
+					orderByUpdatedTS:sortByValue
+				},()=>{
+					this.onSubmit();
+				})
+			}
+		})
+		
 	}
 
 	closeModal() {
@@ -317,7 +325,7 @@ class SevaListForm extends Component {
 
 	render() {
 		const {sevaList,deleteSeva,location,addToast,tag}=this.props;
-		const {showSearchBox}=this.state;
+		const {showSearchBox,orderByName,orderByAmount}=this.state;
 		if(sevaList.sevaData!=undefined){
 			if(sevaList.sevaData.length!=0){
 				this.state.pageNum=Math.ceil(sevaList.numItems / this.state.itemsPerPage);
@@ -383,7 +391,7 @@ class SevaListForm extends Component {
 							<div className="col-md-3 filter-container">
 							<h3 className="filter-color"> Filters</h3>
 							<select name="orderByName" className=" form-control  font-color mb10 link-secondary coursor-pointer" onChange={this.changeSort}>
-								<option value="">Sort By Name</option>
+								<option value="" selected={orderByName === ""}>Sort By Name</option>
 								<option value="asc">Sort By Ascending</option>
 								<option value="desc">Sort By Descending</option>
 							</select>
@@ -393,7 +401,7 @@ class SevaListForm extends Component {
 								<option value="desc">Sort By Descending</option>
 							</select>*/}
 							<select name="orderByAmount" className=" form-control  font-color mb10 link-secondary coursor-pointer" onChange={this.changeSort}>
-								<option value="">Sort By Amount</option>
+								<option value="" selected={orderByAmount === ""}>Sort By Amount</option>
 								<option value="asc">Sort By Ascending</option>
 								<option value="desc">Sort By Descending</option>
 							</select>

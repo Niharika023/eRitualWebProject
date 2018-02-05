@@ -19,10 +19,10 @@ const Seva = ({sevaRenderList,deleteSeva}) => {
 		}
 		else{
 			item.available="false";
-		
+
 		}
 		if(item.name!=null){
-		 /*let timeArr= item.time.split(":");
+			/*let timeArr= item.time.split(":");
 	    		let hours=timeArr[0];
 	    		let minutes=timeArr[1];
 	    	let selectedHour = hours%12;
@@ -30,29 +30,29 @@ const Seva = ({sevaRenderList,deleteSeva}) => {
 	    		selectedHour=12;
 	    		}
 	    	let time=`${(selectedHour < 10) ? "0" + selectedHour : selectedHour}:${minutes} ${(hours < 12)?'AM':'PM'}`;*/
-      return ( 
-    		  
-    		  <tr className="font-color p-ver-70" key={index}>
-              <td className="col-sm-2" > <Link to={{ pathname: '/ERitual/sevaDetails/'+item.id}}  className=" link-secondary  active ">{item.name}
-    		  </Link></td>
-              <td className="col-sm-2" > {item.tags}</td>
-              <td className="col-sm-2" > Rs.{item.amount}</td>
-              {/*<td className="col-sm-2" > {time}</td>*/}
-              <td className="col-sm-2" > {item.available}</td>
-              <td className="col-sm-2" > <tr>
-            	<td>
-          		<ul className="nav navbar-nav row ">
-          		<u><li className="col-sm-4"><Link to={{ pathname: '/ERitual/editSeva/'+item.id}}  className=" link-secondary  active ">Edit</Link> </li></u>
-          		<u><li className="col-sm-4"><Link to=""  onClick={(event)=> {deleteSeva(event,item.id,index)}} className=" link-secondary  active ">Delete</Link> </li></u>
-          	</ul>
-          </td>
-          	</tr></td>
-            </tr> 
-      
-        );
+			return ( 
+
+					<tr className="font-color p-ver-70" key={index}>
+					<td className="col-sm-2" > <Link to={{ pathname: '/ERitual/sevaDetails/'+item.id}}  className=" link-secondary  active ">{item.name}
+					</Link></td>
+					<td className="col-sm-2" > {item.tags}</td>
+					<td className="col-sm-2" > Rs.{item.amount}</td>
+					{/*<td className="col-sm-2" > {time}</td>*/}
+					<td className="col-sm-2" > {item.available}</td>
+					<td className="col-sm-2" > <tr>
+					<td>
+					<ul className="nav navbar-nav row ">
+					<u><li className="col-sm-4"><Link to={{ pathname: '/ERitual/editSeva/'+item.id}}  className=" link-secondary  active ">Edit</Link> </li></u>
+					<u><li className="col-sm-4"><Link to=""  onClick={(event)=> {deleteSeva(event,item.id,index)}} className=" link-secondary  active ">Delete</Link> </li></u>
+					</ul>
+					</td>
+					</tr></td>
+					</tr> 
+
+			);
 		}
-    })
-  return <tbody>{sevaList}</tbody>;
+	})
+	return <tbody>{sevaList}</tbody>;
 }
 
 export default Seva;

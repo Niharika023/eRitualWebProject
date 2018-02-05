@@ -89,6 +89,7 @@ class MessageFormContainer extends Component {
 			this.setState({triggerUploadVidAudPdf:false});
 			this.setState({showTextBox:true});
 			this.setState({triggerSelectedUrl:false});
+			this.setState({triggerUploadPdf:false});
 			
 		}
 		else if(this.state.tag=='My Latest Articles') {
@@ -97,7 +98,7 @@ class MessageFormContainer extends Component {
 			this.setState({triggerUploadPdf:true});
 			this.setState({triggerUploadBanner:false});
 			this.setState({triggerUploadVideo:false});
-			//this.setState({showTextBox:true});
+			this.setState({showTextBox:false});
 			this.setState({triggerUploadVidAudPdf:false});
 			this.setState({triggerSelectedUrl:false});
 		}else {
@@ -224,9 +225,8 @@ class MessageFormContainer extends Component {
 	//For uploading video/audio/pdf
 	onSubmitAudVidUrl(event){
 		event.preventDefault();
-		
 		let audVidDetails= {
-				"name":this.state.title,
+				"name":this.state.typename,
 				"description":this.state.videoDescription,
 				"tags":this.state.tag,
 				"items":[{
@@ -434,7 +434,7 @@ class MessageFormContainer extends Component {
               </div>
               <div className="row">
               {triggerUploadPdf && <div className="col-xs-6 mt20">
-              <label>Upload Image</label>
+              <label>Upload Pdf</label>
               {pdfUploadSuccess && <a href={aboutPdf} target="_blank"><span className="ml10"> Click to view</span></a>}
               <div className="pull-right logo-container" onClick={this.selectLogoClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
                 {this.state.logoImageOnCard != '' && <img ref="logoOnCard" src={this.state.logoImageOnCard} style={uploadedImageStyles}/> }
@@ -498,10 +498,21 @@ class MessageFormContainer extends Component {
 				<button className = 'close-modal' onClick = {this.closeModal}>x</button>
 				{videoUrl}
 				<form onSubmit={this.onSubmitAudVidUrl} id=" vid-aud-url-form">
-					<div className="row">
+				<div className="row">
+				 <div className="col-md-12">
+			      <TextFieldGroup
+			       error={errors.name}
+		       	   onChange={this.onChange}
+			       value={typename}
+			       field="typename"
+				    label="Type Name"
+					/>
+			    </div>
+			    </div>	
+				<div className="row">
 					 <div className="col-md-12">
 					  <TextFieldGroup
-					  error={errors.name}
+					  error={errors.url}
 					  onChange={this.onChange}
 					  value={url}
 					  field="url"

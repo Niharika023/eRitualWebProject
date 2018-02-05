@@ -254,7 +254,6 @@ class EventFormContainer extends Component {
 					"date":this.state.date,
 					"time":this.state.time,
 					"imageId":this.state.imageId
-					
 			}
 			this.props.userEventFormsRequest(event).then(
 					(res) => {

@@ -106,6 +106,15 @@ class EventListForm extends Component {
 	changeSort(event){
 		let sortBy=event.target.name;
 		let sortByValue=event.target.value;
+		this.setState({
+			orderByName:"",
+			orderByAmount:"",
+			orderByCity:"",
+			orderByDate:"",
+			orderByUpdatedTS:""
+		},()=>{
+			this.onSubmit();
+		})
 		if(sortBy=="orderByName"){
 			this.setState({
 				orderByName:sortByValue
@@ -304,7 +313,7 @@ class EventListForm extends Component {
 
 	render() {
 		const {eventList,deleteEvent,location,addToast}=this.props;
-		const {showSearchBox}=this.state;
+		const {showSearchBox,orderByDate,orderByName}=this.state;
 		if(eventList.eventData!=undefined){
 			if(eventList.eventData.length!=0){
 				this.state.pageNum=Math.ceil(eventList.numItems / this.state.itemsPerPage);
@@ -373,12 +382,12 @@ class EventListForm extends Component {
 							<div className="col-md-3  filter-container">
 							<h3 className="filter-color"> Filters</h3>
 							<select name="orderByDate" className=" form-control link-secondary font-color mb10" onChange={this.changeSort}>
-							<option value="">Sort By Date</option>
+							<option value="" selected={orderByDate === ""}>Sort By Date</option>
 							<option value="asc">Ascending</option>
 							<option value="desc">Descending</option>
 							</select>
 							<select name="orderByName" className=" form-control link-secondary font-color mb10" onChange={this.changeSort}>
-							<option value="">Sort By Name</option>
+							<option value="" selected={orderByName === ""}>Sort By Name</option>
 							<option value="asc">Ascending</option>
 							<option value="desc">Descending</option>
 							</select>
