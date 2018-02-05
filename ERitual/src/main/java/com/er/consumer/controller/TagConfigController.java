@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.util.LinkedMultiValueMap;
@@ -24,6 +25,8 @@ import com.er.consumer.util.ServiceResponse;
 @RestController
 @RequestMapping("/tagConfig")
 public class TagConfigController {
+	@Value("${api.baseUrl}")
+	private String baseUrl;
 	@Autowired
 	Environment environment;
 	private static final String TAGCONFIG_LIST = "/list";
@@ -48,7 +51,7 @@ public class TagConfigController {
 		if(request.getParameter("pageNumber") != null)
 			queryParameter+=";pageNumber="+request.getParameter("pageNumber");
 		CommonUtility.isSessionActive(response, (String) session.getAttribute("access_token"));
-			 url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/configuration/list"+queryParameter;
+			 url = baseUrl+"/eritual-web/rest/configuration/list"+queryParameter;
 		ServiceResponse responseObj = HttpUtil.sendGet(url, (String) session.getAttribute("access_token"));
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 		
@@ -68,7 +71,7 @@ public class TagConfigController {
 		MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
 		String urlParameter = reqObj.toString();
 		map.add("configuration", urlParameter.toString());
-		String url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/configuration/create-or-update";
+		String url = baseUrl+"/eritual-web/rest/configuration/create-or-update";
 		ServiceResponse responseObj = HttpUtil.sendPostForCreateOrUpdate(url, map,roleLess, (String) session.getAttribute("access_token"));
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 		
@@ -88,7 +91,7 @@ public class TagConfigController {
 		if( request.getParameter("tagConfigId") != null)
 			tagConfigId= request.getParameter("tagConfigId"); 
 		CommonUtility.isSessionActive(response, (String) session.getAttribute("access_token"));
-			 url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/configuration/delete/"+tagConfigId;
+			 url = baseUrl+"/eritual-web/rest/configuration/delete/"+tagConfigId;
 		ServiceResponse responseObj = HttpUtil.sendDelete(url, roleLess,(String) session.getAttribute("access_token"));
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 		
@@ -100,7 +103,7 @@ public class TagConfigController {
 		if( request.getParameter("tagConfigId") != null)
 			tagConfigId= request.getParameter("tagConfigId"); 
 		CommonUtility.isSessionActive(response, (String) session.getAttribute("access_token"));
-		String url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/configuration/get/"+tagConfigId;
+		String url = baseUrl+"/eritual-web/rest/configuration/get/"+tagConfigId;
 		ServiceResponse responseObj = HttpUtil.sendGet(url, (String) session.getAttribute("access_token"));
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 		
@@ -112,7 +115,7 @@ public class TagConfigController {
 		if( request.getParameter("key") != null)
 			key= request.getParameter("key"); 
 		CommonUtility.isSessionActive(response, (String) session.getAttribute("access_token"));
-		String url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/configuration/get/"+key;
+		String url = baseUrl+"/eritual-web/rest/configuration/get/"+key;
 		ServiceResponse responseObj = HttpUtil.sendGet(url, (String) session.getAttribute("access_token"));
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 		
@@ -132,7 +135,7 @@ public class TagConfigController {
 		MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
 		String urlParameter = reqObj.toString();
 		map.add("donation", urlParameter.toString());
-		String url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/donation/update";
+		String url = baseUrl+"/eritual-web/rest/donation/update";
 		ServiceResponse responseObj = HttpUtil.sendPostForCreateOrUpdate(url, map,roleLess, (String) session.getAttribute("access_token"));
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 		

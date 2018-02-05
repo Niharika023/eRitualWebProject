@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.util.LinkedMultiValueMap;
@@ -24,6 +25,8 @@ import com.er.consumer.util.ServiceResponse;
 @RestController
 @RequestMapping("/message")
 public class MessageController {
+	@Value("${api.baseUrl}")
+	private String baseUrl;
 	@Autowired
 	Environment environment;
 	private static final String MESSAGE_LIST = "/list";
@@ -55,10 +58,10 @@ public class MessageController {
 		String pageNumber=request.getParameter("pageNumber");
 		CommonUtility.isSessionActive(response, (String) session.getAttribute("access_token"));
 		if(queryParameter !=""){
-			 url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/message/list;"+queryParameter+";pageSize="+pageSize+";pageNumber="+pageNumber;
+			 url = baseUrl+"/eritual-web/rest/message/list;"+queryParameter+";pageSize="+pageSize+";pageNumber="+pageNumber;
 		}
 		else{
-			url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/message/list"+";pageSize="+pageSize+";pageNumber="+pageNumber;
+			url = baseUrl+"/eritual-web/rest/message/list"+";pageSize="+pageSize+";pageNumber="+pageNumber;
 		}
 		ServiceResponse responseObj = HttpUtil.sendGet(url, (String) session.getAttribute("access_token"));
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
@@ -79,7 +82,7 @@ public class MessageController {
 		MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
 		String urlParameter = reqObj.toString();
 		map.add("message", urlParameter.toString());
-		String url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/message/create";
+		String url = baseUrl+"/eritual-web/rest/message/create";
 		ServiceResponse responseObj = HttpUtil.sendPostForCreateOrUpdate(url, map, roleLess,(String) session.getAttribute("access_token"));
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 		
@@ -100,7 +103,7 @@ public class MessageController {
 		if( request.getParameter("messageId") != null)
 			messageId= request.getParameter("messageId"); 
 		CommonUtility.isSessionActive(response, (String) session.getAttribute("access_token"));
-			 url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/message/delete/"+messageId;
+			 url = baseUrl+"/eritual-web/rest/message/delete/"+messageId;
 		ServiceResponse responseObj = HttpUtil.sendDelete(url, roleLess,(String) session.getAttribute("access_token"));
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 		
@@ -112,7 +115,7 @@ public class MessageController {
 		if( request.getParameter("hostedContentId") != null)
 			hostedContentId= request.getParameter("hostedContentId"); 
 		CommonUtility.isSessionActive(response, (String) session.getAttribute("access_token"));
-		String url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/hosted-content/get/"+hostedContentId;
+		String url = baseUrl+"/eritual-web/rest/hosted-content/get/"+hostedContentId;
 		ServiceResponse responseObj = HttpUtil.sendGet(url, (String) session.getAttribute("access_token"));
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 		
@@ -143,7 +146,7 @@ public class MessageController {
 		MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
 		String urlParameter = reqObj.toString();
 		map.add("message", urlParameter.toString());
-		String url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/message/update";
+		String url = baseUrl+"/eritual-web/rest/message/update";
 		ServiceResponse responseObj = HttpUtil.sendPostForCreateOrUpdate(url, map, roleLess,(String) session.getAttribute("access_token"));
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 		

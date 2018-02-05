@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,8 @@ import com.er.consumer.util.ServiceResponse;
 @RestController
 @RequestMapping("/order")
 public class OrderController {
+	@Value("${api.baseUrl}")
+	private String baseUrl;
 	@Autowired
 	Environment environment;
 	private static final String ORDER_LIST = "/list";
@@ -46,7 +49,7 @@ public class OrderController {
 		}
 		
 		CommonUtility.isSessionActive(response, (String) session.getAttribute("access_token"));
-			 url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/customer-order/list;"+queryParameter+";pageSize="+pageSize+";pageNumber="+pageNumber;
+			 url = baseUrl+"/eritual-web/rest/customer-order/list;"+queryParameter+";pageSize="+pageSize+";pageNumber="+pageNumber;
 		ServiceResponse responseObj = HttpUtil.sendGetWithToken(url, roleLess,(String) session.getAttribute("access_token"));
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 		

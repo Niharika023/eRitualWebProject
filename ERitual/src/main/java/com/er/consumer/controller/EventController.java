@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.util.LinkedMultiValueMap;
@@ -23,6 +24,8 @@ import com.er.consumer.util.ServiceResponse;
 @RestController
 @RequestMapping("/event")
 public class EventController {
+	@Value("${api.baseUrl}")
+	private String baseUrl;
 	@Autowired
 	Environment environment;
 	private static final String EVENT_LIST = "/list";
@@ -64,7 +67,7 @@ public class EventController {
 		String pageSize=request.getParameter("pageSize");
 		String pageNumber=request.getParameter("pageNumber");
 		CommonUtility.isSessionActive(response, (String) session.getAttribute("access_token"));
-			 url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/event/list;"+queryParameter+";pageSize="+pageSize+";pageNumber="+pageNumber;
+			 url = baseUrl+"/eritual-web/rest/event/list;"+queryParameter+";pageSize="+pageSize+";pageNumber="+pageNumber;
 		ServiceResponse responseObj = HttpUtil.sendGet(url, (String) session.getAttribute("access_token"));
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 		
@@ -85,7 +88,7 @@ public class EventController {
 		MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
 		String urlParameter = reqObj.toString();
 		map.add("event", urlParameter.toString());
-		String url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/event/create";
+		String url = baseUrl+"/eritual-web/rest/event/create";
 		ServiceResponse responseObj = HttpUtil.sendPostForCreateOrUpdate(url, map, roleLess,(String) session.getAttribute("access_token"));
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 		
@@ -105,7 +108,7 @@ public class EventController {
 		if( request.getParameter("eventId") != null)
 			eventId= request.getParameter("eventId"); 
 		CommonUtility.isSessionActive(response, (String) session.getAttribute("access_token"));
-			 url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/event/delete/"+eventId;
+			 url = baseUrl+"/eritual-web/rest/event/delete/"+eventId;
 		ServiceResponse responseObj = HttpUtil.sendDelete(url, roleLess,(String) session.getAttribute("access_token"));
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 		
@@ -116,7 +119,7 @@ public class EventController {
 		if( request.getParameter("eventId") != null)
 			eventId= request.getParameter("eventId"); 
 		CommonUtility.isSessionActive(response, (String) session.getAttribute("access_token"));
-		String url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/event/get/"+eventId;
+		String url = baseUrl+"/eritual-web/rest/event/get/"+eventId;
 		ServiceResponse responseObj = HttpUtil.sendGet(url, (String) session.getAttribute("access_token"));
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 		
@@ -137,7 +140,7 @@ public class EventController {
 		MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
 		String urlParameter = reqObj.toString();
 		map.add("event", urlParameter.toString());
-		String url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/event/update";
+		String url = baseUrl+"/eritual-web/rest/event/update";
 		ServiceResponse responseObj = HttpUtil.sendPostForCreateOrUpdate(url, map,roleLess, (String) session.getAttribute("access_token"));
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 		

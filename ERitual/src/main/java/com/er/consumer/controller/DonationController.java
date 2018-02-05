@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.util.LinkedMultiValueMap;
@@ -24,6 +25,8 @@ import com.er.consumer.util.ServiceResponse;
 @RestController
 @RequestMapping("/donation")
 public class DonationController {
+	@Value("${api.baseUrl}")
+	private String baseUrl;
 	@Autowired
 	Environment environment;
 	private static final String DONATION_LIST = "/list";
@@ -53,7 +56,7 @@ public class DonationController {
 		String pageSize=request.getParameter("pageSize");
 		String pageNumber=request.getParameter("pageNumber");
 		CommonUtility.isSessionActive(response, (String) session.getAttribute("access_token"));
-			 url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/donation/list;"+queryParameter+";pageSize="+pageSize+";pageNumber="+pageNumber;
+			 url = baseUrl+"/eritual-web/rest/donation/list;"+queryParameter+";pageSize="+pageSize+";pageNumber="+pageNumber;
 		ServiceResponse responseObj = HttpUtil.sendGet(url, (String) session.getAttribute("access_token"));
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 		
@@ -73,7 +76,7 @@ public class DonationController {
 		MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
 		String urlParameter = reqObj.toString();
 		map.add("donation", urlParameter.toString());
-		String url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/donation/create";
+		String url = baseUrl+"/eritual-web/rest/donation/create";
 		ServiceResponse responseObj = HttpUtil.sendPostForCreateOrUpdate(url, map,roleLess, (String) session.getAttribute("access_token"));
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 		
@@ -93,7 +96,7 @@ public class DonationController {
 		if( request.getParameter("donationId") != null)
 			donationId= request.getParameter("donationId"); 
 		CommonUtility.isSessionActive(response, (String) session.getAttribute("access_token"));
-			 url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/donation/delete/"+donationId;
+			 url = baseUrl+"/eritual-web/rest/donation/delete/"+donationId;
 		ServiceResponse responseObj = HttpUtil.sendDelete(url, roleLess,(String) session.getAttribute("access_token"));
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 		
@@ -105,7 +108,7 @@ public class DonationController {
 		if( request.getParameter("donationId") != null)
 			donationId= request.getParameter("donationId"); 
 		CommonUtility.isSessionActive(response, (String) session.getAttribute("access_token"));
-		String url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/donation/get/"+donationId;
+		String url = baseUrl+"/eritual-web/rest/donation/get/"+donationId;
 		ServiceResponse responseObj = HttpUtil.sendGet(url, (String) session.getAttribute("access_token"));
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 		
@@ -124,7 +127,7 @@ public class DonationController {
 		MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
 		String urlParameter = reqObj.toString();
 		map.add("donation", urlParameter.toString());
-		String url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/donation/update";
+		String url = baseUrl+"/eritual-web/rest/donation/update";
 		ServiceResponse responseObj = HttpUtil.sendPostForCreateOrUpdate(url, map,roleLess, (String) session.getAttribute("access_token"));
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 		

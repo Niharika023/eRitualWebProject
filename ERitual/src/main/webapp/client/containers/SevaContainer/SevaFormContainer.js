@@ -95,9 +95,9 @@ class SevaFormContainer extends Component {
 		},()=>{
 			this.state.submitApplied=false;
 			console.log("this.state.firstTimeFormSubmit",this.state.firstTimeFormSubmit);
-				if(this.state.firstTimeFormSubmit) {
-					this.isValid();
-				}
+			if(this.state.firstTimeFormSubmit) {
+				this.isValid();
+			}
 			if(this.state.tag=='Special Packages'){
 				this.setState({triggerUploadImg:true});
 			}
@@ -290,9 +290,9 @@ class SevaFormContainer extends Component {
 							}
 						}
 					},
-				);
-			}
+			);
 		}
+	}
 
 	//method for calendar from current date
 	valid(current)
@@ -305,13 +305,13 @@ class SevaFormContainer extends Component {
 		event.preventDefault();
 		this.setState({
 			triggerUpload:true
-			},()=>{
-		this.state.submitApplied=false;
+		},()=>{
+			this.state.submitApplied=false;
 			if(this.state.firstTimeFormSubmit) {
 				this.isValid();
 			}
-			});
-		}
+		});
+	}
 
 	selectAudVid(event) {
 		this.state.type=event.target.value;
@@ -370,10 +370,10 @@ class SevaFormContainer extends Component {
 									this.setState({logoImage:e2.target.result,sevaImage:e2.target.result,imgName:'templeImage',isUploadLoading:false}
 									,()=>{
 										this.state.submitApplied=false;
-											if(this.state.firstTimeFormSubmit) {
-												this.isValid();
-											}
-											});
+										if(this.state.firstTimeFormSubmit) {
+											this.isValid();
+										}
+									});
 									if(img.width < img.height) {
 										uploadedImageStyles.content.width = "auto";
 										uploadedImageStyles.content.height = "100%";
@@ -479,15 +479,15 @@ class SevaFormContainer extends Component {
 				<div className="pull-right logo-container" onClick={this.selectLogoClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
 				{this.state.logoImageOnCard != '' && <img ref="logoOnCard" src={this.state.logoImageOnCard} style={uploadedImageStyles}/> }
 					<button ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload</button>
-					{errors.imgName && <div className="help-block has-error material-label error-form "> {errors.imgName}</div>}
+				{errors.imgName && <div className="help-block has-error material-label error-form "> {errors.imgName}</div>}
 				</div>
 				</div>}
 				<div className="col-md-6">
 				<label>Description</label>
 				<textarea 
 				cols="43"
-				rows="6"
-					onChange={this.onChange}
+					rows="6"
+						onChange={this.onChange}
 				name="description"
 					placeholder = "Description"
 						value={description}
@@ -544,8 +544,6 @@ class SevaFormContainer extends Component {
 		);
 				}
 				}
-
-
 
 				SevaFormContainer.contextTypes = {
 						router:React.PropTypes.object.isRequired

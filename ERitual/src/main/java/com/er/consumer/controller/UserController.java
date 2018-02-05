@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.util.LinkedMultiValueMap;
@@ -25,6 +26,8 @@ import com.er.consumer.util.ServiceResponse;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+	@Value("${api.baseUrl}")
+	private String baseUrl;
 	@Autowired
 	Environment environment;
 	private static final String REGISTER = "/register";
@@ -44,7 +47,7 @@ public class UserController {
 		user.put("password", password);*/
 		MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
 		map.add("user", reqObj.toString());
-		String url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/user/create";
+		String url = baseUrl+"/eritual-web/rest/user/create";
 		ServiceResponse responseObj = HttpUtil.sendPostBeforeLogging(url, map);
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 		}
@@ -55,7 +58,7 @@ public class UserController {
 		JSONObject reqObj = CommonUtility.readInputStream(request);
 		String email = (String) (reqObj.has("name") == true ? reqObj.getString("name") : "");
 		String password = (String) (reqObj.has("password") == true ? reqObj.getString("password") : "");
-		String url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/user/login";
+		String url = baseUrl+"/eritual-web/rest/user/login";
 		ServiceResponse responseObj = HttpUtil.sendPostForLoging(url, email,password);
 		JSONObject newJsonObject = new JSONObject(responseObj.getResponse());
 		session = request.getSession(true);
@@ -77,7 +80,7 @@ public class UserController {
 		JSONObject reqObj = CommonUtility.readInputStream(request);
 		String currentPassword = (String) (reqObj.has("currentPassword") == true ? reqObj.getString("currentPassword") : "");
 		String newPasword = (String) (reqObj.has("newPassword") == true ? reqObj.getString("newPassword") : "");
-		String url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/user/change-password";
+		String url = baseUrl+"/eritual-web/rest/user/change-password";
 		ServiceResponse responseObj = HttpUtil.sendPost(url, currentPassword,newPasword, (String) session.getAttribute("access_token"));
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 		
@@ -93,7 +96,7 @@ public class UserController {
 		map.add("name", name);
 		map.add("otp", otp);
 		map.add("newPassword", newPassword);
-		String url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/user/reset-password";
+		String url = baseUrl+"/eritual-web/rest/user/reset-password";
 		ServiceResponse responseObj = HttpUtil.sendPostBeforeLogging(url, map);
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 	}
@@ -108,7 +111,7 @@ public class UserController {
 		map.add("name", name);
 		map.add("subject", subject);
 		map.add("template", template);
-		String url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/user/send-lost-password-mail";
+		String url = baseUrl+"/eritual-web/rest/user/send-lost-password-mail";
 		ServiceResponse responseObj = HttpUtil.sendPostBeforeLogging(url, map);
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 	}

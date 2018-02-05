@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.util.LinkedMultiValueMap;
@@ -26,6 +27,8 @@ import com.er.consumer.util.ServiceResponse;
 @RestController
 @RequestMapping("/seva")
 public class SevaController {
+	@Value("${api.baseUrl}")
+	private String baseUrl;
 	@Autowired
 	Environment environment;
 	private static final String SEVA_LIST = "/list";
@@ -66,7 +69,7 @@ public class SevaController {
 		String pageSize=request.getParameter("pageSize");
 		String pageNumber=request.getParameter("pageNumber");
 		CommonUtility.isSessionActive(response, (String) session.getAttribute("access_token"));
-			 url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/seva/list;"+queryParameter+";pageSize="+pageSize+";pageNumber="+pageNumber;
+			 url = baseUrl+"/eritual-web/rest/seva/list;"+queryParameter+";pageSize="+pageSize+";pageNumber="+pageNumber;
 		ServiceResponse responseObj = HttpUtil.sendGet(url, (String) session.getAttribute("access_token"));
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 		
@@ -86,7 +89,7 @@ public class SevaController {
 		MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
 		String urlParameter = reqObj.toString();
 		map.add("seva", urlParameter.toString());
-		String url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/seva/create";
+		String url = baseUrl+"/eritual-web/rest/seva/create";
 		ServiceResponse responseObj = HttpUtil.sendPostForCreateOrUpdate(url, map,roleLess,(String) session.getAttribute("access_token"));
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 	}
@@ -105,7 +108,7 @@ public class SevaController {
 		MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
 		String urlParameter = reqObj.toString();
 		map.add("hostedContent", urlParameter.toString());
-		String url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/hosted-content/create";
+		String url = baseUrl+"/eritual-web/rest/hosted-content/create";
 		ServiceResponse responseObj = HttpUtil.sendPostForCreateOrUpdate(url, map,roleLess,(String) session.getAttribute("access_token"));
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 	}
@@ -124,7 +127,7 @@ public class SevaController {
 		MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
 		String urlParameter = reqObj.toString();
 		map.add("hostedContent", urlParameter.toString());
-		String url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/hosted-content/update";
+		String url = baseUrl+"/eritual-web/rest/hosted-content/update";
 		ServiceResponse responseObj = HttpUtil.sendPostForCreateOrUpdate(url, map,roleLess,(String) session.getAttribute("access_token"));
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 	}
@@ -142,7 +145,7 @@ public class SevaController {
 		if( request.getParameter("sevaId") != null)
 			sevaId= request.getParameter("sevaId"); 
 		CommonUtility.isSessionActive(response, (String) session.getAttribute("access_token"));
-			 url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/seva/delete/"+sevaId;
+			 url = baseUrl+"/eritual-web/rest/seva/delete/"+sevaId;
 		ServiceResponse responseObj = HttpUtil.sendDelete(url,roleLess, (String) session.getAttribute("access_token"));
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 		
@@ -154,7 +157,7 @@ public class SevaController {
 		if( request.getParameter("sevaId") != null)
 			sevaId= request.getParameter("sevaId"); 
 		CommonUtility.isSessionActive(response, (String) session.getAttribute("access_token"));
-		String url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/seva/get/"+sevaId;
+		String url = baseUrl+"/eritual-web/rest/seva/get/"+sevaId;
 		ServiceResponse responseObj = HttpUtil.sendGet(url, (String) session.getAttribute("access_token"));
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 		
@@ -175,7 +178,7 @@ public class SevaController {
 		MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
 		String urlParameter = reqObj.toString();
 		map.add("seva", urlParameter.toString());
-		String url = "http://ec2-54-70-18-17.us-west-2.compute.amazonaws.com:8080/eritual-web/rest/seva/update";
+		String url = baseUrl+"/eritual-web/rest/seva/update";
 		ServiceResponse responseObj = HttpUtil.sendPostForCreateOrUpdate(url, map, roleLess,(String) session.getAttribute("access_token"));
 		CommonUtility.writeResponse(response, responseObj.getResponse(), responseObj.getStatus());
 		

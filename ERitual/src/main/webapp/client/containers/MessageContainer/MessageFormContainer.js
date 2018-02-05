@@ -171,12 +171,26 @@ class MessageFormContainer extends Component {
 		this.setState({ firstTimeFormSubmit : true })
 		if(this.isValid()) {
 			this.setState({ errors: {}, isLoading:true });
-			let message= {
-					"title":this.state.title,
-					"message":this.state.message,
-					"imageId":this.state.imageId,
-					"hostedContentId":this.state.contentId,
-					"tags":this.state.tag,
+			let message;
+			if(this.state.imageId!='')
+			{
+			 message= {
+						"title":this.state.title,
+						"message":this.state.message,
+						"imageId":this.state.imageId,
+						"hostedContentId":this.state.contentId,
+						"tags":this.state.tag,
+				}
+			}
+			else
+			{
+			 message= {
+						"title":this.state.title,
+						"message":this.state.message,
+						"imageId":this.state.pdfId,
+						"hostedContentId":this.state.contentId,
+						"tags":this.state.tag,
+				}
 			}
 			this.props.userMessageFormsRequest(message).then(
 					(res) => {
@@ -375,13 +389,12 @@ class MessageFormContainer extends Component {
 					}).then((response) => {
 						if( this.state.panchangaPdf=='aboutUsPdf'){
 							this.setState({
-								message:response.data.id,
+								pdfId:response.data.id,
 								panchangaPdf:'',
 								pdfUploadSuccess:true
 							})
 							
 						}if(this.state.panchangaImg=='aboutUsImg'){
-							console.log("response.data.id",response.data.id);
 							this.setState({
 								imageId:response.data.id,
 								panchangaImg:'',
