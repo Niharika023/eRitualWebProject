@@ -24,7 +24,7 @@ class MessageFormContainer extends Component {
 				success:{},
 				isLoading:false,
 				firstTimeFormSubmit:false,
-				imageId:"",
+				imageId:'',
 				logoImage:"",
 				logoImageOnCard:"",
 				triggerUpload:false,
@@ -48,7 +48,8 @@ class MessageFormContainer extends Component {
 				pdfUploadSuccess:false,
 				isPdfUpload:false,
 				fileName:'',
-				aboutPdf:''
+				aboutPdf:'',
+				tag:''
 				
 		}
 
@@ -82,32 +83,46 @@ class MessageFormContainer extends Component {
 	}
 	//on select tag
 	SelectTag(event){
-		this.state.tag=event.target.value;
-		if(this.state.tag=='Banner'){
-			this.setState({triggerUploadBanner:true});
-			this.setState({triggerUploadImg:false});
-			this.setState({triggerUploadVidAudPdf:false});
-			this.setState({showTextBox:true});
-			this.setState({triggerSelectedUrl:false});
-			this.setState({triggerUploadPdf:false});
+		//this.state.tag=event.target.value;
+		this.setState({
+			tag:event.target.value
+		},()=>{
+			this.state.submitApplied=false;
+			console.log("this.state.firstTimeFormSubmit",this.state.firstTimeFormSubmit);
+			if(this.state.firstTimeFormSubmit) {
+				this.isValid();
+			}
+			if(this.state.tag=='Banner'){
+				this.setState({triggerUploadBanner:true});
+				this.setState({triggerUploadImg:false});
+				this.setState({triggerUploadVidAudPdf:false});
+				this.setState({showTextBox:true});
+				this.setState({triggerSelectedUrl:false});
+				this.setState({triggerUploadPdf:false});
+				this.state.selectImageorPdf = "selectedImg";
 			
-		}
-		else if(this.state.tag=='My Latest Articles') {
-		//this.setState({triggerUploadVideo:true});
-			this.setState({triggerUploadImg:false});
-			this.setState({triggerUploadPdf:true});
-			this.setState({triggerUploadBanner:false});
-			this.setState({triggerUploadVideo:false});
-			this.setState({showTextBox:false});
-			this.setState({triggerUploadVidAudPdf:false});
-			this.setState({triggerSelectedUrl:false});
-		}else {
-			this.setState({triggerUploadImg:false});
-			this.setState({triggerUploadBanner:false});
-			this.setState({triggerUploadVideo:true});
-			this.setState({showTextBox:false});
-			this.setState({triggerSelectedUrl:true});
-		}
+				
+			}
+			else if(this.state.tag=='My Latest Articles') {	
+			//this.setState({triggerUploadVideo:true});
+				this.setState({triggerUploadImg:false});
+				this.setState({triggerUploadPdf:true});
+				this.setState({triggerUploadBanner:false});
+				this.setState({triggerUploadVideo:false});
+				this.setState({showTextBox:false});
+				this.setState({triggerUploadVidAudPdf:false});
+				this.setState({triggerSelectedUrl:false});
+				this.state.selectImageorPdf = "selectedPdf";
+			
+			}else {
+				this.setState({triggerUploadImg:false});
+				this.setState({triggerUploadBanner:false});
+				this.setState({triggerUploadVideo:true});
+				this.setState({showTextBox:false});
+				this.setState({triggerSelectedUrl:true});
+			}
+		})
+		
 	}
 	onChange(event) {
 		event.preventDefault();
@@ -221,6 +236,7 @@ class MessageFormContainer extends Component {
 	}
 
 	selectLogoClick(event) {
+	  console.log("Select Logo");
 		event.preventDefault();
 		 this.state.imageOrPdf='';
 		 this.state.isPdfUpload=false;
@@ -228,10 +244,12 @@ class MessageFormContainer extends Component {
 		 this.state.imageOrPdf=event.target.name;
 		 if( this.state.imageOrPdf=="aboutUsPdf"){
 
-		 this.setState({ panchangaPdf:event.target.name })
+		 this.setState({ panchangaPdf:event.target.name });
+		
 
 		 }if( this.state.imageOrPdf=="aboutUsImg"){
-		 this.setState({ panchangaImg:event.target.name})	
+		 this.setState({ panchangaImg:event.target.name});
+	
 		 }
 			
 		}
@@ -420,7 +438,7 @@ class MessageFormContainer extends Component {
 					this.setState({isUploadLoading:false});
 				}
 		};
-		const {errors ,success,showTextBox,isPdfUpload,fileName,aboutPdf,videoDescription,pdfUploadSuccess,triggerUploadPdf,image,bannerTags,pdfName,triggerUploadBanner,triggerSelectedUrl,message,videoUrl,triggerUploadImg,triggerUploadVidAudPdf,typename,url,metadata,tags,description,imageUploadSuccess,showMessage,messageImage,isLoading,title} = this.state;
+		const {errors ,success,showTextBox,isPdfUpload,fileName,aboutPdf,videoDescription,pdfUploadSuccess,triggerUploadPdf,image,bannerTags,pdfName,triggerUploadBanner,triggerSelectedUrl,message,videoUrl,triggerUploadImg,triggerUploadVidAudPdf,typename,url,metadata,tags,description,imageUploadSuccess,showMessage,messageImage,isLoading,title,imageId} = this.state;
 		return (
 				<div>
         		<form className="p20 user-entry-forms details-form" onSubmit={this.onSubmitSamastahnamForm}>
@@ -443,7 +461,9 @@ class MessageFormContainer extends Component {
 				{this.sriTagRenderOptions()}
 				</select>
 				{triggerSelectedUrl && <span>Url is : {this.state.selectedUrl}</span>}
+				{errors.tag && <span className="help-block has-error material-label error-form "> {errors.tag}</span>}
 				</div>
+				 
               </div>
               <div className="row">
               {triggerUploadPdf && <div className="col-xs-6 mt20">
@@ -452,7 +472,9 @@ class MessageFormContainer extends Component {
               <div className="pull-right logo-container" onClick={this.selectLogoClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
                 {this.state.logoImageOnCard != '' && <img ref="logoOnCard" src={this.state.logoImageOnCard} style={uploadedImageStyles}/> }
                 <button name="aboutUsPdf" ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer "> Upload Pdf </button>
+                {errors.aboutPdf && <div className="help-block has-error material-label error-form "> {errors.aboutPdf}</div>}
               </div>
+           
               </div>}
               {triggerUploadImg && <div className="col-xs-6 mt20">
               <label>Upload Image</label>
@@ -461,6 +483,7 @@ class MessageFormContainer extends Component {
 	                  {this.state.logoImageOnCard != '' && <img ref="logoOnCard" src={this.state.logoImageOnCard} style={uploadedImageStyles}/> }
 	                  <button name="aboutUsImg" ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload</button>
 	                </div>
+	               
 				</div>}
 				 {triggerUploadBanner && <div className="col-xs-6 mt20">
 	              <label>Upload Banner</label>
@@ -469,6 +492,7 @@ class MessageFormContainer extends Component {
 		                  {this.state.logoImageOnCard != '' && <img ref="logoOnCard" src={this.state.logoImageOnCard} style={uploadedImageStyles}/> }
 		                  <button name="aboutUsImg" ref="logoUploadReveal" className="logo-upload-reveal coursor-pointer ">Click to upload</button>
 		                </div>
+		                {errors.imageId && <div className="help-block has-error material-label error-form "> {errors.imageId}</div>}
 					</div>}
 		                  {showTextBox && <div>
 		  				<div className="col-md-6">
@@ -482,7 +506,9 @@ class MessageFormContainer extends Component {
 		  					value={message}
 		  			className="wordText messageColor"
 		  				/>
+		  			 {errors.message && <div className="help-block has-error material-label error-form "> {errors.message}</div>}
 		  			  </div>
+		  			
 		  			</div>}
 				</div>
 				<div className="row mt30">

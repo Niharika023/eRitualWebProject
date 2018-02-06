@@ -3,7 +3,7 @@ import isEmpty from 'lodash/isEmpty';
 
 export default function validateInput(data) {
 	let errors = {};
-
+   console.log("Validator");
 	if(Validator.isEmpty(data.name)) {
 		errors.name = "Please enter name";
 	}

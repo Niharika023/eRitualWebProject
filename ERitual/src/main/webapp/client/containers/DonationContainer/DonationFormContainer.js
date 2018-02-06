@@ -26,6 +26,7 @@ class DonationFormContainer extends Component {
 				firstTimeFormSubmit:false,
 				submitApplied:false,
 				scroll:'',
+				tag:''
 		}
 		this.onChange = this.onChange.bind(this);// bind(this) is needed here,
 		this.onSubmit = this.onSubmit.bind(this);
@@ -260,7 +261,7 @@ class DonationFormContainer extends Component {
 				}
 		};
 
-		const {errors ,success, name,amount,checked,showTextBox,videoDescription,image,bannerTags,triggerUploadBanner,message,videoUrl,triggerUploadImg,triggerUploadVidAudPdf,typename,url,metadata,tags,description,imageUploadSuccess,showMessage,messageImage,isLoading,title} = this.state;
+		const {errors ,success, name,amount,checked,showTextBox,videoDescription,image,bannerTags,tag,triggerUploadBanner,message,videoUrl,triggerUploadImg,triggerUploadVidAudPdf,typename,url,metadata,tags,description,imageUploadSuccess,showMessage,messageImage,isLoading,title} = this.state;
 		return (
 				<div>
 				<form className="p20 user-entry-forms details-form" onSubmit={this.onSubmit} id="donation-form">
@@ -296,7 +297,7 @@ class DonationFormContainer extends Component {
 				<option value=""> Select Tags</option>
 				{this.donationTagRenderOptions()}
 				</select>
-
+				{errors.tag && <span className="help-block has-error material-label error-form "> {errors.tag}</span>}
 				</div>
 				<div className="col-md-6">
 				<textarea 
@@ -308,7 +309,10 @@ class DonationFormContainer extends Component {
 						value={description}
 				className="wordText messageColor"
 					/>
+				{errors.description && <span className="help-block has-error material-label error-form "> {errors.description}</span>}
 					</div>
+				
+				
 				</div>
 				<div className="row mt30">
 				<div className="col-md-4 col-md-offset-4">
