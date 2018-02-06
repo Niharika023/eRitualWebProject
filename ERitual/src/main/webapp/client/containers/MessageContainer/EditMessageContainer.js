@@ -145,7 +145,17 @@ class MessageFormContainer extends Component {
 				//this.setState({showTextBox:true});
 				this.setState({triggerUploadVidAudPdf:false});
 				this.setState({triggerSelectedUrl:false});
-			}else {
+			}
+			else if(this.state.tag==""){
+				this.setState({triggerUploadImg:false});
+				this.setState({triggerUploadPdf:false});
+				this.setState({triggerUploadBanner:false});
+				this.setState({triggerUploadVideo:false});
+				this.setState({showTextBox:false});
+				this.setState({triggerUploadVidAudPdf:false});
+				this.setState({triggerSelectedUrl:false});
+			}
+			else {
 				this.setState({triggerUploadImg:false});
 				this.setState({triggerUploadBanner:false});
 				this.setState({triggerUploadVideo:true});
@@ -207,6 +217,7 @@ class MessageFormContainer extends Component {
 			imageId:'',
 			pdfId:''
 		},()=>{
+			console.log("this.state.tag",this.state.tag);
 			if(this.state.tag=='Banner'){
 				this.setState({triggerUploadBanner:true});
 				this.setState({triggerUploadImg:false});
@@ -224,7 +235,17 @@ class MessageFormContainer extends Component {
 				this.setState({showTextBox:false});
 				this.setState({triggerUploadVidAudPdf:false});
 				this.setState({triggerSelectedUrl:false});
-			}else {
+			}
+			else if(this.state.tag==""){
+				this.setState({triggerUploadImg:false});
+				this.setState({triggerUploadPdf:false});
+				this.setState({triggerUploadBanner:false});
+				this.setState({triggerUploadVideo:false});
+				this.setState({showTextBox:false});
+				this.setState({triggerUploadVidAudPdf:false});
+				this.setState({triggerSelectedUrl:false});
+			}
+			else {
 				this.setState({triggerUploadImg:false});
 				this.setState({triggerUploadBanner:false});
 				this.setState({triggerUploadVideo:true});
@@ -623,7 +644,7 @@ class MessageFormContainer extends Component {
                   <div className="col-xs-6">
 				  <label>Tags</label>
 				  <select name="type" className=" form-control  font-color" onChange={this.SelectTag}>
-					<option value={tag}> Select Tags</option>
+					<option value=""> Select Tags</option>
 				{this.sriTagRenderOptions()}
 				</select>
 				{triggerSelectedUrl && <span>Url is : {this.state.selectedUrl}</span>}

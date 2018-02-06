@@ -83,6 +83,7 @@ class MessageFormContainer extends Component {
 	//on select tag
 	SelectTag(event){
 		this.state.tag=event.target.value;
+		console.log("this.state.tag",this.state.tag);
 		if(this.state.tag=='Banner'){
 			this.setState({triggerUploadBanner:true});
 			this.setState({triggerUploadImg:false});
@@ -101,7 +102,17 @@ class MessageFormContainer extends Component {
 			this.setState({showTextBox:false});
 			this.setState({triggerUploadVidAudPdf:false});
 			this.setState({triggerSelectedUrl:false});
-		}else {
+		}
+		else if(this.state.tag==""){
+			this.setState({triggerUploadImg:false});
+			this.setState({triggerUploadPdf:false});
+			this.setState({triggerUploadBanner:false});
+			this.setState({triggerUploadVideo:false});
+			this.setState({showTextBox:false});
+			this.setState({triggerUploadVidAudPdf:false});
+			this.setState({triggerSelectedUrl:false});
+		}
+		else {
 			this.setState({triggerUploadImg:false});
 			this.setState({triggerUploadBanner:false});
 			this.setState({triggerUploadVideo:true});
