@@ -114,6 +114,15 @@ class MessageFormContainer extends Component {
 				this.setState({triggerSelectedUrl:false});
 				this.state.selectImageorPdf = "selectedPdf";
 			
+			}
+			else if(this.state.tag==""){
+				this.setState({triggerUploadImg:false});
+				this.setState({triggerUploadPdf:false});
+				this.setState({triggerUploadBanner:false});
+				this.setState({triggerUploadVideo:false});
+				this.setState({showTextBox:false});
+				this.setState({triggerUploadVidAudPdf:false});
+				this.setState({triggerSelectedUrl:false});
 			}else {
 				this.setState({triggerUploadImg:false});
 				this.setState({triggerUploadBanner:false});
@@ -121,8 +130,10 @@ class MessageFormContainer extends Component {
 				this.setState({showTextBox:false});
 				this.setState({triggerSelectedUrl:true});
 			}
+			
 		})
 		
+
 	}
 	onChange(event) {
 		event.preventDefault();
