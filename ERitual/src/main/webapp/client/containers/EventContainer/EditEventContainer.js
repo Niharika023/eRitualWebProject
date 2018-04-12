@@ -256,7 +256,7 @@ class EditEventContainer extends Component {
 		const {errors, isValid } = validateInput(this.state);
 		this.setState({ errors });
 		if(this.state.submitApplied)
-			this.scrollPage({errors});
+			//this.scrollPage({errors});
 		return isValid;
 	}
 
@@ -314,6 +314,9 @@ class EditEventContainer extends Component {
 			this.state.formFields=JSON.stringify(formFields);
 			if(this.state.selectedTime==null){
 				this.state.time=`${(this.state.hours < 10) ? "0" + this.state.hours : this.state.hours}:${(this.state.minutes < 10)? "0"+this.state.minutes : this.state.minutes}`
+			}
+			if(this.state.time=="NaN:NaN"){
+				this.state.time="00:00";
 			}
 			let event= {
 					"name":this.state.name,
@@ -398,8 +401,8 @@ class EditEventContainer extends Component {
 							let _URL = window.URL || window.webkitURL;
 							let img = new Image();
 							img.onload = () => {
-								if(img.width < 300 || img.height < 300) {
-									alert("Minimum dimensions of file should be 300x300");
+								if(img.width < 550 || img.height < 300) {
+									alert("Minimum dimensions of file should be 550x300");
 									return false;
 								}
 								else {
@@ -498,72 +501,20 @@ class EditEventContainer extends Component {
 
 				</div>
 				<div className="col-md-6">
-				<label>Time</label><span className = "required"></span>
+				<label className="mr10">Time</label>
 				<Datetime 
 				onChange ={this.handleTimeSelect}
 				dateFormat={false}
 				timeFormat={this.state.isTime}
 				value={selectedTime}
-				field="Time"
+				field="time"
+					
 					/>
-				{errors.time && <span className="help-block has-error material-label error-form "> {errors.time}</span>}
+				
 
 				</div>
 				</div>
-				<div className="row mb10">
-				<div className="col-md-12">
-				<label className="mr10">Pre-Requisite</label>
-				<input
-				name="checked"
-					type="checkbox"
-						checked={this.state.checked}
-				onChange={this.handleInputChange} 
-				/>
-				{this.state.checked && <div>  <div className="row mb10">
-				<div className="col-md-12">
-				<div className="row mb10">
-				<div className="col-md-3">
-				<label>Name</label>
-				<input
-				name="eventUserName"
-					type="checkbox"
-						checked={this.state.eventUserName}
-				onChange={this.handleInputChange} 
-				/>
-				</div>
-				<div className="col-md-3">
-				<label>Gotra</label>
-				<input
-				name="gotra"
-					type="checkbox"
-						checked={this.state.gotra}
-				onChange={this.handleInputChange} 
-				/>
-				</div>
-				<div className="col-md-3">
-				<label>Rashi</label>
-				<input
-				name="rashi"
-					type="checkbox"
-						checked={this.state.rashi}
-				onChange={this.handleInputChange} 
-				/>
-				</div>
-				<div className="col-md-3">
-				<label>Nakshatra</label>
-				<input
-				name="nakshatra"
-					type="checkbox"
-						checked={this.state.nakshatra}
-				onChange={this.handleInputChange} 
-				/>
-				</div>
-				</div>
-				</div>
-				</div>
-				</div>}
-				</div>
-				</div>
+				
 				<div className="row mb10">
 				<div className="col-xs-12">
 				<TextFieldGroup
@@ -581,10 +532,11 @@ class EditEventContainer extends Component {
 				error={errors.amount}
 				label="Event Amount"
 					onChange={this.onChange}
-				value={amount}
+				value={address2}
 				field="amount"
-					/>
-					</div>
+					asterisk=""
+						/>
+						</div>
 				</div>
 				<div className="row mb10">
 				<div className="col-xs-12">
@@ -642,6 +594,7 @@ class EditEventContainer extends Component {
 				value={contactDetails}
 				field="contactDetails"
 					type="text"
+						asterisk=""
 						/>
 						</div>
 				</div>

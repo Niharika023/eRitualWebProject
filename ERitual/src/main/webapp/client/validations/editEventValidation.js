@@ -23,25 +23,7 @@ let amount=(data.amount).toString();
 {
   errors.date = "please enter the date";
 }
- if((data.time)==null || data.time=="NaN:NaN")
-{
-  errors.time = "please enter the time";
-}
-      if(Validator.isEmpty(amount)) {
-        errors.amount = "Please enter event amount";
-      }
-      if((!Validator.isEmpty(amount)) && (!Validator.isNumeric(amount))) {
-            errors.amount = "Event Amount  should contain only digits";
-          }
-      if(Validator.isEmpty(data.contactDetails)) {
-            errors.contactDetails = "Please enter mobile number";
-          }
-      if((!Validator.isEmpty(data.contactDetails)) && (!Validator.isNumeric(data.contactDetails))) {
-            errors.contactDetails = "Mobile number should contain only numbers";
-          }
-      if((!Validator.isEmpty(data.contactDetails)) && (Validator.isNumeric(data.contactDetails)) && (data.contactDetails.length!=10 && data.contactDetails.length != 12)) {
-            errors.contactDetails = "Mobile Number should contain 10 or 12 digits";
-          }
+ 
   if(Validator.isEmpty(data.city)){
     errors.city = "Please enter the city";
   }

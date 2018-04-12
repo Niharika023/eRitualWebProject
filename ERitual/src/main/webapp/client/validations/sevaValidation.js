@@ -26,9 +26,9 @@ export default function validateInput(data) {
 		errors.tag = "Please enter tag";
 	}
 	
-	if(Validator.isEmpty(data.imgName)) {
+	/*if(Validator.isEmpty(data.imgName)) {
 		errors.imgName = "Please choose an image";
-	}
+	}*/
 
 	/*if(data.time=='' || data.time==null){
 	errors.time = "Please enter the time ";

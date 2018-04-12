@@ -25,25 +25,7 @@ export default function validateInput(data) {
 {
   errors.date = "Please enter the date";
 }
- if((data.time)==null)
-{
-  errors.time = "Please enter the time";
-}
-      if(Validator.isEmpty(data.amount)) {
-        errors.amount = "Please enter event amount";
-      }
-      if((!Validator.isEmpty(data.amount)) && (!Validator.isNumeric(data.amount))) {
-            errors.amount = "Event Amount  should contain only digits";
-          }
-      if(Validator.isEmpty(data.phoneNo)) {
-            errors.phoneNo = "Please enter mobile number";
-          }
-      if((!Validator.isEmpty(data.phoneNo)) && (!Validator.isNumeric(data.phoneNo))) {
-            errors.phoneNo = "Mobile number should contain only numbers";
-          }
-      if((!Validator.isEmpty(data.phoneNo)) && (Validator.isNumeric(data.phoneNo)) && (data.phoneNo.length!=10 && data.phoneNo.length != 12)) {
-            errors.phoneNo = "Mobile Number should contain 10 or 12 digits";
-          }
+
   if(Validator.isEmpty(data.city)){
     errors.city = "Please enter the city";
   }

@@ -155,10 +155,10 @@ class TagConfigFormContainer extends Component {
 				title=keyName[2];
 			}
 			let tagConfig= {
-					value:{
+					"ui.tab.e-Seva":{
 						"type":title,
 						"title":title,
-						"tags":this.state.value
+						"tags":this.state.configValue
 					}
 			}
 			console.log("tagConfig",tagConfig);

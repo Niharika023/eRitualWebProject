@@ -328,8 +328,8 @@ class EventFormContainer extends Component {
 							let _URL = window.URL || window.webkitURL;
 							let img = new Image();
 							img.onload = () => {
-								if(img.width < 300 || img.height < 300) {
-									alert("Minimum dimensions of file should be 300x300");
+								if(img.width < 550 || img.height < 300) {
+									alert("Minimum dimensions of file should be 550x300");
 									return false;
 								}
 								else {
@@ -430,17 +430,19 @@ class EventFormContainer extends Component {
 
 					</div>
 					<div className="col-md-6">
-					<label>Time</label><span className = "required"></span>
+					<label className="mr10">Time</label>
 					<Datetime 
 					onChange ={this.handleTimeSelect}
 					dateFormat={false}
 					isValidDate={this.valid}
 					timeFormat={this.state.isTime}
 					value={selectedTime}
+					
 					field="time"
+						asterisk=""
 						inputProps={{ placeholder: "Time" }}
 					/>
-					{errors.time && <span className="help-block has-error material-label help-block error-form">{errors.time}</span>}
+					
 
 					</div> 
 					</div>
@@ -520,6 +522,7 @@ class EventFormContainer extends Component {
 						onChange={this.onChange}
 					value={amount}
 					field="amount"
+						asterisk=""
 						/>
 						</div>
 					</div>
@@ -577,6 +580,7 @@ class EventFormContainer extends Component {
 					value={phoneNo}
 					field="phoneNo"
 						type="text"
+							asterisk=""
 							/>
 							</div>
 					</div>

@@ -252,8 +252,8 @@ class AboutUsFormContainer extends Component {
 								let _URL = window.URL || window.webkitURL;
 								let img = new Image();
 								img.onload = () => {
-									if(img.width < 300 || img.height < 300) {
-										alert("Minimum dimensions of file should be 300x300");
+									if(img.width < 550 || img.height < 300) {
+										alert("Minimum dimensions of file should be 550x300");
 										return false;
 									}
 									else {
